@@ -1,0 +1,286 @@
+/* ==========================================================================
+   Showcase video ("Lagu Galau" dan video unggulan lain) di beranda.
+   Menggantikan banner foto penuh dengan teks di tengah.
+   Tautan .play-btn.popup-youtube dipertahankan agar pemutar popup tetap jalan.
+
+   Hanya memakai kelas .km-video-stage-* di dalam .video-area.
+   ========================================================================== */
+
+.video-area.km-video-stage {
+    position: relative;
+    overflow: hidden;
+    padding: clamp(46px, 5.6vw, 82px) 0 !important;
+    background: #08202e !important;
+    isolation: isolate;
+}
+
+/* Poster yang diburamkan menjadi latar, bukan foto yang dipakai mentah. */
+.km-video-stage::before {
+    position: absolute;
+    inset: -14%;
+    z-index: 0;
+    background-image: var(--km-video-poster, none);
+    background-position: center;
+    background-size: cover;
+    content: "";
+    filter: blur(28px) saturate(1.15) brightness(.42);
+    transform: scale(1.05);
+}
+
+.km-video-stage::after {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background:
+        radial-gradient(circle 420px at 86% 12%, rgba(58, 174, 229, .38), transparent 72%),
+        linear-gradient(100deg, rgba(4, 19, 28, .95) 0%, rgba(7, 33, 48, .9) 46%, rgba(9, 46, 66, .74) 100%);
+    content: "";
+}
+
+.km-video-stage > .container {
+    position: relative;
+    z-index: 1;
+}
+
+.km-video-stage__grid {
+    display: grid;
+    grid-template-columns: minmax(0, .92fr) minmax(0, 1.08fr);
+    align-items: center;
+    gap: clamp(26px, 4vw, 56px);
+}
+
+/* ---------- Kolom teks --------------------------------------------------- */
+
+.km-video-stage__copy {
+    min-width: 0;
+}
+
+.km-video-stage__title {
+    margin: 0;
+    font-family: var(--km-font);
+    font-size: clamp(26px, 3.4vw, 44px);
+    font-weight: 800;
+    line-height: 1.12;
+    letter-spacing: -.026em;
+    color: #fff;
+}
+
+.km-video-stage__desc {
+    margin: 14px 0 0;
+    max-width: 34em;
+    font-size: clamp(14px, 1.1vw, 16px);
+    line-height: 1.75;
+    color: rgba(221, 240, 251, .8);
+}
+
+.km-video-stage__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 14px;
+    margin-top: 26px;
+}
+
+/* Tombol putar: pil berikon, menggantikan lingkaran polos bawaan template. */
+.km-video-stage .km-video-stage__play {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    width: auto;
+    height: auto;
+    padding: 14px 24px;
+    border: 1px solid rgba(255, 255, 255, .5);
+    border-radius: 999px;
+    background: linear-gradient(120deg, var(--km-blue, #3aaee5) 0%, var(--km-blue-600, #1e93cd) 100%);
+    color: #fff;
+    font-size: 14px;
+    font-weight: 800;
+    line-height: 1.2;
+    text-decoration: none;
+    box-shadow:
+        0 20px 38px -18px rgba(2, 18, 27, .95),
+        0 0 0 6px rgba(255, 255, 255, .07);
+    transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+}
+
+.km-video-stage .km-video-stage__play i {
+    color: #fff;
+    font-size: 12px;
+}
+
+.km-video-stage .km-video-stage__play:hover,
+.km-video-stage .km-video-stage__play:focus-visible {
+    border-color: #fff;
+    transform: translateY(-2px);
+    box-shadow:
+        0 24px 44px -18px rgba(2, 18, 27, 1),
+        0 0 30px -6px rgba(112, 210, 255, .6),
+        0 0 0 6px rgba(255, 255, 255, .12);
+}
+
+.km-video-stage .km-video-stage__play:hover i {
+    color: #fff;
+}
+
+.km-video-stage__meta {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 16px;
+    border: 1px solid rgba(255, 255, 255, .22);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, .08);
+    color: rgba(226, 244, 255, .92);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: .02em;
+}
+
+.km-video-stage__meta i {
+    color: #ff5c5c;
+    font-size: 13px;
+}
+
+/* ---------- Poster video ------------------------------------------------- */
+
+.km-video-stage__poster {
+    position: relative;
+    display: block;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, .2);
+    border-radius: 22px;
+    background: #0d3346;
+    text-decoration: none !important;
+    box-shadow:
+        0 34px 66px -32px rgba(0, 8, 14, .95),
+        0 0 0 1px rgba(255, 255, 255, .06) inset,
+        0 0 44px -10px rgba(58, 174, 229, .45);
+    transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+}
+
+.km-video-stage__poster img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transform: scale(1.01);
+    transition: transform .6s ease;
+}
+
+.km-video-stage__poster::after {
+    position: absolute;
+    inset: auto 0 0;
+    z-index: 1;
+    height: 46%;
+    background: linear-gradient(180deg, rgba(4, 19, 28, 0), rgba(4, 19, 28, .62));
+    content: "";
+    pointer-events: none;
+}
+
+.km-video-stage__poster:hover,
+.km-video-stage__poster:focus-visible {
+    border-color: rgba(127, 216, 255, .75);
+    transform: translateY(-3px);
+    box-shadow:
+        0 40px 74px -30px rgba(0, 8, 14, 1),
+        0 0 56px -8px rgba(58, 174, 229, .6);
+}
+
+.km-video-stage__poster:hover img {
+    transform: scale(1.05);
+}
+
+/* Kunci putar: satu-satunya lingkaran sempurna di panggung. */
+.km-video-stage__key {
+    position: absolute;
+    right: 18px;
+    bottom: 18px;
+    z-index: 2;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, .16);
+    border: 1px solid rgba(255, 255, 255, .6);
+    color: #fff;
+    font-size: 17px;
+    backdrop-filter: blur(7px);
+    box-shadow: 0 16px 30px -14px rgba(0, 8, 14, .95);
+    transition: background .22s ease, color .22s ease, transform .22s ease;
+}
+
+.km-video-stage__key i {
+    margin-left: 3px;
+}
+
+.km-video-stage__poster:hover .km-video-stage__key,
+.km-video-stage__poster:focus-visible .km-video-stage__key {
+    background: #fff;
+    color: var(--km-blue-700, #1276a4);
+    transform: scale(1.06);
+}
+
+/* --------------------------------------------------------------------------
+   Responsif
+   -------------------------------------------------------------------------- */
+
+@media (max-width: 991px) {
+    .km-video-stage__grid {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 24px;
+    }
+
+    .km-video-stage__poster {
+        order: 2;
+    }
+}
+
+@media (max-width: 575px) {
+    .km-video-stage {
+        padding: 34px 0 38px !important;
+    }
+
+    .km-video-stage__desc {
+        margin-top: 10px;
+    }
+
+    .km-video-stage__actions {
+        gap: 10px;
+        margin-top: 20px;
+    }
+
+    .km-video-stage .km-video-stage__play {
+        flex: 1 1 100%;
+        justify-content: center;
+    }
+
+    .km-video-stage__meta {
+        flex: 1 1 100%;
+        justify-content: center;
+    }
+
+    .km-video-stage__poster {
+        border-radius: 18px;
+    }
+
+    .km-video-stage__key {
+        right: 12px;
+        bottom: 12px;
+        width: 46px;
+        height: 46px;
+        font-size: 14px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .km-video-stage__poster,
+    .km-video-stage__poster img,
+    .km-video-stage__key,
+    .km-video-stage .km-video-stage__play {
+        transition: none;
+        transform: none;
+    }
+}

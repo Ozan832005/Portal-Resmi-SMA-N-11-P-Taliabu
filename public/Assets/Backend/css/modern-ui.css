@@ -1,0 +1,1590 @@
+/* ==========================================================================
+   Kombai Modern UI — lapisan desain di atas template admin Bootstrap 4
+   Dimuat terakhir agar menimpa gaya template.
+   ========================================================================== */
+
+:root {
+    /* Token warna */
+    --km-ink: #0d1526;
+    --km-ink-2: #16213a;
+    --km-ink-line: rgba(255, 255, 255, 0.08);
+    --km-brand: #2f6feb;
+    --km-brand-ink: #1d4fbe;
+    --km-brand-soft: #eaf1fe;
+    --km-accent: #b45309;
+    --km-accent-soft: #fdf3e4;
+    --km-canvas: #f5f7fb;
+    --km-canvas-soft: #fbfcfe;
+    --km-hover: #f8fafd;
+    --km-surface: #ffffff;
+    --km-line: #e3e8f0;
+    --km-line-strong: #cfd7e5;
+    --km-text: #172033;
+    --km-text-soft: #5b6779;
+    --km-text-faint: #8b95a7;
+    --km-success: #0f7a5a;
+    --km-success-soft: #e7f5ef;
+    --km-danger: #b3261e;
+    --km-danger-soft: #fdecea;
+
+    /* Token geometri: radius diskalakan per ukuran elemen */
+    --km-radius-control: 6px;
+    --km-radius-card: 12px;
+    --km-radius-panel: 16px;
+
+    --km-font: "Segoe UI", "Montserrat", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+}
+
+/*
+   Varian gelap. app.js menambahkan class `dark-layout` pada <html> saat
+   tombol tema ditekan, jadi semua token ditimpa di level itu.
+*/
+html.dark-layout {
+    --km-canvas: #0b111e;
+    --km-canvas-soft: #101a2c;
+    --km-hover: rgba(255, 255, 255, 0.04);
+    --km-surface: #161d31;
+    --km-line: rgba(255, 255, 255, 0.08);
+    --km-line-strong: rgba(255, 255, 255, 0.18);
+    --km-text: #e7ecf6;
+    --km-text-soft: #a6b1c4;
+    --km-text-faint: #7f8ba1;
+    --km-brand: #5b8ef5;
+    --km-brand-ink: #93b3fb;
+    --km-brand-soft: rgba(91, 142, 245, 0.16);
+    --km-accent: #e0a256;
+    --km-accent-soft: rgba(224, 162, 86, 0.16);
+    --km-success: #4cc79c;
+    --km-success-soft: rgba(76, 199, 156, 0.14);
+    --km-danger: #f28b82;
+    --km-danger-soft: rgba(242, 139, 130, 0.14);
+}
+
+/* ---------- Kanvas & tipografi dasar ---------- */
+
+body.vertical-layout {
+    background-color: var(--km-canvas);
+    color: var(--km-text);
+    font-family: var(--km-font);
+    font-size: 14px;
+    letter-spacing: 0;
+}
+
+/* Navbar mengambang bersifat fixed; beri ruang agar judul halaman tidak tertutup */
+body.vertical-layout .app-content.content {
+    background-color: transparent;
+    padding: 0;
+    margin-top: 104px;
+}
+
+.content-wrapper,
+.content-body {
+    font-family: var(--km-font);
+}
+
+h1, h2, h3, h4, h5, h6,
+.card-title {
+    color: var(--km-text);
+    font-family: var(--km-font);
+    font-weight: 650;
+    letter-spacing: -0.01em;
+}
+
+a {
+    color: var(--km-brand-ink);
+}
+
+.km-page {
+    padding: 26px 30px 40px;
+    max-width: 1440px;
+    margin: 0 auto;
+}
+
+.km-page-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 12px 24px;
+    padding-bottom: 18px;
+    margin-bottom: 18px;
+    border-bottom: 1px solid var(--km-line);
+}
+
+.km-page-title {
+    font-size: 22px;
+    line-height: 1.2;
+    margin: 0 0 4px;
+    font-weight: 700;
+}
+
+.km-page-sub {
+    margin: 0;
+    color: var(--km-text-soft);
+    font-size: 14px;
+}
+
+.km-page-date {
+    margin: 0;
+    color: var(--km-text-faint);
+    font-size: 13px;
+}
+
+.km-link {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--km-brand-ink);
+    white-space: nowrap;
+}
+
+.km-link:hover {
+    color: var(--km-brand);
+    text-decoration: underline;
+}
+
+/* ---------- Sidebar ---------- */
+
+.main-menu.menu-dark {
+    background: var(--km-ink);
+    border-right: 1px solid var(--km-ink-line);
+    box-shadow: none;
+}
+
+.main-menu.menu-fixed {
+    top: 0;
+}
+
+.main-menu.menu-dark .navbar-header {
+    height: 72px;
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--km-ink-line);
+}
+
+.main-menu.menu-dark .navbar-header > .nav {
+    width: 100%;
+    height: 100%;
+    align-items: center;
+}
+
+body.vertical-layout .main-menu.menu-dark .navbar-brand {
+    min-width: 0;
+    gap: 10px;
+    margin: 0 !important;
+    color: #ffffff;
+}
+
+body.vertical-layout .main-menu.menu-dark .navbar-brand .brand-text {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    color: #ffffff;
+    font-size: 17px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    line-height: 1.1;
+}
+
+.main-menu.menu-dark .navbar-brand .brand-logo {
+    display: inline-flex;
+    flex: 0 0 40px;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, .2);
+    border-radius: 12px;
+    background: rgba(255, 255, 255, .96);
+}
+
+.main-menu.menu-dark .navbar-brand .brand-logo img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    padding: 3px;
+    object-fit: contain;
+}
+
+.main-menu.menu-dark .navbar-brand .brand-text small {
+    color: #aebbd0;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: .13em;
+    line-height: 1.2;
+}
+
+.main-menu.menu-dark .navbar-header .nav-toggle {
+    flex: 0 0 auto;
+    margin-left: 8px;
+}
+
+.main-menu.menu-dark .navbar-header .modern-nav-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    padding: 0 !important;
+    border: 1px solid rgba(255, 255, 255, .12);
+    border-radius: 10px;
+    background: rgba(255, 255, 255, .06);
+}
+
+.main-menu.menu-dark .navbar-header .modern-nav-toggle .toggle-icon,
+.main-menu.menu-dark .navbar-header .modern-nav-toggle .collapse-toggle-icon {
+    margin: 0;
+    color: #d8e4f7 !important;
+}
+
+.main-menu.menu-dark .navigation .nav-item > a {
+    color: #b9c4d6;
+    border-radius: var(--km-radius-control);
+    margin: 2px 10px;
+    padding: 9px 12px;
+    font-size: 14px;
+    font-weight: 500;
+    transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.main-menu.menu-dark .navigation .nav-item > a:hover {
+    background: var(--km-ink-2);
+    color: #ffffff;
+}
+
+.main-menu.menu-dark .navigation .nav-item > a svg,
+.main-menu.menu-dark .navigation .nav-item > a i {
+    color: #7d8ba5;
+    width: 18px;
+    height: 18px;
+    margin-right: 10px;
+}
+
+/* Halaman aktif ditandai rel 2px di gutter, bukan pil biru penuh */
+.main-menu.menu-dark .navigation .nav-item.active > a {
+    background: var(--km-ink-2);
+    color: #ffffff;
+    font-weight: 600;
+    box-shadow: inset 2px 0 0 var(--km-brand);
+}
+
+.main-menu.menu-dark .navigation .nav-item.open > a,
+.main-menu.menu-dark .navigation .nav-item.sidebar-group-active > a {
+    background: rgba(255, 255, 255, 0.04);
+    color: #ffffff;
+    font-weight: 600;
+}
+
+.main-menu.menu-dark .navigation .nav-item.open > a svg,
+.main-menu.menu-dark .navigation .nav-item.sidebar-group-active > a svg {
+    color: var(--km-brand);
+}
+
+.main-menu.menu-dark .navigation .nav-item.active > a svg {
+    color: #ffffff;
+}
+
+/* Penanda bagian: garis hairline dengan penanda brand pendek di depan label */
+.main-menu.menu-dark .navigation .km-menu-section {
+    margin: 16px 10px 4px;
+    padding-top: 12px;
+    border-top: 1px solid var(--km-ink-line);
+}
+
+.main-menu.menu-dark .navigation .km-menu-section:first-child {
+    margin-top: 4px;
+    padding-top: 0;
+    border-top: 0;
+}
+
+.km-menu-section-label {
+    display: block;
+    padding: 0 2px;
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #8b9ab3;
+}
+
+.km-menu-section-label::before {
+    content: "";
+    display: inline-block;
+    width: 14px;
+    height: 2px;
+    margin-right: 8px;
+    vertical-align: 3px;
+    background: var(--km-brand);
+}
+
+.main-menu.menu-dark .navigation .menu-content {
+    margin-left: 10px;
+}
+
+.main-menu.menu-dark .navigation .menu-content .nav-item > a {
+    color: #9fadc4;
+    font-size: 13.5px;
+    padding: 7px 12px;
+}
+
+/* Anak menu memakai titik penanda, menggantikan ikon bullet template */
+.main-menu.menu-dark .navigation .menu-content .nav-item > a::before {
+    content: "";
+    width: 5px;
+    height: 5px;
+    flex: none;
+    margin-right: 10px;
+    border-radius: 50%;
+    background: #4a566c;
+    transition: background-color 0.15s ease;
+}
+
+/* Template memberi gradien pada <li> aktif; ganti dengan penanda titik brand */
+.main-menu.menu-dark .navigation > li ul .active {
+    background: transparent;
+    box-shadow: none;
+    border-radius: 0;
+}
+
+.main-menu.menu-dark .navigation .menu-content .nav-item.active > a {
+    background: transparent;
+    color: #ffffff;
+    font-weight: 600;
+    box-shadow: none;
+}
+
+.main-menu.menu-dark .navigation .menu-content .nav-item.active > a::before {
+    background: var(--km-brand);
+}
+
+/* ---------- Header atas ---------- */
+
+.header-navbar.floating-nav {
+    background: var(--km-surface);
+    border: 1px solid var(--km-line);
+    box-shadow: none;
+    border-radius: var(--km-radius-card);
+    min-height: 62px;
+    z-index: 1032;
+    transition: left .4s cubic-bezier(.25, .8, .25, 1), width .4s cubic-bezier(.25, .8, .25, 1);
+}
+
+.header-navbar .navbar-container {
+    min-height: 62px;
+}
+
+.km-backend-menu-toggle {
+    display: inline-flex;
+    flex: 0 0 42px;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    margin: 0 10px 0 0;
+    padding: 0;
+    border: 1px solid var(--km-line);
+    border-radius: 12px;
+    background: var(--km-brand-soft);
+    color: var(--km-brand-ink);
+    cursor: pointer;
+    transition: transform .18s ease, background-color .18s ease, box-shadow .18s ease;
+}
+
+.km-backend-menu-toggle:hover,
+.km-backend-menu-toggle:focus-visible,
+.km-backend-menu-toggle.is-active {
+    transform: translateY(-1px);
+    background: var(--km-brand);
+    border-color: var(--km-brand);
+    color: #ffffff;
+    box-shadow: 0 8px 18px rgba(47, 111, 235, .22);
+}
+
+.km-backend-menu-toggle svg {
+    width: 20px;
+    height: 20px;
+    color: inherit;
+}
+
+@media (min-width: 1200px) {
+    .vertical-layout.vertical-menu-modern.menu-collapsed.menu-hover-expanded .app-content,
+    .vertical-layout.vertical-menu-modern.menu-collapsed.menu-hover-expanded .footer {
+        margin-left: 260px;
+        transition: margin-left .4s cubic-bezier(.25, .8, .25, 1);
+    }
+
+    .vertical-layout.vertical-menu-modern.menu-collapsed.menu-hover-expanded .header-navbar.floating-nav {
+        left: 260px;
+        width: calc(100vw - (100vw - 100%) - 344px - 24px);
+        max-width: 1260px;
+    }
+}
+
+.header-navbar .user-name {
+    color: var(--km-text);
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.header-navbar .user-status {
+    color: var(--km-text-faint);
+    font-size: 12px;
+    letter-spacing: 0.02em;
+}
+
+.header-navbar .avatar img.round {
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.header-navbar .dropdown-menu {
+    border: 1px solid var(--km-line);
+    border-radius: var(--km-radius-card);
+    box-shadow: 0 12px 28px rgba(15, 23, 42, 0.12);
+    padding: 6px;
+}
+
+.header-navbar .menu-toggle svg {
+    width: 20px;
+    height: 20px;
+    color: var(--km-text);
+}
+
+.header-navbar .dropdown-item {
+    border-radius: var(--km-radius-control);
+    font-size: 14px;
+    padding: 8px 10px;
+}
+
+/* ---------- Panel & kartu ---------- */
+
+/*
+   Satu jenis pemisah per permukaan: panel memakai garis tepi tipis,
+   tanpa bayangan. Bayangan hanya untuk elemen yang benar-benar mengambang
+   (dropdown, modal).
+*/
+.km-panel,
+body.vertical-layout .card {
+    background: var(--km-surface);
+    border: 1px solid var(--km-line);
+    border-radius: var(--km-radius-card);
+    box-shadow: none;
+}
+
+.km-panel {
+    padding: 20px 22px;
+    margin-bottom: 18px;
+}
+
+body.vertical-layout .card {
+    margin-bottom: 18px;
+}
+
+body.vertical-layout .card-body,
+body.vertical-layout .card-header {
+    padding: 18px 22px;
+}
+
+.km-panel-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 14px;
+}
+
+.km-panel-title {
+    font-size: 15px;
+    font-weight: 650;
+    margin: 0;
+    color: var(--km-text);
+}
+
+.km-panel-note {
+    margin: 0 0 14px;
+    color: var(--km-text-soft);
+    font-size: 13px;
+    line-height: 1.55;
+}
+
+/* ---------- Matriks angka ---------- */
+
+.km-figures {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 4px;
+}
+
+.km-figures--three {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.km-figure {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 12px 14px;
+    border-left: 1px solid var(--km-line);
+    color: inherit;
+}
+
+.km-figure:first-child {
+    border-left: 0;
+    padding-left: 0;
+}
+
+a.km-figure:hover {
+    color: var(--km-brand-ink);
+    text-decoration: none;
+}
+
+a.km-figure:hover .km-figure-value {
+    color: var(--km-brand);
+}
+
+.km-figure-value {
+    font-size: 30px;
+    line-height: 1.05;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    font-variant-numeric: tabular-nums;
+    color: var(--km-text);
+}
+
+.km-figure-label {
+    font-size: 13px;
+    color: var(--km-text-soft);
+}
+
+/* ---------- Acara ---------- */
+
+.km-event-date {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    margin-bottom: 10px;
+}
+
+.km-event-day {
+    font-size: 34px;
+    font-weight: 700;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+    color: var(--km-text);
+}
+
+.km-event-month {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--km-accent);
+    text-transform: capitalize;
+}
+
+.km-event-title {
+    font-size: 16px;
+    font-weight: 650;
+    margin: 0 0 8px;
+    line-height: 1.35;
+}
+
+.km-meta {
+    display: grid;
+    gap: 6px;
+    margin: 0 0 12px;
+    padding: 0;
+    list-style: none;
+    color: var(--km-text-soft);
+    font-size: 13px;
+}
+
+.km-meta li {
+    display: flex;
+    gap: 8px;
+    align-items: flex-start;
+}
+
+.km-meta svg {
+    width: 15px;
+    height: 15px;
+    flex: none;
+    margin-top: 2px;
+    color: var(--km-text-faint);
+}
+
+.km-event-desc {
+    margin: 0;
+    color: var(--km-text-soft);
+    font-size: 13.5px;
+    line-height: 1.6;
+}
+
+/* ---------- Tabel & daftar ---------- */
+
+.table {
+    margin-bottom: 0;
+    color: var(--km-text);
+    font-size: 14px;
+}
+
+.table thead th,
+.dt-responsive thead th {
+    border-top: 0;
+    border-bottom: 1px solid var(--km-line);
+    color: var(--km-text-faint);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    padding: 10px 12px;
+    white-space: nowrap;
+}
+
+.table tbody td {
+    border-top: 0;
+    border-bottom: 1px solid var(--km-line);
+    padding: 12px;
+    vertical-align: middle;
+}
+
+.table tbody tr:last-child td {
+    border-bottom: 0;
+}
+
+/* DataTables: satu indikator urut saja, bukan dua panah bertumpuk */
+table.dataTable thead th::before {
+    content: none !important;
+    display: none !important;
+}
+
+table.dataTable thead th.sorting,
+table.dataTable thead th.sorting_asc,
+table.dataTable thead th.sorting_desc {
+    background-image: none !important;
+}
+
+table.dataTable thead th.sorting_asc::after,
+table.dataTable thead th.sorting_desc::after {
+    margin-left: 6px;
+    font-size: 11px;
+    color: var(--km-brand);
+}
+
+table.dataTable thead th.sorting_asc::after {
+    content: "\2191";
+}
+
+table.dataTable thead th.sorting_desc::after {
+    content: "\2193";
+}
+
+.table-hover tbody tr:hover,
+.table tbody tr:hover {
+    background: var(--km-hover);
+}
+
+.km-thumb {
+    width: 44px;
+    height: 44px;
+    object-fit: cover;
+    border-radius: var(--km-radius-control);
+    border: 1px solid var(--km-line);
+    background: var(--km-canvas);
+    display: block;
+}
+
+.km-thumb--empty {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--km-text-faint);
+    font-size: 11px;
+    text-align: center;
+}
+
+/* Avatar orang: foto bulat atau inisial, ukuran tetap agar kolom sejajar */
+.km-avatar {
+    width: 40px;
+    height: 40px;
+    flex: none;
+    display: block;
+    border-radius: 50%;
+    border: 1px solid var(--km-line);
+    background: var(--km-canvas);
+    object-fit: cover;
+}
+
+.km-avatar--initials {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    color: var(--km-brand-ink);
+    background: var(--km-brand-soft);
+    border-color: transparent;
+}
+
+.km-avatar--lg {
+    width: 76px;
+    height: 76px;
+    font-size: 18px;
+    border-radius: var(--km-radius-control);
+}
+
+.km-person {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+}
+
+.km-person-name {
+    font-weight: 600;
+    color: var(--km-text);
+    line-height: 1.35;
+}
+
+.km-person-meta {
+    font-size: 12.5px;
+    color: var(--km-text-soft);
+    word-break: break-word;
+}
+
+/* Status domain: titik + label, bukan pil generik */
+.km-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    color: var(--km-text-soft);
+    white-space: nowrap;
+}
+
+.km-status::before {
+    content: "";
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--km-text-faint);
+}
+
+.km-status--live::before {
+    background: var(--km-success);
+}
+
+.km-status--draft::before {
+    background: var(--km-accent);
+}
+
+/* ---------- Tombol ---------- */
+
+.btn {
+    border-radius: var(--km-radius-control);
+    font-family: var(--km-font);
+    font-size: 14px;
+    font-weight: 600;
+    padding: 8px 14px;
+    letter-spacing: 0;
+    transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.btn-sm {
+    font-size: 13px;
+    padding: 5px 11px;
+}
+
+.btn-primary {
+    background-color: var(--km-brand);
+    border-color: var(--km-brand);
+    color: #ffffff;
+}
+
+.btn-primary:hover,
+.btn-primary:focus {
+    background-color: var(--km-brand-ink);
+    border-color: var(--km-brand-ink);
+    color: #ffffff;
+    box-shadow: none;
+}
+
+.btn-outline-primary {
+    border-color: var(--km-line-strong);
+    color: var(--km-text);
+    background: transparent;
+}
+
+.btn-outline-primary:hover {
+    border-color: var(--km-brand);
+    color: var(--km-brand-ink);
+    background: var(--km-brand-soft);
+}
+
+.btn-success {
+    background-color: transparent;
+    border-color: var(--km-line-strong);
+    color: var(--km-text);
+}
+
+.btn-success:hover {
+    background: var(--km-brand-soft);
+    border-color: var(--km-brand);
+    color: var(--km-brand-ink);
+}
+
+.btn-danger,
+.km-btn-danger {
+    background-color: transparent;
+    border: 1px solid var(--km-line-strong);
+    color: var(--km-danger);
+}
+
+.btn-danger:hover,
+.km-btn-danger:hover {
+    background: var(--km-danger-soft);
+    border-color: var(--km-danger);
+    color: var(--km-danger);
+}
+
+.km-row-actions {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    justify-content: flex-end;
+}
+
+/* ---------- Form ---------- */
+
+.form-group label,
+.form-label,
+label {
+    color: var(--km-text);
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 6px;
+}
+
+.form-control {
+    border: 1px solid var(--km-line-strong);
+    border-radius: var(--km-radius-control);
+    color: var(--km-text);
+    font-family: var(--km-font);
+    font-size: 14px;
+    background-color: var(--km-surface);
+    padding: 8px 12px;
+    height: auto;
+}
+
+.form-control::placeholder {
+    color: var(--km-text-faint);
+}
+
+.form-control:focus {
+    border-color: var(--km-brand);
+    box-shadow: 0 0 0 3px rgba(47, 111, 235, 0.16);
+    background-color: var(--km-surface);
+}
+
+.form-control.is-invalid,
+.was-validated .form-control:invalid {
+    border-color: var(--km-danger);
+}
+
+.invalid-feedback {
+    font-size: 12.5px;
+    color: var(--km-danger);
+}
+
+.custom-select {
+    border-radius: var(--km-radius-control);
+    border-color: var(--km-line-strong);
+    font-size: 14px;
+}
+
+.km-form-preview {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 12px;
+    border: 1px dashed var(--km-line-strong);
+    border-radius: var(--km-radius-control);
+    background: var(--km-canvas-soft);
+}
+
+.km-form-preview img {
+    width: 72px;
+    height: 72px;
+    object-fit: cover;
+    border-radius: var(--km-radius-control);
+    border: 1px solid var(--km-line);
+}
+
+.km-form-preview p {
+    margin: 0;
+    font-size: 13px;
+    color: var(--km-text-soft);
+    line-height: 1.5;
+}
+
+.km-form-hint {
+    display: block;
+    margin-top: 6px;
+    font-size: 12.5px;
+    line-height: 1.5;
+    color: var(--km-text-faint);
+}
+
+.km-form-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 18px;
+    padding-top: 16px;
+    border-top: 1px solid var(--km-line);
+}
+
+/* ---------- Alert, badge, state kosong ---------- */
+
+.alert {
+    border-radius: var(--km-radius-card);
+    border: 1px solid transparent;
+    font-size: 14px;
+    padding: 12px 16px;
+}
+
+.alert-success {
+    background: var(--km-success-soft);
+    border-color: #c7e8d9;
+    color: #0b5c45;
+}
+
+.alert-danger {
+    background: var(--km-danger-soft);
+    border-color: #f4c9c5;
+    color: #8f1d16;
+}
+
+html.dark-layout .alert-success {
+    border-color: rgba(76, 199, 156, 0.3);
+    color: #b7f0dd;
+}
+
+html.dark-layout .alert-danger {
+    border-color: rgba(242, 139, 130, 0.3);
+    color: #ffd4d0;
+}
+
+.badge {
+    font-weight: 600;
+    border-radius: 999px;
+    font-size: 12px;
+    padding: 4px 9px;
+}
+
+.km-empty {
+    padding: 26px 18px;
+    text-align: left;
+    border: 1px dashed var(--km-line-strong);
+    border-radius: var(--km-radius-card);
+    background: var(--km-canvas-soft);
+}
+
+.km-empty-title {
+    margin: 0 0 6px;
+    font-size: 14.5px;
+    font-weight: 650;
+    color: var(--km-text);
+}
+
+.km-empty-text {
+    margin: 0 0 14px;
+    font-size: 13.5px;
+    color: var(--km-text-soft);
+    line-height: 1.6;
+}
+
+/* ---------- DataTables ---------- */
+
+.dataTables_wrapper .dataTables_filter input,
+.dataTables_wrapper .dataTables_length select {
+    border: 1px solid var(--km-line-strong);
+    border-radius: var(--km-radius-control);
+    padding: 5px 10px;
+    font-size: 13.5px;
+}
+
+.dataTables_wrapper .dataTables_info,
+.dataTables_wrapper .dataTables_length,
+.dataTables_wrapper .dataTables_filter {
+    color: var(--km-text-soft);
+    font-size: 13.5px;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button.current {
+    background: var(--km-brand);
+    border-color: var(--km-brand);
+    color: #ffffff !important;
+    border-radius: var(--km-radius-control);
+}
+
+.card-datatable {
+    padding: 0 10px 10px;
+}
+
+/* ---------- Footer ---------- */
+
+.footer.footer-light {
+    background: transparent;
+    border-top: 1px solid var(--km-line);
+    color: var(--km-text-faint);
+    font-size: 13px;
+    padding: 14px 30px;
+}
+
+.footer.footer-light .clearfix {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+}
+
+/* ---------- Responsif ---------- */
+
+@media (max-width: 991.98px) {
+    .km-page {
+        padding: 18px 16px 28px;
+    }
+
+    .km-figures {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        row-gap: 14px;
+    }
+
+    .km-figure {
+        border-left: 1px solid var(--km-line);
+        padding-left: 14px;
+    }
+
+    .km-figure:nth-child(odd) {
+        border-left: 0;
+        padding-left: 0;
+    }
+
+    .km-figure-value {
+        font-size: 26px;
+    }
+}
+
+@media (max-width: 575.98px) {
+    body.vertical-layout .app-content.content {
+        margin-top: 96px;
+    }
+
+    .header-navbar.floating-nav {
+        min-height: 58px;
+    }
+
+    .header-navbar .navbar-container {
+        min-height: 58px;
+        padding-right: 10px;
+        padding-left: 10px;
+    }
+
+    .km-backend-menu-toggle {
+        width: 40px;
+        height: 40px;
+        flex-basis: 40px;
+        margin-right: 6px;
+    }
+
+    .header-navbar .dropdown-user > .nav-link {
+        padding-right: 0;
+    }
+
+    .footer.footer-light {
+        padding-right: 16px;
+        padding-left: 16px;
+        text-align: center;
+    }
+
+    .km-page-head {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .km-panel {
+        padding: 16px;
+    }
+
+    .km-figures--three {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .km-quick-grid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
+
+/* ---------- Pintasan & catatan panel ---------- */
+
+.km-quick-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+}
+
+.km-quick {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    border: 1px solid var(--km-line);
+    border-radius: var(--km-radius-control);
+    color: var(--km-text);
+    font-size: 13.5px;
+    font-weight: 600;
+    line-height: 1.3;
+    background: transparent;
+    transition: border-color 0.15s ease, background-color 0.15s ease, color 0.15s ease;
+}
+
+.km-quick:hover {
+    border-color: var(--km-brand);
+    background: var(--km-brand-soft);
+    color: var(--km-brand-ink);
+    text-decoration: none;
+}
+
+.km-quick svg {
+    width: 16px;
+    height: 16px;
+    flex: none;
+    color: var(--km-text-faint);
+}
+
+.km-quick:hover svg {
+    color: var(--km-brand);
+}
+
+.km-figure-note {
+    margin: 12px 0 0;
+    font-size: 12.5px;
+    line-height: 1.55;
+    color: var(--km-text-faint);
+}
+
+.km-figure-period {
+    margin: 0 0 12px;
+    font-size: 13px;
+    color: var(--km-text-soft);
+}
+
+/* ==========================================================================
+   Sidebar off-canvas — drawer di HP & tablet (≤1199px)
+   Hanya mengatur keadaan `vertical-overlay-menu`; sidebar desktop (≥1200px)
+   dan seluruh halaman lain memakai aturan di atas tanpa perubahan.
+   ========================================================================== */
+
+:root {
+    --km-drawer-width: min(86vw, 336px);
+    --km-drawer-radius: 18px;
+    --km-drawer-row: 46px;
+    --km-drawer-subrow: 40px;
+    --km-drawer-active: #182a4b;
+    --km-drawer-spine: rgba(255, 255, 255, 0.10);
+    --km-drawer-icon-active: #7fa8ff;
+    --km-drawer-role-bg: rgba(224, 162, 86, 0.14);
+    --km-drawer-role-ink: #e8b878;
+    --km-drawer-ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@media (max-width: 1199.98px) {
+    /* ---------- Panel ---------- */
+
+    /*
+       Template menggeser drawer dengan translate3d(260px) dari left:-260px.
+       Di sini panel diberi lebar dan gerak sendiri supaya bisa lebih lebar,
+       bersudut membulat, dan tetap diam di tempat saat tertutup.
+    */
+    .vertical-overlay-menu .main-menu,
+    .vertical-overlay-menu.menu-hide .main-menu {
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 1040;
+        display: flex;
+        flex-direction: column;
+        width: var(--km-drawer-width);
+        max-width: calc(100vw - 24px);
+        height: 100vh;
+        height: 100dvh;
+        margin: 0;
+        padding: 0;
+        border: 0;
+        border-right: 1px solid var(--km-ink-line);
+        border-radius: 0 var(--km-drawer-radius) var(--km-drawer-radius) 0;
+        background: var(--km-ink);
+        box-shadow: 0 32px 70px -26px rgba(3, 8, 18, 0.75);
+        opacity: 1;
+        visibility: hidden;
+        transform: translate3d(-100%, 0, 0);
+        transition: transform 0.42s var(--km-drawer-ease), visibility 0s linear 0.42s;
+        will-change: transform;
+    }
+
+    .vertical-overlay-menu.menu-open .main-menu {
+        visibility: visible;
+        transform: translate3d(0, 0, 0);
+        transition: transform 0.42s var(--km-drawer-ease), visibility 0s linear 0s;
+    }
+
+    /* Header di bawah scrim saat drawer terbuka, agar tidak bersaing dengan panel */
+    .vertical-overlay-menu.menu-open .header-navbar.floating-nav {
+        z-index: 996;
+    }
+
+    .vertical-overlay-menu .sidenav-overlay {
+        background: rgba(6, 11, 22, 0.55);
+        -webkit-backdrop-filter: blur(3px);
+        backdrop-filter: blur(3px);
+    }
+
+    html.km-drawer-open,
+    html.km-drawer-open body {
+        overflow: hidden;
+    }
+
+    /* ---------- Kepala identitas ---------- */
+
+    .vertical-overlay-menu .main-menu .navbar-header {
+        flex: 0 0 auto;
+        width: 100%;
+        height: auto;
+        padding: max(12px, env(safe-area-inset-top, 0px)) 14px 10px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.09);
+        background:
+            linear-gradient(180deg, rgba(47, 111, 235, 0.16) 0%, rgba(47, 111, 235, 0) 66%),
+            var(--km-ink);
+    }
+
+    .vertical-overlay-menu .main-menu.menu-dark .navbar-header > .nav {
+        height: auto;
+        align-items: center;
+    }
+
+    .vertical-overlay-menu .main-menu.menu-dark .navbar-brand {
+        gap: 11px;
+    }
+
+    .vertical-overlay-menu .main-menu.menu-dark .navbar-brand .brand-logo {
+        flex: 0 0 42px;
+        width: 42px;
+        height: 42px;
+        border-radius: 12px;
+    }
+
+    .vertical-overlay-menu .main-menu.menu-dark .navbar-brand .brand-text {
+        font-size: 16px;
+    }
+
+    .vertical-overlay-menu .main-menu.menu-dark .navbar-brand .brand-text small {
+        font-size: 9px;
+        letter-spacing: 0.13em;
+    }
+
+    /* Tombol tutup: target 42px, jelas terlihat di atas panel */
+    .vertical-overlay-menu .main-menu.menu-dark .navbar-header .nav-toggle {
+        margin-left: 10px;
+    }
+
+    .vertical-overlay-menu .main-menu.menu-dark .navbar-header .modern-nav-toggle {
+        width: 42px;
+        height: 42px;
+        margin: 0;
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        border-radius: 12px;
+        background: rgba(255, 255, 255, 0.06);
+        transition: background-color 0.16s ease, border-color 0.16s ease;
+    }
+
+    .vertical-overlay-menu .main-menu.menu-dark .navbar-header .modern-nav-toggle:hover,
+    .vertical-overlay-menu .main-menu.menu-dark .navbar-header .modern-nav-toggle:focus-visible {
+        border-color: var(--km-brand);
+        background: var(--km-brand);
+        outline: none;
+    }
+
+    .vertical-overlay-menu .main-menu.menu-dark .navbar-header .modern-nav-toggle svg {
+        width: 18px;
+        height: 18px;
+    }
+
+    .vertical-overlay-menu .main-menu.menu-dark .navbar-header .modern-nav-toggle:hover .toggle-icon,
+    .vertical-overlay-menu .main-menu.menu-dark .navbar-header .modern-nav-toggle:focus-visible .toggle-icon {
+        color: #ffffff !important;
+    }
+
+    .km-drawer-identity {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        min-width: 0;
+        margin-top: 10px;
+        padding-top: 10px;
+        border-top: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .km-drawer-avatar {
+        flex: 0 0 28px;
+        width: 28px;
+        height: 28px;
+        overflow: hidden;
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.08);
+    }
+
+    .km-drawer-avatar img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .km-drawer-identity-name {
+        min-width: 0;
+        overflow: hidden;
+        font-size: 12.5px;
+        font-weight: 600;
+        color: #cdd8e9;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    /* Role sebagai chip amber: penanda status, bukan pil navigasi */
+    .km-drawer-role {
+        flex: 0 1 auto;
+        max-width: 50%;
+        margin-left: auto;
+        padding: 3px 7px;
+        overflow: hidden;
+        border-radius: 6px;
+        text-overflow: ellipsis;
+        background: var(--km-drawer-role-bg);
+        color: var(--km-drawer-role-ink);
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 0.07em;
+        line-height: 1.4;
+        text-transform: uppercase;
+        white-space: nowrap;
+    }
+
+    /* ---------- Area scroll ---------- */
+
+    .vertical-overlay-menu .main-menu .main-menu-content {
+        flex: 1 1 auto;
+        min-height: 0;
+        height: auto !important;
+        padding-bottom: env(safe-area-inset-bottom, 0px);
+        overscroll-behavior: contain;
+    }
+
+    .vertical-overlay-menu .main-menu .navigation.navigation-main {
+        padding: 8px 0 20px;
+    }
+
+    .vertical-overlay-menu .main-menu a {
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    /* Gradien putih milik template tidak cocok untuk panel gelap */
+    .vertical-overlay-menu .main-menu .shadow-bottom {
+        display: none !important;
+    }
+
+    /*
+       Template menggeser isi baris 5px saat hover; di layar sentuh hover
+       mudah "menempel" setelah tap. Umpan balik cukup lewat latar baris.
+    */
+    .vertical-overlay-menu .main-menu.menu-dark .navigation li.nav-item a:hover > *,
+    .vertical-overlay-menu .main-menu.menu-dark .navigation li.nav-item ul.menu-content li a:hover > * {
+        transform: none;
+    }
+
+    /* Indikator posisi: rail tipis terlihat, bukan scrollbar tersembunyi */
+    .vertical-overlay-menu .main-menu-content .ps__rail-y {
+        width: 8px;
+        background: transparent;
+        opacity: 0.6;
+        transition: opacity 0.2s ease;
+    }
+
+    .vertical-overlay-menu .main-menu-content .ps__thumb-y {
+        right: 2px;
+        width: 3px;
+        border-radius: 3px;
+        background: rgba(255, 255, 255, 0.30);
+    }
+
+    .vertical-overlay-menu .main-menu-content .ps__rail-y:hover > .ps__thumb-y,
+    .vertical-overlay-menu .main-menu-content .ps__rail-y.ps--clicking .ps__thumb-y {
+        background: rgba(255, 255, 255, 0.52);
+    }
+
+    /* ---------- Baris menu ---------- */
+
+    .vertical-overlay-menu .main-menu.menu-dark .navigation .nav-item > a {
+        min-height: var(--km-drawer-row);
+        margin: 2px 12px;
+        padding: 10px 14px;
+        border-radius: 10px;
+        font-size: 14.5px;
+        font-weight: 600;
+        color: #b9c4d6;
+    }
+
+    .vertical-overlay-menu .main-menu.menu-dark .navigation .nav-item > a svg,
+    .vertical-overlay-menu .main-menu.menu-dark .navigation .nav-item > a i {
+        width: 19px;
+        height: 19px;
+        margin-right: 11px;
+    }
+
+    .vertical-overlay-menu .main-menu.menu-dark .navigation .nav-item > a:active {
+        background: rgba(47, 111, 235, 0.18);
+    }
+
+    .vertical-overlay-menu .main-menu.menu-dark .navigation .nav-item > a:focus-visible {
+        outline: 2px solid var(--km-brand);
+        outline-offset: -2px;
+    }
+
+    .vertical-overlay-menu .main-menu.menu-dark .navigation .nav-item.active > a {
+        background: var(--km-drawer-active);
+        color: #ffffff;
+        box-shadow: inset 2px 0 0 var(--km-brand);
+    }
+
+    .vertical-overlay-menu .main-menu.menu-dark .navigation .nav-item.active > a svg,
+    .vertical-overlay-menu .main-menu.menu-dark .navigation .nav-item.active > a i {
+        color: var(--km-drawer-icon-active);
+    }
+
+    .vertical-overlay-menu .main-menu.menu-dark .navigation .nav-item.open > a,
+    .vertical-overlay-menu .main-menu.menu-dark .navigation .nav-item.sidebar-group-active > a {
+        background: rgba(255, 255, 255, 0.05);
+        color: #ffffff;
+    }
+
+    .vertical-overlay-menu .main-menu.menu-dark .navigation .nav-item.open > a svg,
+    .vertical-overlay-menu .main-menu.menu-dark .navigation .nav-item.sidebar-group-active > a svg {
+        color: var(--km-drawer-icon-active);
+    }
+
+    /* Chevron sejajar tengah baris */
+    .vertical-overlay-menu .main-menu .navigation li.has-sub > a {
+        padding-right: 36px;
+    }
+
+    /*
+       Chevron menempel pada baris induk, bukan pada <li> yang ikut menghitung
+       tinggi submenu — 16px adalah tinggi ikon chevron template.
+    */
+    .vertical-overlay-menu .main-menu .navigation li.has-sub > a::after {
+        top: calc((var(--km-drawer-row) - 16px) / 2);
+        right: 13px;
+        margin-top: 0;
+        transform: rotate(0deg);
+    }
+
+    .vertical-overlay-menu .main-menu .navigation li.has-sub.open:not(.menu-item-closing) > a::after {
+        transform: rotate(90deg);
+    }
+
+    /* ---------- Submenu ---------- */
+
+    .vertical-overlay-menu .main-menu.menu-dark .navigation .menu-content {
+        margin: 2px 14px 6px 27px;
+        padding: 0;
+        border-left: 1px solid var(--km-drawer-spine);
+    }
+
+    .vertical-overlay-menu .main-menu.menu-dark .navigation .menu-content .nav-item > a {
+        position: relative;
+        min-height: var(--km-drawer-subrow);
+        margin: 0 0 0 -1px;
+        padding: 8px 12px 8px 17px;
+        border-radius: 0 8px 8px 0;
+        font-size: 13.5px;
+        font-weight: 500;
+        color: #9fadc4;
+    }
+
+    .vertical-overlay-menu .main-menu.menu-dark .navigation .menu-content .nav-item > a:hover {
+        background: rgba(255, 255, 255, 0.05);
+        color: #ffffff;
+    }
+
+    /* Titik anak menempel pada spine, menggantikan bullet yang mengambang */
+    .vertical-overlay-menu .main-menu.menu-dark .navigation .menu-content .nav-item > a::before {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: -3px;
+        width: 6px;
+        height: 6px;
+        margin: 0;
+        border-radius: 50%;
+        background: #4a566c;
+        transform: translateY(-50%);
+        transition: background-color 0.15s ease;
+    }
+
+    .vertical-overlay-menu .main-menu.menu-dark .navigation .menu-content .nav-item.active > a {
+        background: rgba(47, 111, 235, 0.16);
+        color: #ffffff;
+        font-weight: 600;
+        box-shadow: none;
+    }
+
+    .vertical-overlay-menu .main-menu.menu-dark .navigation .menu-content .nav-item.active > a::before {
+        background: var(--km-brand);
+    }
+
+    /* ---------- Label seksi ---------- */
+
+    .vertical-overlay-menu .main-menu.menu-dark .navigation .km-menu-section {
+        margin: 14px 14px 4px;
+        padding-top: 12px;
+        border-top: 1px solid rgba(255, 255, 255, 0.09);
+    }
+
+    .vertical-overlay-menu .main-menu.menu-dark .navigation .km-menu-section:first-child {
+        margin-top: 4px;
+        padding-top: 0;
+        border-top: 0;
+    }
+
+    .vertical-overlay-menu .main-menu.menu-dark .km-menu-section .km-menu-section-label {
+        font-size: 10.5px;
+        letter-spacing: 0.1em;
+        color: #8b9ab3;
+    }
+}
+
+/* Tablet: panel sedikit lebih lega, baris lebih tinggi */
+@media (min-width: 768px) and (max-width: 1199.98px) {
+    :root {
+        --km-drawer-width: 320px;
+        --km-drawer-row: 48px;
+        --km-drawer-subrow: 42px;
+    }
+}
+
+@media (max-width: 1199.98px) and (prefers-reduced-motion: reduce) {
+    .vertical-overlay-menu .main-menu,
+    .vertical-overlay-menu.menu-hide .main-menu,
+    .vertical-overlay-menu.menu-open .main-menu {
+        transition-duration: 0.01ms;
+        transition-delay: 0s;
+    }
+}

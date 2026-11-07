@@ -1,0 +1,219 @@
+.mobile-nav-auth {
+    gap: 8px;
+}
+
+.mobile-nav-auth i,
+.mobile-nav-explore > i {
+    font-size: 14px;
+}
+
+.header-action-group .header-btn,
+.header-action-group .apply-now-btn2 {
+    gap: 8px;
+}
+
+.header-action-group .apply-now-btn2 {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.header-action-group .header-btn > i,
+.header-action-group .apply-now-btn2 > i {
+    font-size: 14px;
+}
+
+.mobile-menu-area .mobile-nav-dock .mobile-nav-explore {
+    justify-content: flex-start;
+}
+
+.mobile-menu-area .mobile-nav-dock .mobile-nav-explore > i:last-child {
+    margin-left: auto;
+    font-size: 11px;
+}
+
+.km-login-modal[hidden] {
+    display: none;
+}
+
+.km-login-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 3000;
+    display: grid;
+    place-items: center;
+    padding: 16px;
+}
+
+.km-login-modal__backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(5, 20, 32, .62);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.km-login-modal__dialog {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: min(1160px, 100%);
+    height: min(760px, calc(100vh - 32px));
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, .72);
+    border-radius: 24px;
+    background: #f4f8fb;
+    box-shadow: 0 32px 90px rgba(0, 15, 28, .42);
+    animation: km-login-modal-enter .24s cubic-bezier(.2, .75, .25, 1) both;
+}
+
+.km-login-modal__header {
+    display: flex;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    min-height: 58px;
+    padding: 10px 14px 10px 20px;
+    border-bottom: 1px solid #dce8ef;
+    background: #fff;
+}
+
+.km-login-modal__header h2 {
+    margin: 0;
+    color: #12324a;
+    font-size: 14px;
+    font-weight: 800;
+}
+
+.km-login-modal__close {
+    display: inline-grid;
+    flex: 0 0 36px;
+    place-items: center;
+    width: 36px;
+    height: 36px;
+    border: 1px solid #dce8ef;
+    border-radius: 12px;
+    background: #f4f8fb;
+    color: #456274;
+    cursor: pointer;
+    transition: background .18s ease, color .18s ease, transform .18s ease;
+}
+
+.km-login-modal__close:hover,
+.km-login-modal__close:focus-visible {
+    transform: translateY(-1px);
+    border-color: #b7d4e4;
+    background: #e8f4fa;
+    color: #0b4a68;
+    outline: none;
+}
+
+.km-login-modal__content {
+    position: relative;
+    display: flex;
+    flex: 1 1 auto;
+    min-height: 0;
+    background: #eff7fc;
+}
+
+.km-login-modal__loading {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    display: grid;
+    place-content: center;
+    gap: 14px;
+    background: #eff7fc;
+    color: #456274;
+    font-size: 13px;
+    font-weight: 700;
+    text-align: center;
+}
+
+.km-login-modal__loading::before {
+    width: 30px;
+    height: 30px;
+    margin: 0 auto;
+    border: 3px solid #d5e7f1;
+    border-top-color: #168fc4;
+    border-radius: 50%;
+    content: "";
+    animation: km-login-modal-spin .7s linear infinite;
+}
+
+.km-login-modal__loading[hidden] {
+    display: none;
+}
+
+.km-login-modal__frame {
+    display: block;
+    flex: 1 1 auto;
+    width: 100%;
+    min-height: 0;
+    border: 0;
+    background: #eff7fc;
+}
+
+.km-login-modal__loading[data-submitting="true"] {
+    background: rgba(239, 247, 252, .92);
+}
+
+.header-action-group [data-login-modal-open],
+.mobile-nav-auth[data-login-modal-open] {
+    cursor: pointer;
+}
+
+body.km-login-modal-open {
+    overflow: hidden;
+}
+
+body.km-login-modal-open #wrapper {
+    filter: blur(5px);
+    transition: filter .2s ease;
+}
+
+@keyframes km-login-modal-enter {
+    from {
+        opacity: 0;
+        transform: translateY(12px) scale(.985);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@keyframes km-login-modal-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@media (max-width: 575px) {
+    .km-login-modal {
+        padding: 10px;
+    }
+
+    .km-login-modal__dialog {
+        width: 100%;
+        height: min(760px, calc(100vh - 20px));
+        border-radius: 20px;
+    }
+
+    .km-login-modal__header {
+        min-height: 52px;
+        padding-left: 16px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .km-login-modal__dialog {
+        animation: none;
+    }
+
+    .km-login-modal__loading::before {
+        animation: none;
+    }
+}

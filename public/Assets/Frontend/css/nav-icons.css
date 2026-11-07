@@ -1,0 +1,359 @@
+/* ==========================================================================
+   Ikon menu navigasi (desktop + panel mobile).
+   Ikon duduk di dalam chip petak bersudut bulat — motif yang sama dengan
+   latar bagian "Tentang sekolah" dan kunci putar video.
+
+   Hanya memakai kelas .km-nav-tile sehingga tidak menyentuh menu lain.
+   ========================================================================== */
+
+/* ---------- Menu desktop -------------------------------------------------- */
+
+/* Chip ikon menambah lebar butir menu, jadi jarak antar butir dan kontrol
+   kanan dirapatkan agar menu tetap satu baris pada layar desktop. */
+#desktop-nav > ul > li > a {
+    padding-left: 9px;
+    padding-right: 9px;
+    font-size: 13px;
+    white-space: nowrap;
+}
+
+#desktop-nav > ul > li > a > .km-nav-tile {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 18px;
+    margin-right: 5px;
+    border-radius: 6px;
+    background: rgba(255, 255, 255, .16);
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .22);
+    vertical-align: middle;
+    transition: background .2s ease, box-shadow .2s ease, transform .2s ease;
+}
+
+#desktop-nav > ul > li > a > .km-nav-tile i {
+    color: #fff;
+    font-size: 9.5px;
+    line-height: 1;
+}
+
+#desktop-nav > ul > .km-language-item {
+    margin-left: 4px;
+}
+
+#desktop-nav > ul > .km-theme-item,
+#desktop-nav > ul > .km-language-item {
+    display: flex;
+    align-items: center;
+}
+
+#desktop-nav > ul > .km-theme-item {
+    margin-left: auto;
+}
+
+.header4-area nav#desktop-nav > ul {
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+}
+
+.header4-area nav#desktop-nav > ul > li:not(.km-theme-item):not(.km-language-item) > a {
+    padding: 12px 9px;
+}
+
+.header4-area nav#desktop-nav > ul > .km-theme-item {
+    order: 1;
+    margin-left: auto;
+}
+
+.header4-area nav#desktop-nav > ul > .km-language-item {
+    order: 2;
+    margin-left: 4px;
+}
+
+.km-theme-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 56px;
+    height: 40px;
+    padding: 0;
+    border: 0;
+    border-radius: 999px;
+    background: transparent;
+    cursor: pointer;
+    transition: transform .2s ease;
+}
+
+.km-theme-toggle:hover,
+.km-theme-toggle:focus-visible {
+    transform: translateY(-1px);
+    outline: none;
+}
+
+.km-theme-toggle:focus-visible .km-theme-toggle__track {
+    outline: 3px solid rgba(255, 255, 255, .6);
+    outline-offset: 3px;
+}
+
+.km-theme-toggle__track {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 48px;
+    height: 26px;
+    padding: 0 7px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, .38);
+    border-radius: 999px;
+    background: rgba(3, 53, 86, .3);
+    box-shadow: inset 0 2px 5px rgba(2, 35, 56, .22), 0 5px 12px rgba(2, 35, 56, .16);
+    color: #fff;
+    font-size: 10px;
+    transition: background .25s ease, box-shadow .25s ease;
+}
+
+.km-theme-toggle__track > i {
+    position: relative;
+    z-index: 1;
+    transition: color .25s ease, opacity .25s ease;
+}
+
+.km-theme-toggle[data-theme="dark"] .km-theme-toggle__track {
+    background: #102b40;
+}
+
+.km-theme-toggle[data-theme="dark"] .km-theme-toggle__thumb {
+    transform: translateX(22px);
+    background: #d7efff;
+}
+
+.km-theme-toggle[data-theme="dark"] .km-theme-toggle__track > .fa-moon-o,
+.km-theme-toggle[data-theme="light"] .km-theme-toggle__track > .fa-sun-o {
+    color: #0e638a;
+}
+
+.km-theme-toggle__thumb {
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 2px 7px rgba(5, 37, 58, .34);
+    transition: transform .25s cubic-bezier(.2, .75, .25, 1), background .25s ease;
+}
+
+.km-language-toggle {
+    position: relative;
+    display: inline-grid;
+    grid-template-columns: repeat(2, 1fr);
+    align-items: center;
+    justify-items: center;
+    width: 78px;
+    min-width: 78px;
+    height: 36px;
+    min-height: 36px;
+    padding: 3px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, .34);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, .14);
+    color: #fff;
+    cursor: pointer;
+    font: inherit;
+    font-size: 10px;
+    font-weight: 850;
+    letter-spacing: .04em;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .18);
+    transition: transform .2s ease, border-color .2s ease, background .2s ease;
+}
+
+.km-language-toggle:hover,
+.km-language-toggle:focus-visible {
+    transform: translateY(-1px);
+    border-color: rgba(255, 255, 255, .7);
+    outline: none;
+}
+
+.km-language-toggle:focus-visible {
+    box-shadow: 0 0 0 3px rgba(255, 255, 255, .3);
+}
+
+.km-language-toggle__option {
+    position: relative;
+    z-index: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    color: rgba(255, 255, 255, .7);
+    transition: color .2s ease;
+}
+
+.km-language-toggle__indicator {
+    position: absolute;
+    top: 3px;
+    bottom: 3px;
+    left: 3px;
+    width: calc(50% - 3px);
+    border-radius: 999px;
+    background: #fff;
+    box-shadow: 0 2px 8px rgba(3, 51, 79, .2);
+    transition: transform .25s cubic-bezier(.2, .75, .25, 1);
+}
+
+.km-language-toggle[data-language="id"] .km-language-toggle__option:first-child,
+.km-language-toggle[data-language="en"] .km-language-toggle__option:nth-child(2) {
+    color: var(--km-blue-700, #1276a4);
+}
+
+.km-language-toggle[data-language="en"] .km-language-toggle__indicator {
+    transform: translateX(100%);
+}
+
+#desktop-nav > ul > li:hover > a > .km-nav-tile,
+#desktop-nav > ul > li.active > a > .km-nav-tile,
+#desktop-nav > ul > li > a:focus-visible > .km-nav-tile {
+    background: #fff;
+    box-shadow:
+        inset 0 0 0 1px #fff,
+        0 8px 16px -12px rgba(0, 0, 0, .85);
+    transform: translateY(-1px);
+}
+
+#desktop-nav > ul > li:hover > a > .km-nav-tile i,
+#desktop-nav > ul > li.active > a > .km-nav-tile i,
+#desktop-nav > ul > li > a:focus-visible > .km-nav-tile i {
+    color: var(--km-blue-700, #1276a4);
+}
+
+/* Submenu: ikon kecil tanpa chip agar baris tetap tenang. */
+#desktop-nav ul li ul li > a > i.fa {
+    width: 14px;
+    margin-right: 8px;
+    color: var(--km-blue-600, #1e93cd);
+    font-size: 12px;
+    text-align: center;
+}
+
+#desktop-nav ul li ul li:hover > a > i.fa {
+    color: var(--km-blue-700, #1276a4);
+}
+
+/* Layar 768-1199px memakai kontainer 960px sehingga chip ikon tidak muat
+   dalam satu baris: ikon disembunyikan dan jarak butir dikembalikan. */
+@media (min-width: 768px) and (max-width: 1199px) {
+    .header4-area nav#desktop-nav > ul > li:not(.km-theme-item):not(.km-language-item) > a {
+        padding: 12px 6px;
+        font-size: 12px;
+    }
+
+    .header4-area nav#desktop-nav > ul > .km-theme-item .km-theme-toggle {
+        width: 48px;
+    }
+
+    .header4-area nav#desktop-nav > ul > .km-language-item .km-language-toggle {
+        width: 68px;
+        min-width: 68px;
+    }
+
+    #desktop-nav > ul > li > a > .km-nav-kecil,
+    #desktop-nav > ul > li > a > .km-nav-tile {
+        display: none;
+    }
+}
+
+/* ---------- Panel menu mobile ------------------------------------------- */
+
+.mobile-header-actions > .km-theme-toggle {
+    width: 48px;
+    height: 40px;
+    border: 1px solid var(--km-line, #d8e8f2);
+    background: var(--km-soft-2, #f5fbff);
+}
+
+.mobile-header-actions > .km-theme-toggle .km-theme-toggle__track {
+    border-color: rgba(30, 147, 205, .2);
+    background: #dceef8;
+    color: var(--km-blue-700, #1276a4);
+}
+
+.mobile-header-actions > .km-theme-toggle:focus-visible .km-theme-toggle__track {
+    outline-color: rgba(30, 147, 205, .35);
+}
+
+.mobile-nav-panel .mobile-nav-language .km-language-toggle,
+.mobile-menu-area .mobile-nav-dock .mobile-nav-language .km-language-toggle {
+    justify-content: initial;
+    width: 78px;
+    min-width: 78px;
+    min-height: 36px;
+    height: 36px;
+    padding: 3px;
+    border-radius: 999px;
+    background: var(--km-soft, #e9f6fd);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .8);
+}
+
+.mobile-nav-panel .mobile-nav-language .km-language-toggle .km-language-toggle__option,
+.mobile-menu-area .mobile-nav-dock .mobile-nav-language .km-language-toggle .km-language-toggle__option {
+    color: var(--km-muted, #6d8899);
+}
+
+.mobile-nav-panel .mobile-nav-language .km-language-toggle[data-language="id"] .km-language-toggle__option:first-child,
+.mobile-nav-panel .mobile-nav-language .km-language-toggle[data-language="en"] .km-language-toggle__option:nth-child(2),
+.mobile-menu-area .mobile-nav-dock .km-language-toggle[data-language="id"] .km-language-toggle__option:first-child,
+.mobile-menu-area .mobile-nav-dock .km-language-toggle[data-language="en"] .km-language-toggle__option:nth-child(2) {
+    color: #fff;
+}
+
+.mobile-nav-panel .mobile-nav-language .km-language-toggle .km-language-toggle__indicator,
+.mobile-menu-area .mobile-nav-dock .km-language-toggle .km-language-toggle__indicator {
+    background: linear-gradient(140deg, var(--km-blue, #3aaee5), var(--km-blue-600, #1e93cd));
+}
+
+.mobile-nav-panel > ul > li > a {
+    justify-content: flex-start;
+    gap: 12px;
+}
+
+.mobile-nav-panel > ul > li > a > .km-nav-tile--mobile {
+    display: inline-flex;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    border-radius: 9px;
+    background: rgba(58, 174, 229, .13);
+    box-shadow: inset 0 0 0 1px rgba(58, 174, 229, .18);
+    color: var(--km-blue-700, #1276a4);
+    font-size: 11.5px;
+    transition: background .2s ease, color .2s ease, box-shadow .2s ease;
+}
+
+.mobile-nav-panel > ul > li > a:hover > .km-nav-tile--mobile,
+.mobile-nav-panel > ul > li > a:focus-visible > .km-nav-tile--mobile,
+.mobile-nav-panel > ul > li > a.active > .km-nav-tile--mobile {
+    background: linear-gradient(140deg, var(--km-blue, #3aaee5), var(--km-blue-600, #1e93cd));
+    box-shadow: 0 10px 20px -14px rgba(11, 74, 104, .95);
+    color: #fff;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .km-theme-toggle,
+    .km-theme-toggle__track,
+    .km-theme-toggle__track > i,
+    .km-theme-toggle__thumb,
+    .km-language-toggle,
+    .km-language-toggle__option,
+    .km-language-toggle__indicator,
+    #desktop-nav > ul > li > a > .km-nav-tile,
+    .mobile-nav-panel > ul > li > a > .km-nav-tile--mobile {
+        transition: none;
+        transform: none;
+    }
+}

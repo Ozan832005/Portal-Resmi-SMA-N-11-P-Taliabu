@@ -1,0 +1,387 @@
+/* ==========================================================================
+   Bagian "Tentang sekolah" di beranda.
+   Dimuat setelah modern.css. Hanya memakai kelas .km-about-* sehingga bagian
+   lain situs tidak terpengaruh.
+
+   Lapisan di dalam .about1-area:
+     z-index 0 : .km-about-fx  -> petak bersudut bulat yang berjalan + cahaya
+     z-index 1 : .km-about-shell -> isi bagian
+   ========================================================================== */
+
+.about1-area {
+    position: relative;
+    overflow: hidden;
+    padding: clamp(46px, 5.4vw, 76px) 0 clamp(40px, 4.6vw, 62px) !important;
+    background: linear-gradient(180deg, #ffffff 0%, #f6fbff 52%, #eef8ff 100%) !important;
+}
+
+.km-about-shell {
+    position: relative;
+    z-index: 1;
+}
+
+/* --------------------------------------------------------------------------
+   Latar: mosaik petak bersudut bulat yang bergerak pelan
+   -------------------------------------------------------------------------- */
+
+.km-about-fx {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+    pointer-events: none;
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 14%, #000 86%, transparent 100%);
+    mask-image: linear-gradient(to bottom, transparent 0%, #000 14%, #000 86%, transparent 100%);
+    --km-about-pointer-x: 50%;
+    --km-about-pointer-y: 45%;
+    --km-about-pointer-opacity: 0;
+}
+
+/* Lapis 1: garis petak bersudut bulat + titik petak kecil, bergerak diagonal. */
+.km-about-fx::before {
+    content: "";
+    position: absolute;
+    inset: -12%;
+    background-image:
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='184' height='184'%3E<g fill='none' stroke='%23b9ddf2' stroke-width='1.4'%3E%3Crect x='8' y='8' width='68' height='68' rx='21'/%3E%3Crect x='108' y='108' width='68' height='68' rx='21'/%3E%3C/g%3E%3C/svg%3E"),
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='92' height='92'%3E%3Crect x='35' y='35' width='22' height='22' rx='7' fill='%23a9d8f1'/%3E%3C/svg%3E");
+    background-size: 184px 184px, 92px 92px;
+    background-repeat: repeat, repeat;
+    background-position: 0 0, 0 0;
+    opacity: .58;
+    animation: km-about-tiles 28s linear infinite;
+    -webkit-mask-image: radial-gradient(115% 92% at 50% 42%, #000 22%, rgba(0, 0, 0, .42) 62%, transparent 96%);
+    mask-image: radial-gradient(115% 92% at 50% 42%, #000 22%, rgba(0, 0, 0, .42) 62%, transparent 96%);
+}
+
+/* Lapis 2: cahaya biru lembut yang mengambang. */
+.km-about-fx::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image:
+        radial-gradient(circle 320px at var(--km-about-pointer-x) var(--km-about-pointer-y), rgba(58, 174, 229, var(--km-about-pointer-opacity)), transparent 74%),
+        radial-gradient(circle 340px at 16% 20%, rgba(124, 214, 255, .26), transparent 72%),
+        radial-gradient(circle 400px at 84% 76%, rgba(58, 174, 229, .2), transparent 74%);
+    animation: km-about-glow 17s ease-in-out infinite alternate;
+}
+
+@keyframes km-about-tiles {
+    from {
+        background-position: 0 0, 0 0;
+    }
+    to {
+        background-position: 184px 184px, -92px 92px;
+    }
+}
+
+@keyframes km-about-glow {
+    from {
+        transform: translate3d(0, 0, 0) scale(1);
+        opacity: .85;
+    }
+    to {
+        transform: translate3d(-18px, 14px, 0) scale(1.06);
+        opacity: 1;
+    }
+}
+
+/* --------------------------------------------------------------------------
+   Susunan: foto di kiri, teks di kanan
+   -------------------------------------------------------------------------- */
+
+.km-about {
+    grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr);
+    gap: clamp(26px, 3.6vw, 54px);
+    align-items: center;
+}
+
+.km-about-copy {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    min-width: 0;
+}
+
+.km-about-title {
+    margin: 0 0 16px;
+    font-size: clamp(26px, 3vw, 40px);
+    line-height: 1.14;
+    font-weight: 800;
+    letter-spacing: -.028em;
+    color: var(--km-ink, #0d2233);
+}
+
+.km-about-desc {
+    position: relative;
+    max-height: 264px;
+    margin: 0 0 26px;
+    overflow: hidden;
+    font-size: 15.5px;
+    line-height: 1.88;
+    color: var(--km-text, #33505f);
+}
+
+/* Petunjuk halus bahwa teks masih bisa digulir ke halaman profil sekolah. */
+.km-about-desc::after {
+    content: "";
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    height: 34px;
+    background: linear-gradient(180deg, rgba(246, 251, 255, 0), rgba(246, 251, 255, .92));
+    pointer-events: none;
+}
+
+.km-about-desc p {
+    margin: 0 0 12px;
+}
+
+.km-about-desc p:last-child {
+    margin-bottom: 0;
+}
+
+.km-about-actions {
+    margin-top: auto;
+}
+
+/* --------------------------------------------------------------------------
+   Foto sekolah: bingkai menyala + badge alamat menempel di tepi bawah
+   -------------------------------------------------------------------------- */
+
+.km-about-media {
+    position: relative;
+    order: 1;
+    aspect-ratio: 5 / 4;
+    overflow: visible;
+    padding: 10px;
+    border: 1px solid rgba(126, 209, 247, .55);
+    border-radius: 28px;
+    background: linear-gradient(155deg, #ffffff 0%, #f4fcff 58%, #e8f5ff 100%);
+    box-shadow:
+        0 1px 0 rgba(255, 255, 255, .95) inset,
+        0 26px 56px -34px rgba(11, 74, 104, .48),
+        0 0 34px -12px rgba(112, 210, 255, .6);
+}
+
+/* Aura cahaya di belakang foto */
+.km-about-media::before {
+    position: absolute;
+    inset: -14%;
+    z-index: -1;
+    border-radius: 50%;
+    background: radial-gradient(circle at 50% 50%, rgba(143, 219, 255, .45), rgba(58, 174, 229, .16) 55%, transparent 74%);
+    content: "";
+    filter: blur(16px);
+}
+
+.km-about-media img {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    border-radius: 20px;
+    object-fit: cover;
+    display: block;
+}
+
+.km-about-badge {
+    position: absolute;
+    right: 22px;
+    bottom: 24px;
+    left: auto;
+    padding: 11px 16px;
+    border: 1px solid var(--km-line);
+    border-radius: 14px;
+    background: #fff;
+    color: var(--km-ink);
+    box-shadow: 0 18px 34px -22px rgba(11, 74, 104, .85);
+}
+
+.km-about-badge i {
+    color: var(--km-blue-600);
+}
+
+/* ---------- Strip lokasi + peta ------------------------------------------ */
+
+.km-about-location {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 400px);
+    gap: 18px;
+    align-items: center;
+    margin-top: clamp(30px, 3.4vw, 44px);
+    padding: 14px;
+    border: 1px solid var(--km-line, #d8e8f2);
+    border-radius: 22px;
+    background: rgba(255, 255, 255, .82);
+    backdrop-filter: blur(7px);
+    box-shadow: 0 20px 44px -36px rgba(11, 74, 104, .8);
+}
+
+.km-about-location__info {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 14px;
+    padding: 4px 6px 4px 10px;
+    min-width: 0;
+}
+
+.km-about-location__pin {
+    display: inline-flex;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    border-radius: 13px;
+    background: linear-gradient(140deg, var(--km-blue, #3aaee5), var(--km-blue-600, #1e93cd));
+    color: #fff;
+    font-size: 17px;
+    box-shadow: 0 14px 26px -16px rgba(11, 74, 104, .95);
+}
+
+.km-about-location__text {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.km-about-location__label {
+    font-size: 10.5px;
+    font-weight: 800;
+    letter-spacing: .11em;
+    text-transform: uppercase;
+    color: var(--km-muted, #6d8899);
+}
+
+.km-about-location__value {
+    margin-top: 3px;
+    font-size: 14.5px;
+    font-weight: 800;
+    line-height: 1.4;
+    color: var(--km-ink, #0d2233);
+}
+
+.km-about-location__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-left: auto;
+    padding: 10px 18px;
+    border: 1px solid rgba(58, 174, 229, .42);
+    border-radius: 999px;
+    background: #fff;
+    color: var(--km-blue-700, #1276a4) !important;
+    font-size: 12.5px;
+    font-weight: 800;
+    text-decoration: none !important;
+    transition: background .2s ease, color .2s ease, border-color .2s ease, box-shadow .2s ease;
+}
+
+.km-about-location__link i {
+    font-size: 10.5px;
+}
+
+.km-about-location__link:hover,
+.km-about-location__link:focus-visible {
+    border-color: transparent;
+    background: linear-gradient(120deg, var(--km-blue, #3aaee5), var(--km-blue-600, #1e93cd));
+    color: #fff !important;
+    box-shadow: 0 14px 26px -18px rgba(11, 74, 104, .9);
+}
+
+.km-about-location__frame {
+    height: clamp(128px, 13vw, 172px);
+    overflow: hidden;
+    border: 1px solid var(--km-line, #d8e8f2);
+    border-radius: 16px;
+    background: var(--km-soft, #e9f6fd);
+}
+
+.km-about-location__frame iframe {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border: 0;
+}
+
+/* --------------------------------------------------------------------------
+   Responsif
+   -------------------------------------------------------------------------- */
+
+@media (max-width: 991px) {
+    .km-about {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 30px;
+    }
+
+    .km-about-media {
+        order: 2;
+        aspect-ratio: 16 / 10;
+    }
+
+    .km-about-desc {
+        max-height: none;
+    }
+
+    .km-about-desc::after {
+        display: none;
+    }
+
+    .km-about-badge {
+        right: 18px;
+        bottom: -14px;
+    }
+
+    .km-about-location {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 14px;
+    }
+
+    .km-about-location__frame {
+        height: 168px;
+    }
+}
+
+@media (max-width: 575px) {
+    .about1-area {
+        padding: 38px 0 44px !important;
+    }
+
+    .km-about-media {
+        aspect-ratio: 4 / 3;
+        padding: 8px;
+        border-radius: 22px;
+    }
+
+    .km-about-media img {
+        border-radius: 16px;
+    }
+
+    .km-about-location {
+        padding: 12px;
+        border-radius: 18px;
+    }
+
+    .km-about-location__info {
+        padding: 2px;
+    }
+
+    .km-about-location__link {
+        margin-left: 0;
+        width: 100%;
+        justify-content: center;
+    }
+
+    .km-about-location__frame {
+        height: 150px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .km-about-fx::before,
+    .km-about-fx::after {
+        animation: none;
+    }
+}
