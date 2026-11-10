@@ -72,7 +72,7 @@
                                                 <div class="km-row-actions">
                                                     <a href="{{ route('backend-footer-gallery.edit', $item->id) }}" class="btn btn-sm btn-success">Edit</a>
                                                     <form action="{{ route('backend-footer-gallery.destroy', $item->id) }}" method="post"
-                                                          onsubmit="return confirm('Hapus foto ini dari footer?');">
+                                                          data-delete-message="Foto ini akan dihapus dari footer secara permanen.">
                                                         @csrf
                                                         @method('DELETE')
                                                         <button type="submit" class="btn btn-sm km-btn-danger">Hapus</button>

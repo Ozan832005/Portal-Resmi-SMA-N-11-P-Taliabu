@@ -52,6 +52,36 @@
     </button>
     <!-- END: Footer-->
 
+    <div
+        class="km-delete-dialog"
+        id="km-delete-dialog"
+        aria-hidden="true"
+        hidden
+    >
+        <div class="km-delete-dialog__backdrop"></div>
+        <section
+            class="km-delete-dialog__panel"
+            role="alertdialog"
+            aria-modal="true"
+            aria-labelledby="km-delete-dialog-title"
+            aria-describedby="km-delete-dialog-message"
+            tabindex="-1"
+        >
+            <span class="km-delete-dialog__icon" aria-hidden="true">
+                <i data-feather="trash-2"></i>
+            </span>
+            <h2 id="km-delete-dialog-title">Hapus data ini?</h2>
+            <p id="km-delete-dialog-message">Data yang dihapus tidak dapat dikembalikan.</p>
+            <div class="km-delete-dialog__actions">
+                <button class="km-delete-dialog__cancel" type="button" data-delete-cancel>
+                    Batal
+                </button>
+                <button class="km-delete-dialog__confirm" type="button" data-delete-confirm>
+                    Ya, hapus
+                </button>
+            </div>
+        </section>
+    </div>
 
     @include('layouts.backend.scripts')
     @yield('scripts')

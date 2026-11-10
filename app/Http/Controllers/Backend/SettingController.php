@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
-use App\Models\Bank;
 use App\Models\Setting;
 use ErrorException;
 use Exception;
@@ -11,16 +10,13 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Modules\SPP\Entities\BankAccount;
-use Modules\SPP\Entities\SppSetting;
 
 class SettingController extends Controller
 {
     // setting
     public function index()
     {
-      $bank = Bank::all();
-      $spp  = SppSetting::first();
-      return view('backend.settings.index', compact('bank', 'spp'));
+        return view('backend.settings.index');
     }
 
     // Tambah Bank

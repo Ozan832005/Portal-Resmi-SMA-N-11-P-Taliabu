@@ -3,6 +3,8 @@
 namespace Tests\Feature;
 
 use App\Models\Berita;
+use App\Models\Curriculum;
+use App\Models\PublicationVideo;
 use App\Models\Video;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\DB;
@@ -246,7 +248,7 @@ class FrontendViewsAndPublicationsTest extends TestCase
             ['Dokumentasi kegiatan ketiga', 'cdeFGH34567'],
             ['Dokumentasi kegiatan keempat', 'defGHI45678'],
         ] as $index => [$title, $videoId]) {
-            $video = new Video;
+            $video = new PublicationVideo;
             $video->title = $title;
             $video->desc = 'Kegiatan sekolah';
             $video->url = 'https://www.youtube.com/watch?v='.$videoId;
@@ -312,7 +314,7 @@ class FrontendViewsAndPublicationsTest extends TestCase
     public function test_publications_on_later_pages_remain_available_for_inline_playback(): void
     {
         for ($index = 0; $index < 13; $index++) {
-            $video = new Video;
+            $video = new PublicationVideo;
             $video->title = 'Dokumentasi '.$index;
             $video->desc = 'Kegiatan sekolah';
             $video->url = 'https://www.youtube.com/watch?v=abcDEF12345';
@@ -331,6 +333,53 @@ class FrontendViewsAndPublicationsTest extends TestCase
         $this->assertSame(1, substr_count((string) $response->getContent(), 'class="km-publication-play-button"'));
         $this->assertSame(1, substr_count((string) $response->getContent(), 'data-embed-url='));
         $this->assertSame(0, substr_count((string) $response->getContent(), '<iframe'));
+    }
+
+    public function test_publication_page_uses_only_publication_video_records(): void
+    {
+        $siteVideo = new Video;
+        $siteVideo->title = 'Video khusus halaman situs';
+        $siteVideo->desc = 'Video halaman situs';
+        $siteVideo->url = 'https://www.youtube.com/watch?v=abcDEF12345';
+        $siteVideo->is_active = '0';
+        $siteVideo->save();
+
+        $publicationVideo = new PublicationVideo;
+        $publicationVideo->title = 'Video khusus publikasi';
+        $publicationVideo->desc = 'Video publikasi sekolah';
+        $publicationVideo->url = 'https://www.youtube.com/watch?v=bcdEFG23456';
+        $publicationVideo->is_active = '0';
+        $publicationVideo->save();
+
+        $this->get('/publikasi')
+            ->assertOk()
+            ->assertSee('Video khusus publikasi')
+            ->assertDontSee('Video khusus halaman situs');
+    }
+
+    public function test_curriculum_page_renders_active_curriculum_records_in_order(): void
+    {
+        $this->createHomepageTables();
+
+        Curriculum::create([
+            'label' => 'ATP',
+            'title' => 'Alur pembelajaran baru',
+            'description' => 'Urutan materi terbaru.',
+            'is_active' => true,
+            'sort_order' => 2,
+        ]);
+        Curriculum::create([
+            'label' => 'CP',
+            'title' => 'Capaian pembelajaran',
+            'description' => 'Tujuan pembelajaran.',
+            'is_active' => false,
+            'sort_order' => 1,
+        ]);
+
+        $this->get('/kurikulum')
+            ->assertOk()
+            ->assertSee('Alur pembelajaran baru')
+            ->assertDontSee('Capaian pembelajaran');
     }
 
     public function test_alumni_page_shows_active_alumni_cards_and_more_link(): void
@@ -565,6 +614,25 @@ class FrontendViewsAndPublicationsTest extends TestCase
             $table->text('desc');
             $table->string('url');
             $table->string('is_active')->default('0');
+            $table->timestamps();
+        });
+
+        Schema::create('publication_videos', function (Blueprint $table): void {
+            $table->id();
+            $table->string('title');
+            $table->text('desc');
+            $table->string('url', 2048);
+            $table->string('is_active')->default('0');
+            $table->timestamps();
+        });
+
+        Schema::create('curricula', function (Blueprint $table): void {
+            $table->id();
+            $table->string('label', 50);
+            $table->string('title');
+            $table->text('description');
+            $table->boolean('is_active')->default(true);
+            $table->unsignedSmallInteger('sort_order')->default(0);
             $table->timestamps();
         });
 

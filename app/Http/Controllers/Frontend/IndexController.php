@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Frontend;
 use App\Http\Controllers\Controller;
 use App\Models\About;
 use App\Models\Berita;
+use App\Models\Curriculum;
 use App\Models\Events;
 use App\Models\Fasilitas;
 use App\Models\Footer;
@@ -13,6 +14,7 @@ use App\Models\Jurusan;
 use App\Models\KategoriBerita;
 use App\Models\Kegiatan;
 use App\Models\ProfileSekolah;
+use App\Models\PublicationVideo;
 use App\Models\User;
 use App\Models\Video;
 use App\Models\Visimisi;
@@ -253,28 +255,11 @@ class IndexController extends Controller
         $kegiatanM = Kegiatan::where('is_active', '0')->get();
         $footer = Footer::first() ?: $this->mockEmptyObject();
 
-        $curriculum = [
-            [
-                'label' => 'CP',
-                'title' => 'Capaian Pembelajaran',
-                'description' => 'Target pembelajaran yang dicapai siswa melalui pengalaman belajar yang terstruktur dan terukur.',
-            ],
-            [
-                'label' => 'ATP',
-                'title' => 'Alur Tujuan Pembelajaran',
-                'description' => 'Urutan pencapaian kompetensi agar proses belajar berjalan sistematis, progresif, dan terarah.',
-            ],
-            [
-                'label' => 'TP',
-                'title' => 'Tujuan Pembelajaran',
-                'description' => 'Tujuan spesifik setiap unit pembelajaran yang menjabarkan kompetensi siswa secara operasional.',
-            ],
-            [
-                'label' => 'Modul',
-                'title' => 'Modul Ajar',
-                'description' => 'Panduan pembelajaran guru yang memuat materi, aktivitas, tugas, asesmen, dan sumber belajar.',
-            ],
-        ];
+        $curriculum = Curriculum::query()
+            ->where('is_active', true)
+            ->orderBy('sort_order')
+            ->orderBy('id')
+            ->get();
 
         $pengajar = User::with('userDetail')->where('status', 'Aktif')->where('role', 'Guru')->get();
 
@@ -286,7 +271,11 @@ class IndexController extends Controller
         $jurusanM = Jurusan::where('is_active', '0')->get();
         $kegiatanM = Kegiatan::where('is_active', '0')->get();
         $footer = Footer::first() ?: $this->mockEmptyObject();
-        $videos = Video::where('is_active', '0')->orderByDesc('created_at')->orderByDesc('id')->paginate(12);
+        $videos = PublicationVideo::query()
+            ->where('is_active', '0')
+            ->orderByDesc('created_at')
+            ->orderByDesc('id')
+            ->paginate(12);
 
         return view('frontend.content.publikasi', compact('jurusanM', 'kegiatanM', 'footer', 'videos'));
     }

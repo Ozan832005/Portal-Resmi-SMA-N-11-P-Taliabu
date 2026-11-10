@@ -3,13 +3,14 @@
 namespace App\Http\Controllers\Backend\Pengguna;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use ErrorException;
+use App\Http\Requests\ppdbRequest;
 use App\Models\User;
 use App\Models\UsersDetail;
-use App\Http\Requests\ppdbRequest;
 use App\Support\ImageStorage;
 use DB;
+use ErrorException;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Session;
 
 class PPDBController extends Controller
@@ -17,18 +18,19 @@ class PPDBController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function index()
     {
-        $user = User::with('userDetail')->where('role','PPDB')->get();
+        $user = User::with('userDetail')->where('role', 'PPDB')->get();
+
         return view('backend.pengguna.ppdb.index', compact('user'));
     }
 
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function create()
     {
@@ -38,8 +40,8 @@ class PPDBController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param  Request  $request
+     * @return Response
      */
     public function store(ppdbRequest $request)
     {
@@ -48,38 +50,35 @@ class PPDBController extends Controller
 
             $nama_img = ImageStorage::store($request->file('foto_profile'), 'profile');
 
-            // Pilih kalimat
-            $kalimatKe  = "1";
-            $username   = implode(" ", array_slice(explode(" ", $request->name), 0, $kalimatKe)); // ambil kalimat
-
-            $user = new User();
-            $user->name             = $request->name;
-            $user->email            = $request->email;
-            $user->username         = strtolower($username).date("s");
-            $user->role             = 'PPDB';
-            $user->status           = 'Aktif';
-            $user->foto_profile     = $nama_img;
-            $user->password         = bcrypt('12345678');
+            $user = new User;
+            $user->name = $request->name;
+            $user->email = $request->email;
+            $user->username = User::generateUsername($request->name);
+            $user->role = 'PPDB';
+            $user->status = 'Aktif';
+            $user->foto_profile = $nama_img;
+            $user->password = bcrypt('12345678');
             $user->save();
 
             if ($user) {
-                $userDetail = new UsersDetail();
-                $userDetail->user_id      = $user->id;
-                $userDetail->role         = $user->role;
-                $userDetail->nip          = $request->nip;
-                $userDetail->email        = $request->email;
-                $userDetail->linkedln     = $request->linkedln;
-                $userDetail->instagram    = $request->instagram;
-                $userDetail->website      = $request->website;
-                $userDetail->facebook     = $request->facebook;
-                $userDetail->twitter      = $request->twitter;
-                $userDetail->youtube      = $request->youtube;
+                $userDetail = new UsersDetail;
+                $userDetail->user_id = $user->id;
+                $userDetail->role = $user->role;
+                $userDetail->nip = $request->nip;
+                $userDetail->email = $request->email;
+                $userDetail->linkedln = $request->linkedln;
+                $userDetail->instagram = $request->instagram;
+                $userDetail->website = $request->website;
+                $userDetail->facebook = $request->facebook;
+                $userDetail->twitter = $request->twitter;
+                $userDetail->youtube = $request->youtube;
                 $userDetail->save();
             }
 
             $user->assignRole($user->role);
             DB::commit();
-            Session::flash('success','Staf PPDB Berhasil ditambah !');
+            Session::flash('success', 'Staf PPDB Berhasil ditambah !');
+
             return redirect()->route('backend-pengguna-ppdb.index');
 
         } catch (ErrorException $e) {
@@ -92,7 +91,7 @@ class PPDBController extends Controller
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function show($id)
     {
@@ -103,20 +102,20 @@ class PPDBController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function edit($id)
     {
         $user = User::with('userDetail')->findOrFail($id);
+
         return view('backend.pengguna.ppdb.edit', compact('user'));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function update(Request $request, $id)
     {
@@ -127,10 +126,10 @@ class PPDBController extends Controller
 
             $user = User::findOrFail($id);
             $old_image = $user->foto_profile;
-            $user->name             = $request->name;
-            $user->email            = $request->email;
-            $user->status           = $request->status;
-            $user->foto_profile     = $nama_img ?? $user->foto_profile;
+            $user->name = $request->name;
+            $user->email = $request->email;
+            $user->status = $request->status;
+            $user->foto_profile = $nama_img ?? $user->foto_profile;
             $user->save();
 
             if ($nama_img) {
@@ -139,21 +138,22 @@ class PPDBController extends Controller
 
             if ($user) {
                 $userDetail = UsersDetail::firstOrNew(['user_id' => $user->id]);
-                $userDetail->user_id      = $user->id;
-                $userDetail->nip          = $request->nip;
-                $userDetail->is_active    = $user->status == 'Aktif' ? '0' : '1';
-                $userDetail->email        = $request->email;
-                $userDetail->linkedln     = $request->linkedln;
-                $userDetail->instagram    = $request->instagram;
-                $userDetail->website      = $request->website;
-                $userDetail->facebook     = $request->facebook;
-                $userDetail->twitter      = $request->twitter;
-                $userDetail->youtube      = $request->youtube;
+                $userDetail->user_id = $user->id;
+                $userDetail->nip = $request->nip;
+                $userDetail->is_active = $user->status == 'Aktif' ? '0' : '1';
+                $userDetail->email = $request->email;
+                $userDetail->linkedln = $request->linkedln;
+                $userDetail->instagram = $request->instagram;
+                $userDetail->website = $request->website;
+                $userDetail->facebook = $request->facebook;
+                $userDetail->twitter = $request->twitter;
+                $userDetail->youtube = $request->youtube;
                 $userDetail->save();
             }
 
             DB::commit();
-            Session::flash('success','Staf PPDB Berhasil diubah !');
+            Session::flash('success', 'Staf PPDB Berhasil diubah !');
+
             return redirect()->route('backend-pengguna-ppdb.index');
 
         } catch (ErrorException $e) {
@@ -166,7 +166,7 @@ class PPDBController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function destroy($id)
     {
@@ -183,10 +183,10 @@ class PPDBController extends Controller
             ImageStorage::delete($old_image, 'profile');
 
             DB::commit();
-            Session::flash('success','Staf PPDB Berhasil dihapus !');
+            Session::flash('success', 'Staf PPDB Berhasil dihapus !');
         } catch (ErrorException $e) {
             DB::rollback();
-            Session::flash('error','Staf PPDB Gagal dihapus !');
+            Session::flash('error', 'Staf PPDB Gagal dihapus !');
         }
 
         return redirect()->route('backend-pengguna-ppdb.index');

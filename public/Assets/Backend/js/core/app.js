@@ -976,23 +976,8 @@ window.colors = {
   // Navbar Dark / Light Layout Toggle Switch
   $('.nav-link-style').on('click', function () {
     var currentLayout = getCurrentLayout(),
-      switchToLayout = '',
-      prevLayout = localStorage.getItem(dataLayout + '-prev-skin') || currentLayout;
+      switchToLayout = currentLayout === 'dark-layout' ? 'light-layout' : 'dark-layout';
 
-    // If currentLayout is not dark layout
-    if (currentLayout !== 'dark-layout') {
-      // Switch to dark
-      switchToLayout = 'dark-layout';
-    } else {
-      // Switch to light
-      if (currentLayout === prevLayout) {
-        switchToLayout = 'light-layout';
-      } else {
-        switchToLayout = prevLayout ? prevLayout : 'light-layout';
-      }
-    }
-    // Set Previous skin in local db
-    localStorage.setItem(dataLayout + '-prev-skin', currentLayout);
     // Set Current skin in local db
     localStorage.setItem(dataLayout + '-current-skin', switchToLayout);
 
@@ -1023,6 +1008,10 @@ window.colors = {
       switchToLayout = currentLocalStorageLayout ? currentLocalStorageLayout : currentLayout;
 
     $html.removeClass('light-layout semi-dark-layout dark-layout bordered-layout');
+    navLinkStyle.attr('aria-pressed', switchToLayout === 'dark-layout' ? 'true' : 'false');
+    navLinkStyle.attr('aria-label', switchToLayout === 'dark-layout' ? 'Ganti ke mode terang' : 'Ganti ke mode gelap');
+    navLinkStyle.find('.km-theme-toggle__label').text(switchToLayout === 'dark-layout' ? 'Mode terang' : 'Mode gelap');
+    navLinkStyle.attr('title', switchToLayout === 'dark-layout' ? 'Ganti ke mode terang' : 'Ganti ke mode gelap');
 
     if (switchToLayout === 'dark-layout') {
       $html.addClass('dark-layout');

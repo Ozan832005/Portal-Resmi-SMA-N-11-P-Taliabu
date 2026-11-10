@@ -3,32 +3,34 @@
 namespace App\Http\Controllers\Backend\Pengguna;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StafRequest;
 use App\Models\User;
 use App\Models\UsersDetail;
-use Illuminate\Http\Request;
-use App\Http\Requests\StafRequest;
 use App\Support\ImageStorage;
 use ErrorException;
-use Session;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
+use Session;
 
 class StafController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function index()
     {
-        $staf = User::with('userDetail')->where('role','Staf')->get();
+        $staf = User::with('userDetail')->where('role', 'Staf')->get();
+
         return view('backend.pengguna.staff.index', compact('staf'));
     }
 
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function create()
     {
@@ -38,8 +40,8 @@ class StafController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param  Request  $request
+     * @return Response
      */
     public function store(StafRequest $request)
     {
@@ -48,38 +50,35 @@ class StafController extends Controller
 
             $nama_img = ImageStorage::store($request->file('foto_profile'), 'profile');
 
-            // Pilih kalimat
-            $kalimatKe  = "1";
-            $username   = implode(" ", array_slice(explode(" ", $request->name), 0, $kalimatKe)); // ambil kalimat
-
-            $user = new User();
-            $user->name             = $request->name;
-            $user->email            = $request->email;
-            $user->username         = strtolower($username).date("s");
-            $user->role             = 'Staf';
-            $user->status           = 'Aktif';
-            $user->foto_profile     = $nama_img;
-            $user->password         = bcrypt('12345678');
+            $user = new User;
+            $user->name = $request->name;
+            $user->email = $request->email;
+            $user->username = User::generateUsername($request->name);
+            $user->role = 'Staf';
+            $user->status = 'Aktif';
+            $user->foto_profile = $nama_img;
+            $user->password = bcrypt('12345678');
             $user->save();
 
             if ($user) {
-                $userDetail = new UsersDetail();
-                $userDetail->user_id      = $user->id;
-                $userDetail->role         = $user->role;
-                $userDetail->nip          = $request->nip;
-                $userDetail->email        = $request->email;
-                $userDetail->linkedln     = $request->linkedln;
-                $userDetail->instagram    = $request->instagram;
-                $userDetail->website      = $request->website;
-                $userDetail->facebook     = $request->facebook;
-                $userDetail->twitter      = $request->twitter;
-                $userDetail->youtube      = $request->youtube;
+                $userDetail = new UsersDetail;
+                $userDetail->user_id = $user->id;
+                $userDetail->role = $user->role;
+                $userDetail->nip = $request->nip;
+                $userDetail->email = $request->email;
+                $userDetail->linkedln = $request->linkedln;
+                $userDetail->instagram = $request->instagram;
+                $userDetail->website = $request->website;
+                $userDetail->facebook = $request->facebook;
+                $userDetail->twitter = $request->twitter;
+                $userDetail->youtube = $request->youtube;
                 $userDetail->save();
             }
 
             $user->assignRole($user->role);
             DB::commit();
-            Session::flash('success','Staf Berhasil ditambah !');
+            Session::flash('success', 'Staf Berhasil ditambah !');
+
             return redirect()->route('backend-pengguna-staf.index');
 
         } catch (ErrorException $e) {
@@ -92,7 +91,7 @@ class StafController extends Controller
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function show($id)
     {
@@ -103,20 +102,20 @@ class StafController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function edit($id)
     {
-        $staf = User::with('userDetail')->where('role','Staf')->findOrFail($id);
+        $staf = User::with('userDetail')->where('role', 'Staf')->findOrFail($id);
+
         return view('backend.pengguna.staff.edit', compact('staf'));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function update(Request $request, $id)
     {
@@ -127,10 +126,10 @@ class StafController extends Controller
 
             $user = User::findOrFail($id);
             $old_image = $user->foto_profile;
-            $user->name             = $request->name;
-            $user->email            = $request->email;
-            $user->status           = $request->status;
-            $user->foto_profile     = $nama_img ?? $user->foto_profile;
+            $user->name = $request->name;
+            $user->email = $request->email;
+            $user->status = $request->status;
+            $user->foto_profile = $nama_img ?? $user->foto_profile;
             $user->save();
 
             if ($nama_img) {
@@ -139,21 +138,22 @@ class StafController extends Controller
 
             if ($user) {
                 $userDetail = UsersDetail::firstOrNew(['user_id' => $user->id]);
-                $userDetail->user_id      = $user->id;
-                $userDetail->nip          = $request->nip;
-                $userDetail->is_active    = $user->status == 'Aktif' ? '0' : '1';
-                $userDetail->email        = $request->email;
-                $userDetail->linkedln     = $request->linkedln;
-                $userDetail->instagram    = $request->instagram;
-                $userDetail->website      = $request->website;
-                $userDetail->facebook     = $request->facebook;
-                $userDetail->twitter      = $request->twitter;
-                $userDetail->youtube      = $request->youtube;
+                $userDetail->user_id = $user->id;
+                $userDetail->nip = $request->nip;
+                $userDetail->is_active = $user->status == 'Aktif' ? '0' : '1';
+                $userDetail->email = $request->email;
+                $userDetail->linkedln = $request->linkedln;
+                $userDetail->instagram = $request->instagram;
+                $userDetail->website = $request->website;
+                $userDetail->facebook = $request->facebook;
+                $userDetail->twitter = $request->twitter;
+                $userDetail->youtube = $request->youtube;
                 $userDetail->save();
             }
 
             DB::commit();
-            Session::flash('success','Staf Berhasil diubah !');
+            Session::flash('success', 'Staf Berhasil diubah !');
+
             return redirect()->route('backend-pengguna-staf.index');
 
         } catch (ErrorException $e) {
@@ -166,7 +166,7 @@ class StafController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function destroy($id)
     {
@@ -183,10 +183,10 @@ class StafController extends Controller
             ImageStorage::delete($old_image, 'profile');
 
             DB::commit();
-            Session::flash('success','Staf Berhasil dihapus !');
+            Session::flash('success', 'Staf Berhasil dihapus !');
         } catch (ErrorException $e) {
             DB::rollback();
-            Session::flash('error','Staf Gagal dihapus !');
+            Session::flash('error', 'Staf Gagal dihapus !');
         }
 
         return redirect()->route('backend-pengguna-staf.index');

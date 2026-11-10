@@ -21,6 +21,7 @@
 <script src="{{asset('Assets/Backend/js/core/app-menu.js')}}"></script>
 <script src="{{asset('Assets/Backend/js/core/app.js')}}"></script>
 <script src="{{asset('Assets/Backend/js/km-drawer.js')}}"></script>
+<script src="{{asset('Assets/Backend/js/km-delete-confirmation.js')}}"></script>
 <!-- END: Theme JS-->
 
 <!-- BEGIN: Page JS-->

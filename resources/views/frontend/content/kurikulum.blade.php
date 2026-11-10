@@ -19,8 +19,8 @@
                         <div class="km-goal-stack">
                             @foreach ($curriculum as $item)
                                 <div class="km-goal-card">
-                                    <h3>{{ $item['label'] }} · {{ __($item['title']) }}</h3>
-                                    <p>{{ __($item['description']) }}</p>
+                                    <h3>{{ $item->label }} · {{ __($item->title) }}</h3>
+                                    <p>{{ __($item->description) }}</p>
                                 </div>
                             @endforeach
                         </div>

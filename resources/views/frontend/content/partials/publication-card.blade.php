@@ -4,7 +4,7 @@
      * .km-publication-play-button dipertahankan karena dipakai skrip pemutar
      * video di layouts/Frontend/scripts.blade.php.
      *
-     * @var \App\Models\Video $videoItem
+     * @var \App\Models\Video|\App\Models\PublicationVideo $videoItem
      */
     $playback = $videoItem->playback();
     $videoTypeLabel = $playback && $playback['type'] === 'youtube'

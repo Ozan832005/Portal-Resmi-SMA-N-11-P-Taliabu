@@ -20,8 +20,7 @@
         'backend-pengguna-staf.*',
         'backend-pengguna-murid.*',
         'backend-pengguna-ppdb.*',
-        'backend-pengguna-perpus.*',
-        'backend-pengguna-bendahara.*'
+        'backend-pengguna-perpus.*'
     );
 @endphp
 
@@ -102,6 +101,13 @@
                     </ul>
                 </li>
 
+                <li class="nav-item {{ request()->routeIs('backend-video-publikasi.*') ? 'active' : '' }}">
+                    <a class="d-flex align-items-center" href="{{ route('backend-video-publikasi.index') }}">
+                        <i data-feather="video"></i>
+                        <span class="menu-title text-truncate">Video publikasi</span>
+                    </a>
+                </li>
+
                 <li class="nav-item {{ $tentangAktif ? 'open sidebar-group-active' : '' }}">
                     <a class="d-flex align-items-center" href="javascript:void(0);">
                         <i data-feather="book-open"></i>
@@ -164,10 +170,10 @@
                     <span class="km-menu-section-label">Akademik</span>
                 </li>
 
-                <li class="nav-item {{ request()->routeIs('program-studi.*') ? 'active' : '' }}">
-                    <a class="d-flex align-items-center" href="{{ route('program-studi.index') }}">
+                <li class="nav-item {{ request()->routeIs('backend-kurikulum.*') ? 'active' : '' }}">
+                    <a class="d-flex align-items-center" href="{{ route('backend-kurikulum.index') }}">
                         <i data-feather="layers"></i>
-                        <span class="menu-title text-truncate">Program studi</span>
+                        <span class="menu-title text-truncate">Kurikulum</span>
                     </a>
                 </li>
 
@@ -211,11 +217,6 @@
                         <li class="nav-item {{ request()->routeIs('backend-pengguna-perpus.*') ? 'active' : '' }}">
                             <a class="d-flex align-items-center" href="{{ route('backend-pengguna-perpus.index') }}">
                                 <span class="menu-item text-truncate">Petugas perpustakaan</span>
-                            </a>
-                        </li>
-                        <li class="nav-item {{ request()->routeIs('backend-pengguna-bendahara.*') ? 'active' : '' }}">
-                            <a class="d-flex align-items-center" href="{{ route('backend-pengguna-bendahara.index') }}">
-                                <span class="menu-item text-truncate">Bendahara</span>
                             </a>
                         </li>
                     </ul>

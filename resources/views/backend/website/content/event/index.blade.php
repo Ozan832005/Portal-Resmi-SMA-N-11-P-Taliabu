@@ -77,7 +77,7 @@
                                     <div class="km-row-actions">
                                         <a href="{{ route('backend-event.edit', $events->id) }}" class="btn btn-sm btn-success">Edit</a>
                                         <form action="{{ route('backend-event.destroy', $events->id) }}" method="post"
-                                              onsubmit="return confirm('Hapus event {{ addslashes($events->title) }}? Tindakan ini tidak dapat dibatalkan.');">
+                                              data-delete-message="{{ 'Acara “'.$events->title.'” akan dihapus permanen.' }}">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="btn btn-sm km-btn-danger">Hapus</button>

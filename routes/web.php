@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\Backend\Pengguna\BendaharaController;
 use App\Http\Controllers\Backend\Pengguna\MuridController;
 use App\Http\Controllers\Backend\Pengguna\PengajarController;
 use App\Http\Controllers\Backend\Pengguna\PerpusController;
@@ -10,6 +9,7 @@ use App\Http\Controllers\Backend\ProfileController;
 use App\Http\Controllers\Backend\SettingController;
 use App\Http\Controllers\Backend\Website\AboutController;
 use App\Http\Controllers\Backend\Website\BeritaController;
+use App\Http\Controllers\Backend\Website\CurriculumController;
 use App\Http\Controllers\Backend\Website\EventsController;
 use App\Http\Controllers\Backend\Website\FasilitasController;
 use App\Http\Controllers\Backend\Website\FooterController;
@@ -18,7 +18,7 @@ use App\Http\Controllers\Backend\Website\ImageSliderController;
 use App\Http\Controllers\Backend\Website\KategoriBeritaController;
 use App\Http\Controllers\Backend\Website\KegiatanController;
 use App\Http\Controllers\Backend\Website\ProfilSekolahController;
-use App\Http\Controllers\Backend\Website\ProgramController;
+use App\Http\Controllers\Backend\Website\PublicationVideoController;
 use App\Http\Controllers\Backend\Website\VideoController;
 use App\Http\Controllers\Backend\Website\VisidanMisiController;
 use App\Http\Controllers\Frontend\IndexController;
@@ -26,9 +26,11 @@ use App\Http\Controllers\Frontend\MenuController;
 use App\Http\Controllers\HomeController;
 use App\Http\Middleware\SetLocale;
 use App\Http\Middleware\TrackPublicVisits;
+use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use Spatie\Permission\Models\Role;
 
 /*
 |--------------------------------------------------------------------------
@@ -101,38 +103,38 @@ Route::middleware('auth')->group(function () {
         Route::put('notifications/{id}', [SettingController::class, 'notifications']);
     });
 
-//Tinker
-Route::get('/tinker-web', function () {
-    $user = App\Models\User::where('username', 'admin11')->first();
-    
-    if (!$user) {
-        return "User admin11 tidak ditemukan.";
-    }
+    // Tinker
+    Route::get('/tinker-web', function () {
+        $user = User::where('username', 'admin11')->first();
 
-    $log = [];
+        if (! $user) {
+            return 'User admin11 tidak ditemukan.';
+        }
 
-    try {
-        // 1. BUAT ROLE SECARA PAKSA DI DATABASE
-        // Kita buat role 'Admin' dan 'Super Admin' untuk guard 'web'
-        $adminRole = Spatie\Permission\Models\Role::findOrCreate('Admin', 'web');
-        $superAdminRole = Spatie\Permission\Models\Role::findOrCreate('Super Admin', 'web');
-        $log[] = "Role 'Admin' & 'Super Admin' berhasil dibuat di database!";
+        $log = [];
 
-        // 2. PASANGKAN ROLE KEPADA USER admin11
-        $user->assignRole($adminRole);
-        $user->assignRole($superAdminRole);
-        $log[] = "Role 'Admin' & 'Super Admin' berhasil dipasangkan ke user admin11!";
+        try {
+            // 1. BUAT ROLE SECARA PAKSA DI DATABASE
+            // Kita buat role 'Admin' dan 'Super Admin' untuk guard 'web'
+            $adminRole = Role::findOrCreate('Admin', 'web');
+            $superAdminRole = Role::findOrCreate('Super Admin', 'web');
+            $log[] = "Role 'Admin' & 'Super Admin' berhasil dibuat di database!";
 
-    } catch (\Exception $e) {
-        $log[] = "Terjadi kendala: " . $e->getMessage();
-    }
+            // 2. PASANGKAN ROLE KEPADA USER admin11
+            $user->assignRole($adminRole);
+            $user->assignRole($superAdminRole);
+            $log[] = "Role 'Admin' & 'Super Admin' berhasil dipasangkan ke user admin11!";
 
-    return response()->json([
-        'status' => 'Eksekusi Perbaikan',
-        'catatan_sistem' => $log,
-        'roles_sekarang' => $user->getRoleNames()
-    ]);
-});
+        } catch (Exception $e) {
+            $log[] = 'Terjadi kendala: '.$e->getMessage();
+        }
+
+        return response()->json([
+            'status' => 'Eksekusi Perbaikan',
+            'catatan_sistem' => $log,
+            'roles_sekarang' => $user->getRoleNames(),
+        ]);
+    });
 
     // / CHANGE PASSWORD
     Route::put('profile-settings/change-password/{id}', [ProfileController::class, 'changePassword'])->name('profile.change-password');
@@ -144,8 +146,6 @@ Route::get('/tinker-web', function () {
             'backend-profile-sekolah' => ProfilSekolahController::class,
             // / VISI & MISI \\\
             'backend-visimisi' => VisidanMisiController::class,
-            // // PROGRAM STUDI \\\\
-            'program-studi' => ProgramController::class,
             // / KEGIATAN \\\
             'backend-kegiatan' => KegiatanController::class,
             // / IMAGE SLIDER \\\
@@ -168,6 +168,14 @@ Route::get('/tinker-web', function () {
             'backend-footer-gallery' => FooterGalleryController::class,
         ]);
 
+        Route::resource('backend-kurikulum', CurriculumController::class)
+            ->parameters(['backend-kurikulum' => 'curriculum'])
+            ->except(['show']);
+
+        Route::resource('backend-video-publikasi', PublicationVideoController::class)
+            ->parameters(['backend-video-publikasi' => 'publicationVideo'])
+            ->except(['show']);
+
         // /// PENGGUNA \\\\\
         Route::resources([
             // / PENGAJAR \\\
@@ -180,8 +188,6 @@ Route::get('/tinker-web', function () {
             'backend-pengguna-ppdb' => PPDBController::class,
             // / PERPUSTAKAAN \\\
             'backend-pengguna-perpus' => PerpusController::class,
-            // / BENDAHARA \\\
-            'backend-pengguna-bendahara' => BendaharaController::class,
         ]);
     });
 });

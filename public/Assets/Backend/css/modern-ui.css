@@ -77,6 +77,25 @@ body.vertical-layout .app-content.content {
     margin-top: 104px;
 }
 
+body.vertical-layout .app-content.content > .content-wrapper.container-xxl:not(.km-page) {
+    padding: 8px 26px 32px !important;
+}
+
+@media (max-width: 767.98px) {
+    body.vertical-layout .app-content.content > .content-wrapper.container-xxl:not(.km-page) {
+        padding: 8px 16px 28px !important;
+    }
+
+    .km-page.km-settings-page {
+        padding-right: 18px;
+        padding-left: 24px;
+    }
+
+    .km-website-table-page .dataTables_wrapper .dataTables_filter {
+        justify-content: flex-start;
+    }
+}
+
 .content-wrapper,
 .content-body {
     font-family: var(--km-font);
@@ -98,6 +117,56 @@ a {
     padding: 26px 30px 40px;
     max-width: 1440px;
     margin: 0 auto;
+}
+
+.km-page.km-settings-page {
+    padding-left: 64px;
+    padding-right: 36px;
+}
+
+.km-website-table-page .row > [class*="col-"] {
+    min-width: 0;
+}
+
+.km-website-table-page .card {
+    min-width: 0;
+    overflow: hidden;
+}
+
+.km-website-table-page .card-datatable {
+    min-width: 0;
+    max-width: 100%;
+    overflow-x: auto;
+}
+
+.km-website-table-page .dataTables_wrapper {
+    min-width: 0;
+    max-width: 100%;
+}
+
+.km-website-table-page .dataTables_wrapper .dataTables_filter {
+    display: flex;
+    float: none;
+    justify-content: flex-end;
+    max-width: 100%;
+}
+
+.km-website-table-page .dataTables_wrapper .dataTables_filter label {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    max-width: 100%;
+    margin: 0;
+    white-space: normal;
+}
+
+.km-website-table-page .dataTables_wrapper .dataTables_filter input {
+    flex: 1 1 120px;
+    width: auto;
+    min-width: 0;
+    max-width: 190px;
+    margin-left: 0;
+    box-sizing: border-box;
 }
 
 .km-page-head {
@@ -372,6 +441,222 @@ body.vertical-layout .main-menu.menu-dark .navbar-brand .brand-text {
     min-height: 62px;
 }
 
+.header-navbar .km-theme-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 40px;
+    padding: 8px 14px;
+    border: 1px solid var(--km-line);
+    border-radius: 999px;
+    background: var(--km-canvas-soft);
+    color: var(--km-text-soft);
+    font-size: 12px;
+    font-weight: 650;
+    transition: color .18s ease, background-color .18s ease, border-color .18s ease, box-shadow .18s ease, transform .18s ease;
+}
+
+.header-navbar .km-theme-toggle:hover,
+.header-navbar .km-theme-toggle:focus-visible {
+    transform: translateY(-1px);
+    border-color: var(--km-brand);
+    background: var(--km-brand-soft);
+    color: var(--km-brand-ink);
+    box-shadow: 0 8px 18px rgba(47, 111, 235, .12);
+}
+
+.header-navbar .km-theme-toggle .ficon {
+    width: 17px;
+    height: 17px;
+    margin: 0;
+}
+
+.header-navbar .km-theme-toggle__label {
+    white-space: nowrap;
+}
+
+.header-navbar .km-notification {
+    position: relative;
+    margin: 0 8px;
+}
+
+.header-navbar .km-notification__toggle {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 40px;
+    padding: 8px 12px;
+    border: 1px solid var(--km-line);
+    border-radius: 999px;
+    background: var(--km-canvas-soft);
+    color: var(--km-text-soft);
+    font-size: 12px;
+    font-weight: 650;
+    cursor: pointer;
+    transition: color .18s ease, background-color .18s ease, border-color .18s ease, box-shadow .18s ease, transform .18s ease;
+}
+
+.header-navbar .km-notification__toggle:hover,
+.header-navbar .km-notification__toggle:focus-visible,
+.header-navbar .km-notification.show .km-notification__toggle {
+    transform: translateY(-1px);
+    border-color: var(--km-brand);
+    background: var(--km-brand-soft);
+    color: var(--km-brand-ink);
+    box-shadow: 0 8px 18px rgba(47, 111, 235, .12);
+}
+
+.header-navbar .km-notification__toggle svg {
+    width: 17px;
+    height: 17px;
+}
+
+.header-navbar .km-notification__badge {
+    display: inline-flex;
+    min-width: 18px;
+    height: 18px;
+    align-items: center;
+    justify-content: center;
+    padding: 0 5px;
+    border: 2px solid var(--km-surface);
+    border-radius: 999px;
+    background: var(--km-danger);
+    color: #ffffff;
+    font-size: 10px;
+    line-height: 1;
+}
+
+.header-navbar .dropdown-menu.km-notification__menu {
+    width: 350px;
+    max-width: calc(100vw - 32px);
+    margin-top: 12px;
+    padding: 0;
+    overflow: hidden;
+    background: var(--km-surface);
+}
+
+.km-notification__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 16px 18px;
+    border-bottom: 1px solid var(--km-line);
+}
+
+.km-notification__header > div,
+.km-notification__item-body {
+    min-width: 0;
+}
+
+.km-notification__header strong,
+.km-notification__item-body strong {
+    display: block;
+    color: var(--km-text);
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.km-notification__header span:not(.km-notification__count) {
+    display: block;
+    margin-top: 3px;
+    color: var(--km-text-faint);
+    font-size: 11px;
+}
+
+.km-notification__count {
+    flex: 0 0 auto;
+    padding: 5px 8px;
+    border-radius: 999px;
+    background: var(--km-brand-soft);
+    color: var(--km-brand-ink);
+    font-size: 10px;
+    font-weight: 700;
+}
+
+.km-notification__item {
+    display: flex;
+    gap: 12px;
+    padding: 16px 18px;
+    border-bottom: 1px solid var(--km-line);
+    white-space: normal;
+}
+
+.km-notification__item:last-child {
+    border-bottom: 0;
+}
+
+.km-notification__item-icon,
+.km-notification__empty-icon {
+    display: inline-flex;
+    flex: 0 0 36px;
+    width: 36px;
+    height: 36px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    background: var(--km-brand-soft);
+    color: var(--km-brand-ink);
+}
+
+.km-notification__item-icon svg,
+.km-notification__empty-icon svg {
+    width: 17px;
+    height: 17px;
+}
+
+.km-notification__item--success .km-notification__item-icon {
+    background: var(--km-success-soft);
+    color: var(--km-success);
+}
+
+.km-notification__item--error .km-notification__item-icon {
+    background: var(--km-danger-soft);
+    color: var(--km-danger);
+}
+
+.km-notification__item-body p {
+    margin: 4px 0 6px;
+    color: var(--km-text-soft);
+    font-size: 12px;
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+}
+
+.km-notification__item-body small {
+    color: var(--km-text-faint);
+    font-size: 10px;
+}
+
+.km-notification__empty {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    padding: 28px 20px;
+    text-align: center;
+}
+
+.km-notification__empty-icon {
+    width: 44px;
+    height: 44px;
+    flex-basis: 44px;
+    margin-bottom: 12px;
+    border-radius: 14px;
+}
+
+.km-notification__empty strong {
+    color: var(--km-text);
+    font-size: 13px;
+}
+
+.km-notification__empty p {
+    margin: 5px 0 0;
+    color: var(--km-text-faint);
+    font-size: 12px;
+}
+
 .km-backend-menu-toggle {
     display: inline-flex;
     flex: 0 0 42px;
@@ -453,6 +738,217 @@ body.vertical-layout .main-menu.menu-dark .navbar-brand .brand-text {
     border-radius: var(--km-radius-control);
     font-size: 14px;
     padding: 8px 10px;
+}
+
+/* ---------- Settings ---------- */
+
+/* ---------- Delete confirmation ---------- */
+
+.km-delete-dialog[hidden] {
+    display: none;
+}
+
+.km-delete-dialog {
+    position: fixed;
+    z-index: 2050;
+    inset: 0;
+    display: grid;
+    align-items: center;
+    justify-items: center;
+    padding: 20px;
+}
+
+.km-delete-dialog__backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(10, 17, 31, .62);
+    backdrop-filter: blur(5px);
+    animation: km-delete-fade-in .16s ease-out;
+}
+
+.km-delete-dialog__panel {
+    position: relative;
+    width: min(100%, 420px);
+    padding: 30px;
+    border: 1px solid var(--km-line);
+    border-radius: 20px;
+    background: var(--km-surface);
+    box-shadow: 0 24px 70px rgba(8, 15, 30, .28);
+    color: var(--km-text);
+    text-align: center;
+    animation: km-delete-pop-in .2s ease-out;
+}
+
+.km-delete-dialog__icon {
+    display: inline-flex;
+    width: 58px;
+    height: 58px;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 16px;
+    border: 1px solid var(--km-danger-soft);
+    border-radius: 18px;
+    background: var(--km-danger-soft);
+    color: var(--km-danger);
+}
+
+.km-delete-dialog__icon svg {
+    width: 25px;
+    height: 25px;
+}
+
+.km-delete-dialog__panel h2 {
+    margin: 0 0 8px;
+    color: var(--km-text);
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.km-delete-dialog__panel p {
+    margin: 0;
+    color: var(--km-text-soft);
+    font-size: 13px;
+    line-height: 1.65;
+    overflow-wrap: anywhere;
+}
+
+.km-delete-dialog__actions {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 24px;
+}
+
+.km-delete-dialog__actions button {
+    min-height: 42px;
+    padding: 9px 16px;
+    border: 1px solid transparent;
+    border-radius: 10px;
+    font: inherit;
+    font-size: 13px;
+    font-weight: 650;
+    cursor: pointer;
+    transition: transform .16s ease, box-shadow .16s ease, background-color .16s ease;
+}
+
+.km-delete-dialog__actions button:hover {
+    transform: translateY(-1px);
+}
+
+.km-delete-dialog__cancel {
+    border-color: var(--km-line-strong) !important;
+    background: var(--km-surface);
+    color: var(--km-text-soft);
+}
+
+.km-delete-dialog__confirm {
+    background: var(--km-danger);
+    color: #ffffff;
+    box-shadow: 0 6px 14px rgba(179, 38, 30, .18);
+}
+
+.km-delete-dialog__confirm:hover,
+.km-delete-dialog__confirm:focus-visible {
+    background: #991f19;
+    box-shadow: 0 9px 20px rgba(179, 38, 30, .25);
+}
+
+.km-delete-dialog__actions button:focus-visible {
+    outline: 3px solid var(--km-brand);
+    outline-offset: 3px;
+}
+
+@keyframes km-delete-fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes km-delete-pop-in {
+    from { opacity: 0; transform: translateY(8px) scale(.98); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .km-delete-dialog__backdrop,
+    .km-delete-dialog__panel {
+        animation: none;
+    }
+
+    .km-delete-dialog__actions button {
+        transition: none;
+    }
+}
+
+.km-settings-card {
+    max-width: 920px;
+    overflow: hidden;
+    background: var(--km-surface);
+    border: 1px solid var(--km-line);
+    border-radius: var(--km-radius-panel);
+}
+
+.km-settings-card__header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 22px 24px;
+    border-bottom: 1px solid var(--km-line);
+}
+
+.km-settings-card__icon {
+    display: inline-flex;
+    flex: 0 0 44px;
+    width: 44px;
+    height: 44px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 14px;
+    background: var(--km-brand-soft);
+    color: var(--km-brand-ink);
+}
+
+.km-settings-card__icon svg {
+    width: 20px;
+    height: 20px;
+}
+
+.km-settings-card__header h3 {
+    margin: 0 0 4px;
+    font-size: 16px;
+}
+
+.km-settings-card__header p,
+.km-settings-option p {
+    margin: 0;
+    color: var(--km-text-soft);
+    font-size: 12px;
+}
+
+.km-settings-option {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+    padding: 20px 24px;
+    border-bottom: 1px solid var(--km-line);
+}
+
+.km-settings-option strong {
+    display: block;
+    margin-bottom: 4px;
+    color: var(--km-text);
+    font-size: 13px;
+}
+
+.km-settings-option--disabled {
+    opacity: .65;
+}
+
+.km-settings-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 18px 24px;
 }
 
 /* ---------- Panel & kartu ---------- */
@@ -1100,6 +1596,43 @@ html.dark-layout .alert-danger {
         padding-right: 0;
     }
 
+    .header-navbar .km-notification {
+        margin: 0 6px 0 0;
+    }
+
+    .header-navbar .km-notification__toggle {
+        width: 40px;
+        height: 40px;
+        padding: 0;
+    }
+
+    .header-navbar .km-notification__label {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+    }
+
+    .header-navbar .km-notification__badge {
+        position: absolute;
+        top: -4px;
+        right: -4px;
+    }
+
+    .km-settings-card__header,
+    .km-settings-option {
+        padding-right: 16px;
+        padding-left: 16px;
+    }
+
+    .km-settings-actions {
+        padding: 16px;
+    }
+
     .footer.footer-light {
         padding-right: 16px;
         padding-left: 16px;
@@ -1121,6 +1654,41 @@ html.dark-layout .alert-danger {
 
     .km-quick-grid {
         grid-template-columns: minmax(0, 1fr);
+    }
+}
+
+@media (max-width: 767.98px) {
+    .header-navbar .km-theme-toggle {
+        width: 40px;
+        height: 40px;
+        min-height: 40px;
+        justify-content: center;
+        padding: 0;
+    }
+
+    .header-navbar .km-theme-toggle__label {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+    }
+}
+
+@media (max-width: 991.98px) {
+    .km-page.km-settings-page {
+        padding-left: 48px;
+        padding-right: 28px;
+    }
+}
+
+@media (max-width: 575.98px) {
+    .km-page.km-settings-page {
+        padding-left: 32px;
+        padding-right: 18px;
     }
 }
 
@@ -1586,5 +2154,145 @@ html.dark-layout .alert-danger {
     .vertical-overlay-menu.menu-open .main-menu {
         transition-duration: 0.01ms;
         transition-delay: 0s;
+    }
+}
+
+/* ---------- Panel content on phones ---------- */
+
+@media (max-width: 767.98px) {
+    body.vertical-layout .app-content,
+    body.vertical-layout .app-content .content-wrapper,
+    body.vertical-layout .app-content .content-body,
+    body.vertical-layout .app-content .row,
+    body.vertical-layout .app-content .card,
+    body.vertical-layout .app-content .km-panel,
+    body.vertical-layout .app-content form {
+        min-width: 0;
+        max-width: 100%;
+    }
+
+    body.vertical-layout .app-content .row > .col-2,
+    body.vertical-layout .app-content .row > .col-3,
+    body.vertical-layout .app-content .row > .col-4,
+    body.vertical-layout .app-content .row > .col-5,
+    body.vertical-layout .app-content .row > .col-6,
+    body.vertical-layout .app-content .row > .col-7,
+    body.vertical-layout .app-content .row > .col-8,
+    body.vertical-layout .app-content .row > .col-9,
+    body.vertical-layout .app-content .row > .col-10,
+    body.vertical-layout .app-content .row > .col-11 {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+
+    body.vertical-layout .app-content .card-body,
+    body.vertical-layout .app-content .km-panel {
+        padding: 16px;
+    }
+
+    body.vertical-layout .app-content .table-responsive,
+    body.vertical-layout .app-content .card-datatable {
+        width: 100%;
+        max-width: 100%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    body.vertical-layout .app-content .dataTables_wrapper {
+        width: 100%;
+        max-width: 100%;
+        overflow-x: auto;
+    }
+
+    body.vertical-layout .app-content .dataTables_wrapper .row {
+        margin-right: 0;
+        margin-left: 0;
+    }
+
+    body.vertical-layout .app-content .dataTables_length,
+    body.vertical-layout .app-content .dataTables_filter,
+    body.vertical-layout .app-content .dataTables_info,
+    body.vertical-layout .app-content .dataTables_paginate {
+        float: none;
+        max-width: 100%;
+        text-align: left;
+        white-space: normal;
+    }
+
+    body.vertical-layout .app-content .dataTables_filter label {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 6px;
+        max-width: 100%;
+        margin: 0;
+    }
+
+    body.vertical-layout .app-content .dataTables_filter input,
+    body.vertical-layout .app-content .dataTables_length select,
+    body.vertical-layout .app-content .form-control,
+    body.vertical-layout .app-content .custom-select,
+    body.vertical-layout .app-content textarea {
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+        box-sizing: border-box;
+    }
+
+    body.vertical-layout .app-content img,
+    body.vertical-layout .app-content video,
+    body.vertical-layout .app-content iframe {
+        max-width: 100%;
+    }
+
+    body.vertical-layout .app-content .km-page-head {
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    body.vertical-layout .app-content .km-page-head > .btn,
+    body.vertical-layout .app-content .km-form-actions > .btn {
+        max-width: 100%;
+        white-space: normal;
+    }
+
+    body.vertical-layout .app-content .km-row-actions {
+        flex-wrap: wrap;
+    }
+
+    body.vertical-layout .app-content .nav-tabs,
+    body.vertical-layout .app-content .nav-pills {
+        flex-wrap: nowrap;
+        max-width: 100%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    body.vertical-layout .app-content .modal-dialog {
+        width: auto;
+        max-width: calc(100vw - 24px);
+        margin: 12px auto;
+    }
+}
+
+@media (max-width: 575.98px) {
+    body.vertical-layout .app-content .card-header,
+    body.vertical-layout .app-content .km-panel-head {
+        flex-wrap: wrap;
+        gap: 8px;
+        padding-right: 16px;
+        padding-left: 16px;
+    }
+
+    body.vertical-layout .app-content .km-form-actions {
+        align-items: stretch;
+    }
+
+    body.vertical-layout .app-content .km-form-actions > .btn {
+        flex: 1 1 140px;
+    }
+
+    body.vertical-layout .app-content .dataTables_paginate {
+        overflow-x: auto;
     }
 }

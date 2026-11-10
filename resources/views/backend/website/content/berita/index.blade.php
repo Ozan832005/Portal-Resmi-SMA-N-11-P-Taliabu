@@ -81,7 +81,7 @@
                                     <div class="km-row-actions">
                                         <a href="{{ route('backend-berita.edit', $beritas->id) }}" class="btn btn-sm btn-success">Edit</a>
                                         <form action="{{ route('backend-berita.destroy', $beritas->id) }}" method="post"
-                                              onsubmit="return confirm('Hapus berita {{ addslashes($beritas->title) }}? Tindakan ini tidak dapat dibatalkan.');">
+                                              data-delete-message="{{ 'Berita “'.$beritas->title.'” akan dihapus permanen.' }}">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="btn btn-sm km-btn-danger">Hapus</button>
