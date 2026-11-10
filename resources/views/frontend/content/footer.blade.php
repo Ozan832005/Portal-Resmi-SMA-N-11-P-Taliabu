@@ -5,7 +5,7 @@
                 <div class="footer-box">
                     <a href="/" aria-label="{{ __('Beranda SMA Negeri 11 Pulau Taliabu') }}">
                         @if (@$footer->logo == NULL)
-                            <img class="img-responsive" src="{{asset('Assets/Frontend/img/logo-footer.png')}}" alt="{{ __('Logo sekolah') }}">
+                            <img class="img-responsive" src="{{asset('Assets/Frontend/img/favicon.png')}}" alt="{{ __('Logo sekolah') }}">
                         @else
                             <img class="img-responsive" src="{{asset('storage/images/logo/' .$footer->logo)}}" alt="{{ __('Logo SMA Negeri 11 Pulau Taliabu') }}">
                         @endif

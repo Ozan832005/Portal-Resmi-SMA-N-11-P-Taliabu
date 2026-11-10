@@ -79,6 +79,21 @@ class FrontendViewsAndPublicationsTest extends TestCase
             ->assertSee('href="https://localhost:8000/Assets/Frontend/css/modern.css?v=', false);
     }
 
+    public function test_homepage_uses_the_bundled_school_icon_when_no_footer_logo_is_configured(): void
+    {
+        $this->createHomepageTables();
+
+        $this->get('/')
+            ->assertOk()
+            ->assertSee('Assets/Frontend/img/favicon.png?v=', false)
+            ->assertSee('src="http://localhost:8000/Assets/Frontend/img/favicon.png"', false);
+
+        $this->get('/login')
+            ->assertOk()
+            ->assertSee('Assets/Frontend/img/favicon.png?v=', false)
+            ->assertSee('src="http://localhost:8000/Assets/Frontend/img/favicon.png"', false);
+    }
+
     public function test_homepage_defaults_to_indonesian_and_switches_all_static_copy_to_english(): void
     {
         $this->createHomepageTables();

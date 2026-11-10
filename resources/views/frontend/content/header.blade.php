@@ -7,7 +7,7 @@
                         <div class="logo-area">
                             <a href="/" class="header-brand" aria-label="{{ __('Beranda SMA Negeri 11 Pulau Taliabu') }}">
                                 @if (@$footer->logo == NULL)
-                                    <img class="img-responsive" src="{{asset('Assets/Frontend/img/logo-footer.png')}}" alt="{{ __('Logo sekolah') }}">
+                                    <img class="img-responsive" src="{{asset('Assets/Frontend/img/favicon.png')}}" alt="{{ __('Logo sekolah') }}">
                                 @else
                                     <img class="img-responsive" src="{{asset('storage/images/logo/' .$footer->logo)}}" alt="Logo SMA Negeri 11 Pulau Taliabu">
                                 @endif
@@ -99,7 +99,7 @@
     <div class="mobile-header">
         <a href="/" class="mobile-brand" aria-label="{{ __('Beranda SMA Negeri 11 Pulau Taliabu') }}">
             @if (@$footer->logo == NULL)
-                <img src="{{ asset('Assets/Frontend/img/logo-footer.png') }}" alt="{{ __('Logo sekolah') }}">
+                <img src="{{ asset('Assets/Frontend/img/favicon.png') }}" alt="{{ __('Logo sekolah') }}">
             @else
                 <img src="{{ asset('storage/images/logo/' . $footer->logo) }}" alt="Logo SMA Negeri 11 Pulau Taliabu">
             @endif
@@ -125,7 +125,7 @@
                     <div class="mobile-nav-head">
                         <a href="/" class="mobile-nav-brand" aria-label="{{ __('Beranda SMA Negeri 11 Pulau Taliabu') }}">
                             @if (@$footer->logo == NULL)
-                                <img src="{{ asset('Assets/Frontend/img/logo-footer.png') }}" alt="{{ __('Logo sekolah') }}">
+                                <img src="{{ asset('Assets/Frontend/img/favicon.png') }}" alt="{{ __('Logo sekolah') }}">
                             @else
                                 <img src="{{ asset('storage/images/logo/' . $footer->logo) }}" alt="Logo SMA Negeri 11 Pulau Taliabu">
                             @endif

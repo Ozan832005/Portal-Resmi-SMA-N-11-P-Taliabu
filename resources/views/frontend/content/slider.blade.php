@@ -64,7 +64,7 @@
                                  alt="Logo SMA Negeri 11 Pulau Taliabu">
                         @else
                             <img class="km-hero__slide is-active"
-                                 src="{{ asset('Assets/Frontend/img/logo-footer.png') }}"
+                                 src="{{ asset('Assets/Frontend/img/favicon.png') }}"
                                  alt="Logo SMA Negeri 11 Pulau Taliabu">
                         @endif
                     </div>

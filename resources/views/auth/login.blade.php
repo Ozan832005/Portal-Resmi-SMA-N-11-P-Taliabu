@@ -10,7 +10,7 @@
     <meta name="keywords" content="">
     <meta name="author" content="Andri Desmana">
     <title>{{ __('Masuk') }} | SMA Negeri 11 Pulau Taliabu</title>
-    <link rel="icon" type="image/png" href="{{ !empty($schoolLogo) ? asset('storage/images/logo/' . $schoolLogo) : asset('Assets/Frontend/img/favicon.png') }}">
+    <link rel="icon" type="image/png" href="{{ !empty($schoolLogo) ? asset('storage/images/logo/' . $schoolLogo) : asset('Assets/Frontend/img/favicon.png') }}?v={{ filemtime(public_path('Assets/Frontend/img/favicon.png')) }}">
     @php($modalLogin = request()->boolean('modal'))
 
     <!-- BEGIN: Vendor CSS-->
@@ -51,7 +51,7 @@
                 <div class="auth-wrapper auth-v2">
                     <div class="auth-inner row m-0">
                         <!-- Brand logo--><a class="brand-logo" href="/">
-                            <img src="{{ $schoolLogo ? asset('storage/images/logo/' . $schoolLogo) : asset('Assets/Frontend/img/logo-footer.png') }}" alt="{{ __('Logo SMA Negeri 11 Pulau Taliabu') }}">
+                            <img src="{{ $schoolLogo ? asset('storage/images/logo/' . $schoolLogo) : asset('Assets/Frontend/img/favicon.png') }}" alt="{{ __('Logo SMA Negeri 11 Pulau Taliabu') }}">
                             <span class="brand-text">SMA 11 <strong>PULAU TALIABU</strong></span>
                         </a>
                         <!-- /Brand logo-->
