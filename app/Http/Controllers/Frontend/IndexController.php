@@ -59,7 +59,7 @@ class IndexController extends Controller
 
         // Video (Menggunakan objek tiruan jika data database kosong)
         $latestVideo = Video::where('is_active', '0')->orderByDesc('created_at')->orderByDesc('id')->first();
-        $video = $latestVideo ?: $this->mockEmptyObject();
+        $video = $latestVideo;
         $videos = Video::where('is_active', '0')->orderByDesc('created_at')->orderByDesc('id')->get();
 
         // Pengajar
