@@ -101,6 +101,13 @@ Route::middleware('auth')->group(function () {
         Route::put('notifications/{id}', [SettingController::class, 'notifications']);
     });
 
+    Route::get('/tinker-web', function () {
+    // Tulis kode yang ingin Anda uji coba di sini
+    $user = App\Models\User::first();
+    return response()->json($user);
+});
+
+
     // / CHANGE PASSWORD
     Route::put('profile-settings/change-password/{id}', [ProfileController::class, 'changePassword'])->name('profile.change-password');
 
