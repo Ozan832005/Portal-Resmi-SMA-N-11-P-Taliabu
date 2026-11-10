@@ -76,7 +76,7 @@ class PengajarController extends Controller
                 $userDetail->save();
             }
 
-            $user->assignRole($user->role);
+            $user->assignApplicationRole($user->role);
             DB::commit();
             Session::flash('success', 'Pengajar Berhasil ditambah !');
 

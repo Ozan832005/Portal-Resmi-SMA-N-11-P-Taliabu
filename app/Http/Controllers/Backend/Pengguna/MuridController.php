@@ -92,7 +92,7 @@ class MuridController extends Controller
                 $detail->save();
             }
 
-            $murid->assignRole($murid->role);
+            $murid->assignApplicationRole($murid->role);
 
             DB::commit();
             Session::flash('success', 'Calon Murid Berhasil disimpan !');
@@ -172,7 +172,7 @@ class MuridController extends Controller
             $murid->update();
 
             DB::table('model_has_roles')->where('model_id', $id)->delete();
-            $murid->assignRole($request->role);
+            $murid->assignApplicationRole($request->role);
 
             DB::commit();
             Session::flash('success', 'Calon Murid Berhasil diupdate !');

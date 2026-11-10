@@ -11,6 +11,7 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Storage;
 use Spatie\Permission\Models\Role;
+use Spatie\Permission\PermissionRegistrar;
 use Tests\TestCase;
 
 class BackendContentManagementTest extends TestCase
@@ -95,6 +96,35 @@ class BackendContentManagementTest extends TestCase
             ->assertOk()
             ->assertSee('1 baru')
             ->assertSee('Acara berhasil ditambahkan.');
+    }
+
+    public function test_admin_can_create_a_student_when_its_application_role_has_not_been_seeded(): void
+    {
+        Role::query()->where('name', '!=', 'Admin')->delete();
+        app(PermissionRegistrar::class)->forgetCachedPermissions();
+
+        $response = $this->actingAs($this->admin)
+            ->post(route('backend-pengguna-murid.store'), [
+                'name' => 'Murid Baru',
+                'email' => 'murid-baru@example.test',
+                'password' => 'password-aman',
+            ]);
+
+        $response->assertRedirect(route('backend-pengguna-murid.index'));
+
+        $this->assertDatabaseHas('users', [
+            'name' => 'Murid Baru',
+            'email' => 'murid-baru@example.test',
+            'role' => 'Guest',
+            'status' => 'Aktif',
+        ]);
+        $this->assertDatabaseHas('roles', [
+            'name' => 'Guest',
+            'guard_name' => 'web',
+        ]);
+
+        $murid = User::query()->where('email', 'murid-baru@example.test')->firstOrFail();
+        $this->assertSame(['Guest'], $murid->getRoleNames()->all());
     }
 
     public function test_admin_can_create_update_and_delete_curriculum_items(): void

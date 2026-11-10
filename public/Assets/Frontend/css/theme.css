@@ -251,14 +251,27 @@ html[data-theme="dark"] .km-news-search input::placeholder {
 
 html[data-theme="dark"] .km-teacher-carousel .owl-nav .owl-prev,
 html[data-theme="dark"] .km-teacher-carousel .owl-nav .owl-next {
-    border-color: rgba(93, 177, 218, .3) !important;
-    background: linear-gradient(145deg, #1a2c3a, #12222f) !important;
+    background:
+        linear-gradient(145deg, #1a2c3a, #12222f) padding-box,
+        linear-gradient(145deg, rgba(93, 177, 218, .72), rgba(93, 177, 218, .2)) border-box !important;
     color: #8ed3f5;
 }
 
 html[data-theme="dark"] .km-teacher-carousel .owl-nav .owl-prev i,
 html[data-theme="dark"] .km-teacher-carousel .owl-nav .owl-next i {
     color: #8ed3f5 !important;
+}
+
+html[data-theme="dark"] .km-teacher-carousel .owl-nav .owl-prev:hover,
+html[data-theme="dark"] .km-teacher-carousel .owl-nav .owl-next:hover {
+    background:
+        linear-gradient(135deg, #238fbd, #12628e) padding-box,
+        linear-gradient(145deg, #9de5ff, #238fbd) border-box !important;
+}
+
+html[data-theme="dark"] .km-teacher-carousel .owl-nav .owl-prev:hover i,
+html[data-theme="dark"] .km-teacher-carousel .owl-nav .owl-next:hover i {
+    color: #fff !important;
 }
 
 html[data-theme="dark"] .km-marquee {

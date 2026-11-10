@@ -62,7 +62,11 @@ class IndexController extends Controller
         // Video (Menggunakan objek tiruan jika data database kosong)
         $latestVideo = Video::where('is_active', '0')->orderByDesc('created_at')->orderByDesc('id')->first();
         $video = $latestVideo;
-        $videos = Video::where('is_active', '0')->orderByDesc('created_at')->orderByDesc('id')->get();
+        $videos = PublicationVideo::query()
+            ->where('is_active', '0')
+            ->orderByDesc('created_at')
+            ->orderByDesc('id')
+            ->get();
 
         // Pengajar
         $pengajar = User::with('userDetail')->where('status', 'Aktif')->where('role', 'Guru')->get();

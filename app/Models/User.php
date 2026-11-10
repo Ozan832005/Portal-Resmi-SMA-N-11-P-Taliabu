@@ -11,6 +11,7 @@ use Modules\PPDB\Entities\BerkasMurid;
 use Modules\PPDB\Entities\DataOrangTua;
 use Modules\SPP\Entities\BankAccount;
 use Modules\SPP\Entities\PaymentSpp;
+use Spatie\Permission\Models\Role;
 use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
@@ -61,6 +62,13 @@ class User extends Authenticatable
         } while (static::query()->where('username', $username)->exists());
 
         return $username;
+    }
+
+    public function assignApplicationRole(string $roleName): void
+    {
+        $role = Role::findOrCreate($roleName, $this->getDefaultGuardName());
+
+        $this->assignRole($role);
     }
 
     public function userDetail()

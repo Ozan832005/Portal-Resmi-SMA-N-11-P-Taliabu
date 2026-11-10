@@ -74,7 +74,7 @@ class PerpusController extends Controller
                 $userDetail->save();
             }
 
-            $user->assignRole($user->role);
+            $user->assignApplicationRole($user->role);
             DB::commit();
             Session::flash('success', 'Petugas Perpustakaan Berhasil ditambah !');
 

@@ -100,7 +100,7 @@ class FrontendViewsAndPublicationsTest extends TestCase
     {
         $this->createHomepageTables();
 
-        DB::table('videos')->insert([
+        DB::table('publication_videos')->insert([
             'title' => 'School event video',
             'desc' => 'School activity',
             'url' => 'https://www.youtube.com/watch?v=abcDEF12345',
@@ -128,6 +128,43 @@ class FrontendViewsAndPublicationsTest extends TestCase
             ->assertSee('Meet the educators who share knowledge and guide students toward the future.')
             ->assertSee('News &amp; Events', false)
             ->assertSee('Publications');
+    }
+
+    public function test_homepage_shows_up_to_three_publication_videos_and_keeps_the_site_video_separate(): void
+    {
+        $this->createHomepageTables();
+
+        DB::table('videos')->insert([
+            'title' => 'Video halaman situs',
+            'desc' => 'Video utama situs.',
+            'url' => 'https://www.youtube.com/watch?v=abcDEF12345',
+            'is_active' => '0',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        for ($index = 1; $index <= 4; $index++) {
+            DB::table('publication_videos')->insert([
+                'title' => 'Video publikasi '.$index,
+                'desc' => 'Dokumentasi kegiatan '.$index.'.',
+                'url' => 'https://www.youtube.com/watch?v=abcDEF12345',
+                'is_active' => '0',
+                'created_at' => now()->addSeconds(5 - $index),
+                'updated_at' => now()->addSeconds(5 - $index),
+            ]);
+        }
+
+        $response = $this->get('/');
+
+        $response
+            ->assertOk()
+            ->assertSee('Video halaman situs')
+            ->assertSee('Video publikasi 1')
+            ->assertSee('Video publikasi 2')
+            ->assertSee('Video publikasi 3')
+            ->assertDontSee('Video publikasi 4');
+
+        $this->assertSame(3, substr_count((string) $response->getContent(), 'class="km-video-card"'));
     }
 
     public function test_homepage_stat_widgets_show_live_database_totals(): void
@@ -167,7 +204,7 @@ class FrontendViewsAndPublicationsTest extends TestCase
     {
         $this->createHomepageTables();
 
-        DB::table('videos')->insert([
+        DB::table('publication_videos')->insert([
             'title' => 'Publikasi kegiatan sekolah',
             'desc' => 'Dokumentasi kegiatan.',
             'url' => 'https://www.youtube.com/watch?v=abcDEF12345',
@@ -192,7 +229,7 @@ class FrontendViewsAndPublicationsTest extends TestCase
             ->assertSee('data-visit-total="1"', false);
 
         $content = (string) $response->getContent();
-        $publicationPosition = strpos($content, 'km-publication-wrap');
+        $publicationPosition = strpos($content, 'km-news-publication-title');
         $analyticsPosition = strpos($content, 'km-visit-panel');
 
         $this->assertNotFalse($publicationPosition);

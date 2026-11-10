@@ -2316,13 +2316,7 @@ a.apply-now-btn2 {
     bottom: 40px;
     left: 50%;
     display: flex;
-    gap: 8px;
-    padding: 5px;
-    border: 1px solid rgba(255, 255, 255, .9);
-    border-radius: 999px;
-    background: rgba(255, 255, 255, .84);
-    box-shadow: 0 10px 26px -16px rgba(11, 74, 104, .65);
-    backdrop-filter: blur(12px);
+    gap: 10px;
     transform: translateX(-50%);
 }
 
@@ -2333,38 +2327,58 @@ a.apply-now-btn2 {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 40px;
-    height: 40px;
+    width: 48px;
+    height: 48px;
     margin: 0;
     transform: none;
-    border: 1px solid rgba(58, 174, 229, .32) !important;
-    border-radius: 50%;
-    background: linear-gradient(145deg, #fff 0%, #eef9ff 100%) !important;
+    border: 1px solid transparent !important;
+    border-radius: 17px;
+    background:
+        linear-gradient(145deg, #fff 0%, #edf9ff 100%) padding-box,
+        linear-gradient(145deg, rgba(255, 255, 255, .96), rgba(58, 174, 229, .66)) border-box !important;
     color: var(--km-blue-700);
     font-size: 20px;
-    box-shadow: 0 8px 20px -14px rgba(11, 74, 104, .65);
-    transition: transform .25s ease, background .25s ease, color .25s ease, box-shadow .25s ease;
+    box-shadow: 0 10px 22px -12px rgba(11, 74, 104, .6), inset 0 1px 0 rgba(255, 255, 255, .9);
+    cursor: pointer;
+    transition: transform .22s ease, background .22s ease, color .22s ease, box-shadow .22s ease;
 }
 
 .km-teacher-carousel .owl-nav .owl-prev i,
 .km-teacher-carousel .owl-nav .owl-next i {
     color: var(--km-blue-700) !important;
-    font-size: 22px;
+    font-size: 24px;
     line-height: 1;
 }
 
 .km-teacher-carousel .owl-nav .owl-prev:hover,
 .km-teacher-carousel .owl-nav .owl-next:hover {
-    transform: translateY(-3px) scale(1.06);
-    border-color: var(--km-blue-700) !important;
-    background: linear-gradient(135deg, var(--km-blue) 0%, var(--km-blue-700) 100%) !important;
+    transform: translateY(-2px) scale(1.04);
+    background:
+        linear-gradient(135deg, var(--km-blue) 0%, var(--km-blue-700) 100%) padding-box,
+        linear-gradient(145deg, #9de5ff, var(--km-blue-700)) border-box !important;
     color: #fff;
-    box-shadow: 0 12px 24px -12px rgba(11, 74, 104, .65);
+    box-shadow: 0 14px 26px -12px rgba(11, 74, 104, .66), 0 0 0 4px rgba(58, 174, 229, .12);
 }
 
 .km-teacher-carousel .owl-nav .owl-prev:hover i,
 .km-teacher-carousel .owl-nav .owl-next:hover i {
     color: #fff !important;
+}
+
+.km-teacher-carousel .owl-nav .owl-prev:focus-visible,
+.km-teacher-carousel .owl-nav .owl-next:focus-visible {
+    outline: 3px solid rgba(18, 118, 164, .48);
+    outline-offset: 3px;
+}
+
+.km-teacher-carousel .owl-nav .owl-prev:active,
+.km-teacher-carousel .owl-nav .owl-next:active {
+    transform: scale(.96);
+}
+
+.km-teacher-carousel .owl-nav .disabled {
+    cursor: not-allowed;
+    opacity: .48;
 }
 
 .km-teacher-carousel .owl-dots {

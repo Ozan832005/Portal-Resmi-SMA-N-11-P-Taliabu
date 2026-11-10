@@ -75,7 +75,7 @@ class PPDBController extends Controller
                 $userDetail->save();
             }
 
-            $user->assignRole($user->role);
+            $user->assignApplicationRole($user->role);
             DB::commit();
             Session::flash('success', 'Staf PPDB Berhasil ditambah !');
 
