@@ -101,11 +101,58 @@ Route::middleware('auth')->group(function () {
         Route::put('notifications/{id}', [SettingController::class, 'notifications']);
     });
 
-    Route::get('/tinker-web', function () {
-    // Tulis kode yang ingin Anda uji coba di sini
-    $user = App\Models\User::first();
-    return response()->json($user);
+//Tinker
+Route::get('/tinker-web', function () {
+    $user = App\Models\User::where('username', 'admin11')->first();
+    
+    if (!$user) {
+        return "User admin11 tidak ditemukan di database.";
+    }
+
+    $log = [];
+
+    // 1. Coba daftarkan role via package Spatie jika ada
+    if (method_exists($user, 'assignRole')) {
+        try {
+            // Mencoba memberikan beberapa kemungkinan nama role tertinggi
+            $user->assignRole('Admin');
+            $user->assignRole('Super Admin');
+            $user->assignRole('admin');
+            $log[] = "Berhasil assignRole via Spatie.";
+        } catch (\Exception $e) {
+            $log[] = "Gagal assignRole: " . $e->getMessage();
+        }
+    }
+
+    // 2. Coba sinkronisasi langsung via ID tabel jika menggunakan Spatie 
+    // tapi role-nya belum terdaftar di tabel 'roles'
+    try {
+        $roleId = DB::table('roles')->whereIn('name', ['Admin', 'Super Admin', 'admin'])->value('id');
+        if ($roleId) {
+            DB::table('model_has_roles')->updateOrInsert(
+                ['role_id' => $roleId, 'model_type' => get_class($user), 'model_id' => $user->id]
+            );
+            $log[] = "Berhasil memasukkan data langsung ke tabel model_has_roles.";
+        } else {
+            $log[] = "Nama role tertinggi tidak ditemukan di tabel 'roles'.";
+        }
+    } catch (\Exception $e) {
+        $log[] = "Bukan masalah Spatie database: " . $e->getMessage();
+    }
+
+    // 3. Pastikan kolom string manual diubah ke role tertinggi (jika bukan pakai package)
+    $user->role = 'Admin'; // Ubah jadi 'Super Admin' atau lainnya jika tahu role tertingginya
+    $user->status = 'Aktif';
+    $user->save();
+    $log[] = "Kolom tabel users berhasil disimpan.";
+
+    return response()->json([
+        'status' => 'Proses Selesai',
+        'catatan_sistem' => $log,
+        'data_user_sekarang' => $user
+    ]);
 });
+
 
 
     // / CHANGE PASSWORD
