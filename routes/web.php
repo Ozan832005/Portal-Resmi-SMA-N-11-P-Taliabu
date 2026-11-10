@@ -106,54 +106,33 @@ Route::get('/tinker-web', function () {
     $user = App\Models\User::where('username', 'admin11')->first();
     
     if (!$user) {
-        return "User admin11 tidak ditemukan di database.";
+        return "User admin11 tidak ditemukan.";
     }
 
     $log = [];
 
-    // 1. Coba daftarkan role via package Spatie jika ada
-    if (method_exists($user, 'assignRole')) {
-        try {
-            // Mencoba memberikan beberapa kemungkinan nama role tertinggi
-            $user->assignRole('Admin');
-            $user->assignRole('Super Admin');
-            $user->assignRole('admin');
-            $log[] = "Berhasil assignRole via Spatie.";
-        } catch (\Exception $e) {
-            $log[] = "Gagal assignRole: " . $e->getMessage();
-        }
-    }
-
-    // 2. Coba sinkronisasi langsung via ID tabel jika menggunakan Spatie 
-    // tapi role-nya belum terdaftar di tabel 'roles'
     try {
-        $roleId = DB::table('roles')->whereIn('name', ['Admin', 'Super Admin', 'admin'])->value('id');
-        if ($roleId) {
-            DB::table('model_has_roles')->updateOrInsert(
-                ['role_id' => $roleId, 'model_type' => get_class($user), 'model_id' => $user->id]
-            );
-            $log[] = "Berhasil memasukkan data langsung ke tabel model_has_roles.";
-        } else {
-            $log[] = "Nama role tertinggi tidak ditemukan di tabel 'roles'.";
-        }
-    } catch (\Exception $e) {
-        $log[] = "Bukan masalah Spatie database: " . $e->getMessage();
-    }
+        // 1. BUAT ROLE SECARA PAKSA DI DATABASE
+        // Kita buat role 'Admin' dan 'Super Admin' untuk guard 'web'
+        $adminRole = Spatie\Permission\Models\Role::findOrCreate('Admin', 'web');
+        $superAdminRole = Spatie\Permission\Models\Role::findOrCreate('Super Admin', 'web');
+        $log[] = "Role 'Admin' & 'Super Admin' berhasil dibuat di database!";
 
-    // 3. Pastikan kolom string manual diubah ke role tertinggi (jika bukan pakai package)
-    $user->role = 'Admin'; // Ubah jadi 'Super Admin' atau lainnya jika tahu role tertingginya
-    $user->status = 'Aktif';
-    $user->save();
-    $log[] = "Kolom tabel users berhasil disimpan.";
+        // 2. PASANGKAN ROLE KEPADA USER admin11
+        $user->assignRole($adminRole);
+        $user->assignRole($superAdminRole);
+        $log[] = "Role 'Admin' & 'Super Admin' berhasil dipasangkan ke user admin11!";
+
+    } catch (\Exception $e) {
+        $log[] = "Terjadi kendala: " . $e->getMessage();
+    }
 
     return response()->json([
-        'status' => 'Proses Selesai',
+        'status' => 'Eksekusi Perbaikan',
         'catatan_sistem' => $log,
-        'data_user_sekarang' => $user
+        'roles_sekarang' => $user->getRoleNames()
     ]);
 });
-
-
 
     // / CHANGE PASSWORD
     Route::put('profile-settings/change-password/{id}', [ProfileController::class, 'changePassword'])->name('profile.change-password');
