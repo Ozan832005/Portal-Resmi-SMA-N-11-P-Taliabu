@@ -68,6 +68,17 @@ class FrontendViewsAndPublicationsTest extends TestCase
             ->assertSee('data-target="2"', false);
     }
 
+    public function test_homepage_generates_https_asset_urls_behind_tls_terminating_proxy(): void
+    {
+        $this->createHomepageTables();
+
+        $this->withHeaders([
+            'X-Forwarded-Proto' => 'https',
+        ])->get('/')
+            ->assertOk()
+            ->assertSee('href="https://localhost:8000/Assets/Frontend/css/modern.css?v=', false);
+    }
+
     public function test_homepage_defaults_to_indonesian_and_switches_all_static_copy_to_english(): void
     {
         $this->createHomepageTables();
