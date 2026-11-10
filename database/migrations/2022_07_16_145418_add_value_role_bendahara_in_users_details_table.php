@@ -14,7 +14,18 @@ class AddValueRoleBendaharaInUsersDetailsTable extends Migration
     public function up()
     {
         Schema::table('users_details', function (Blueprint $table) {
-            \DB::statement("ALTER TABLE `users_details` CHANGE `role` `role` ENUM('Admin','Guru','Staf','Murid','Orang Tua','Alumni','Guest','Perpustakaan','PPDB','Bendahara')");
+            $table->enum('role', [
+                'Admin',
+                'Guru',
+                'Staf',
+                'Murid',
+                'Orang Tua',
+                'Alumni',
+                'Guest',
+                'Perpustakaan',
+                'PPDB',
+                'Bendahara',
+            ])->change();
         });
     }
 
