@@ -4,7 +4,9 @@
             <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
                 <div class="footer-box">
                     <a href="/">
-                        @if (@$footer->logo == NULL)
+                        @if ($schoolLogo)
+                            <img class="img-responsive" src="{{ asset('storage/images/logo/' . $schoolLogo) }}" alt="Logo SMA Negeri 11 Pulau Taliabu">
+                        @elseif (@$footer->logo == NULL)
                             <img class="img-responsive" src="{{asset('Assets/Frontend/img/logo-footer.png')}}" alt="logo">
                         @else
                             <img class="img-responsive" src="{{asset('storage/images/logo/' .$footer->logo)}}" alt="logo">

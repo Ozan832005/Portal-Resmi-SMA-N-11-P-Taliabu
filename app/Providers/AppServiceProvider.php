@@ -36,6 +36,14 @@ class AppServiceProvider extends ServiceProvider
             $view->with('schoolLogo', Footer::value('logo'));
         });
 
+        View::composer([
+            'ppdb::layouts.header',
+            'ppdb::layouts.master',
+            'ppdb::layouts.footer',
+        ], function ($view) {
+            $view->with('schoolLogo', Footer::value('logo'));
+        });
+
         View::composer('layouts.backend.menu', function ($view) {
             $view->with('schoolLogo', Footer::value('logo'));
         });

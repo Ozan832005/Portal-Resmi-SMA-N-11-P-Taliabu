@@ -87,63 +87,7 @@ class PpdbAndPasswordActionsTest extends TestCase
 
     public function test_ppdb_staff_can_accept_applicant_when_student_role_has_not_been_created(): void
     {
-        $ppdbRole = Role::create([
-            'name' => 'PPDB',
-            'guard_name' => 'web',
-        ]);
-        $reviewer = User::create([
-            'name' => 'Petugas PPDB',
-            'username' => 'petugas-ppdb',
-            'email' => 'petugas@example.test',
-            'role' => 'PPDB',
-            'status' => 'Aktif',
-            'password' => Hash::make('password-aman'),
-        ]);
-        $reviewer->assignRole($ppdbRole);
-
-        $applicant = User::create([
-            'name' => 'Calon Murid',
-            'username' => 'calon-murid',
-            'email' => 'calon@example.test',
-            'role' => 'Guest',
-            'status' => 'Aktif',
-            'password' => Hash::make('password-aman'),
-        ]);
-        DB::table('data_murids')->insert([
-            'user_id' => $applicant->id,
-            'nis' => null,
-            'nisn' => null,
-            'created_at' => now(),
-            'updated_at' => now(),
-        ]);
-
-        Schema::create('spp_setting', function (Blueprint $table): void {
-            $table->id();
-            $table->unsignedBigInteger('amount');
-            $table->unsignedBigInteger('update_by');
-            $table->timestamps();
-        });
-        Schema::create('payment_spps', function (Blueprint $table): void {
-            $table->id();
-            $table->unsignedBigInteger('user_id');
-            $table->bigInteger('year');
-            $table->boolean('is_active');
-            $table->timestamps();
-        });
-        Schema::create('detail_payment_spps', function (Blueprint $table): void {
-            $table->id();
-            $table->unsignedBigInteger('payment_id');
-            $table->unsignedBigInteger('user_id');
-            $table->string('month');
-            $table->bigInteger('amount');
-            $table->string('status');
-            $table->string('file')->nullable();
-            $table->timestamps();
-        });
-        SppSetting::create([
-            'amount' => 150000,
-            'update_by' => $reviewer->id,
-        ]);
+        [$reviewer, $applicant] = $this->createApplicantAcceptanceScenario(150000);
 
         $response = $this->actingAs($reviewer)
             ->put(route('data-murid.update', $applicant), [
@@ -173,6 +117,105 @@ class PpdbAndPasswordActionsTest extends TestCase
             'user_id' => $applicant->id,
             'amount' => 150000,
         ]);
+    }
+
+    public function test_ppdb_staff_can_accept_applicant_without_spp_setting(): void
+    {
+        [$reviewer, $applicant] = $this->createApplicantAcceptanceScenario(null);
+
+        $response = $this->actingAs($reviewer)
+            ->put(route('data-murid.update', $applicant), [
+                'nis' => '10002',
+                'nisn' => '20002',
+            ]);
+
+        $response->assertRedirect(route('data-murid.index'));
+        $this->assertDatabaseHas('users', [
+            'id' => $applicant->id,
+            'role' => 'Murid',
+        ]);
+        $this->assertDatabaseHas('detail_payment_spps', [
+            'user_id' => $applicant->id,
+            'amount' => 0,
+            'status' => 'unpaid',
+        ]);
+    }
+
+    public function test_ppdb_homepage_uses_school_branding_and_current_school_data(): void
+    {
+        Schema::create('curricula', function (Blueprint $table): void {
+            $table->id();
+            $table->string('label', 50);
+            $table->string('title');
+            $table->text('description');
+            $table->boolean('is_active')->default(true);
+            $table->unsignedSmallInteger('sort_order')->default(0);
+            $table->timestamps();
+        });
+        Schema::create('fasilitas', function (Blueprint $table): void {
+            $table->id();
+            $table->string('nama');
+            $table->text('desc')->nullable();
+            $table->string('image')->nullable();
+            $table->string('is_active')->default('0');
+            $table->unsignedInteger('urutan')->default(0);
+            $table->timestamps();
+        });
+        Schema::create('kegiatans', function (Blueprint $table): void {
+            $table->id();
+            $table->string('nama');
+            $table->string('slug');
+            $table->string('image')->nullable();
+            $table->string('imagas')->nullable();
+            $table->text('content');
+            $table->string('is_active')->default('0');
+            $table->timestamps();
+        });
+        DB::table('footers')->insert(['logo' => 'logo-sma11.png']);
+        DB::table('curricula')->insert([
+            ['label' => 'CP', 'title' => 'Capaian Pembelajaran', 'description' => 'Target pembelajaran', 'is_active' => true, 'sort_order' => 1],
+            ['label' => 'ATP', 'title' => 'Alur Tujuan Pembelajaran', 'description' => 'Urutan pembelajaran', 'is_active' => true, 'sort_order' => 2],
+            ['label' => 'TP', 'title' => 'Tujuan Pembelajaran', 'description' => 'Tujuan pembelajaran', 'is_active' => true, 'sort_order' => 3],
+            ['label' => 'Nonaktif', 'title' => 'Kurikulum Nonaktif', 'description' => 'Tidak ditampilkan', 'is_active' => false, 'sort_order' => 4],
+        ]);
+        DB::table('fasilitas')->insert([
+            ['nama' => 'Perpustakaan', 'is_active' => '0'],
+            ['nama' => 'Laboratorium', 'is_active' => '0'],
+            ['nama' => 'Fasilitas Nonaktif', 'is_active' => '1'],
+        ]);
+        DB::table('kegiatans')->insert([
+            ['nama' => 'Kegiatan Satu', 'slug' => 'kegiatan-satu', 'content' => 'Kegiatan sekolah', 'is_active' => '0'],
+            ['nama' => 'Kegiatan Dua', 'slug' => 'kegiatan-dua', 'content' => 'Kegiatan sekolah', 'is_active' => '0'],
+            ['nama' => 'Kegiatan Tiga', 'slug' => 'kegiatan-tiga', 'content' => 'Kegiatan sekolah', 'is_active' => '0'],
+            ['nama' => 'Kegiatan Nonaktif', 'slug' => 'kegiatan-nonaktif', 'content' => 'Tidak ditampilkan', 'is_active' => '1'],
+        ]);
+        $this->createUser('Guru', 'guru-aktif');
+        $this->createUser('Guest', 'calon-aktif');
+        $this->createUser('Guest', 'calon-aktif-dua');
+        $this->createUser('Murid', 'murid-aktif');
+        $this->createUser('Murid', 'murid-aktif-dua');
+
+        $this->get('/ppdb')
+            ->assertOk()
+            ->assertSee('Logo SMA Negeri 11 Pulau Taliabu')
+            ->assertSee('storage/images/logo/logo-sma11.png')
+            ->assertSee('Kurikulum')
+            ->assertSee('href="'.route('kurikulum').'"', false)
+            ->assertSee('Capaian Pembelajaran')
+            ->assertSee('Alur Tujuan Pembelajaran')
+            ->assertSee('Tujuan Pembelajaran')
+            ->assertSee('<h2 class="about-counter title-bar-counter" data-num="1">1</h2>', false)
+            ->assertSee('<h2 class="about-counter title-bar-counter" data-num="2">2</h2>', false)
+            ->assertSee('<h2 class="about-counter title-bar-counter" data-num="3">3</h2>', false)
+            ->assertSee('<h2 class="about-counter title-bar-counter" data-num="4">4</h2>', false)
+            ->assertSee('GURU AKTIF')
+            ->assertSee('FASILITAS SEKOLAH')
+            ->assertSee('KEGIATAN SEKOLAH')
+            ->assertSee('MURID TERDAFTAR')
+            ->assertSee('SMA Negeri 11 Pulau Taliabu')
+            ->assertDontSee('SMK Yadika Natar')
+            ->assertDontSee('Teknik Komputer &amp; Jaringan')
+            ->assertDontSee('Program Studi');
     }
 
     public function test_ppdb_staff_can_open_current_and_legacy_uploaded_documents(): void
@@ -302,6 +345,55 @@ class PpdbAndPasswordActionsTest extends TestCase
             ->assertSee('<h2>SMA Negeri 11 Pulau Taliabu</h2>', false)
             ->assertSee(route('data-murid.berkas', [$applicant->id, 'kartu_keluarga']), false)
             ->assertDontSee('SMK Yadika Natar');
+    }
+
+    /**
+     * @return array{0: User, 1: User}
+     */
+    private function createApplicantAcceptanceScenario(?int $sppAmount): array
+    {
+        $reviewer = $this->createUserWithRole('PPDB', 'petugas-penerimaan');
+        $applicant = $this->createUser('Guest', 'calon-penerimaan');
+        DB::table('data_murids')->insert([
+            'user_id' => $applicant->id,
+            'nis' => null,
+            'nisn' => null,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        Schema::create('spp_setting', function (Blueprint $table): void {
+            $table->id();
+            $table->unsignedBigInteger('amount');
+            $table->unsignedBigInteger('update_by');
+            $table->timestamps();
+        });
+        Schema::create('payment_spps', function (Blueprint $table): void {
+            $table->id();
+            $table->unsignedBigInteger('user_id');
+            $table->bigInteger('year');
+            $table->boolean('is_active');
+            $table->timestamps();
+        });
+        Schema::create('detail_payment_spps', function (Blueprint $table): void {
+            $table->id();
+            $table->unsignedBigInteger('payment_id');
+            $table->unsignedBigInteger('user_id');
+            $table->string('month');
+            $table->bigInteger('amount');
+            $table->string('status');
+            $table->string('file')->nullable();
+            $table->timestamps();
+        });
+
+        if ($sppAmount !== null) {
+            SppSetting::create([
+                'amount' => $sppAmount,
+                'update_by' => $reviewer->id,
+            ]);
+        }
+
+        return [$reviewer, $applicant];
     }
 
     private function createUser(string $roleName, string $username): User

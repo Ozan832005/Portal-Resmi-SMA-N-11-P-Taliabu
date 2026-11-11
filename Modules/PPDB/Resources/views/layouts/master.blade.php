@@ -5,11 +5,11 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>@yield('title')</title>
+    <title>@yield('title') | SMA Negeri 11 Pulau Taliabu</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Favicon -->
-    <link rel="shortcut icon" type="image/x-icon" href="img/favicon.png">
+    <link rel="shortcut icon" type="image/x-icon" href="{{ $schoolLogo ? asset('storage/images/logo/' . $schoolLogo) : asset('Assets/Frontend/img/favicon.png') }}">
     @include('layouts.Frontend.style')
 </head>
 
