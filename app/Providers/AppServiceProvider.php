@@ -32,7 +32,7 @@ class AppServiceProvider extends ServiceProvider
             $view->with('footerGalleries', FooterGallery::aktif());
         });
 
-        View::composer('auth.login', function ($view) {
+        View::composer(['auth.login', 'ppdb::auth.register'], function ($view) {
             $view->with('schoolLogo', Footer::value('logo'));
         });
 

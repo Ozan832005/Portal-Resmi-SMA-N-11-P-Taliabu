@@ -103,7 +103,7 @@
             @else
                 <img src="{{ asset('storage/images/logo/' . $footer->logo) }}" alt="Logo SMA Negeri 11 Pulau Taliabu">
             @endif
-            <span>SMA 11 <strong>PULAU TALIABU</strong></span>
+            <span>SMA NEGERI 11 <strong>PULAU TALIABU</strong></span>
         </a>
 
         <div class="mobile-header-actions">

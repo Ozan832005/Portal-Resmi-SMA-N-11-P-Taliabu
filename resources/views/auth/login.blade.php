@@ -52,7 +52,7 @@
                     <div class="auth-inner row m-0">
                         <!-- Brand logo--><a class="brand-logo" href="/">
                             <img src="{{ $schoolLogo ? asset('storage/images/logo/' . $schoolLogo) : asset('Assets/Frontend/img/favicon.png') }}" alt="{{ __('Logo SMA Negeri 11 Pulau Taliabu') }}">
-                            <span class="brand-text">SMA 11 <strong>PULAU TALIABU</strong></span>
+                            <span class="brand-text">SMA Negeri 11 <strong>PULAU TALIABU</strong></span>
                         </a>
                         <!-- /Brand logo-->
                         <!-- Left Text-->

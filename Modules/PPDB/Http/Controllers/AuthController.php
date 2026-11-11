@@ -4,14 +4,13 @@ namespace Modules\PPDB\Http\Controllers;
 
 use App\Models\dataMurid;
 use App\Models\User;
+use App\Providers\RouteServiceProvider;
+use DB;
 use ErrorException;
 use Illuminate\Foundation\Auth\RegistersUsers;
-use App\Providers\RouteServiceProvider;
-use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Modules\PPDB\Http\Requests\RegisterRequest;
 use Session;
-use DB;
 
 class AuthController extends Controller
 {
@@ -41,30 +40,28 @@ class AuthController extends Controller
         try {
             DB::beginTransaction();
 
-           // Pilih kalimat
-           $kalimatKe  = "1";
-           $username   = implode(" ", array_slice(explode(" ", $request->name), 0, $kalimatKe)); // ambil kalimat
-
-            $register = new User();
-            $register->name      = $request->name;
-            $register->username  = $username;
-            $register->email     = $request->email;
-            $register->role      = 'Guest';
-            $register->password  = bcrypt($request->password);
+            $register = new User;
+            $register->name = $request->name;
+            $register->username = User::generateUsername($request->name);
+            $register->email = $request->email;
+            $register->role = 'Guest';
+            $register->status = 'Aktif';
+            $register->password = bcrypt($request->password);
             $register->save();
 
             if ($register) {
-                $murid = new dataMurid();
-                $murid->user_id         =   $register->id;
-                $murid->whatsapp        =   $request->whatsapp;
-                $murid->asal_sekolah    =   $request->asal_sekolah;
+                $murid = new dataMurid;
+                $murid->user_id = $register->id;
+                $murid->whatsapp = $request->whatsapp;
+                $murid->asal_sekolah = $request->asal_sekolah;
                 $murid->save();
             }
 
-            $register->assignRole($register->role);
+            $register->assignApplicationRole($register->role);
 
             DB::commit();
-            Session::flash('success','Success, Data Berhasil dikirim !');
+            Session::flash('success', 'Success, Data Berhasil dikirim !');
+
             return redirect()->route('login');
         } catch (ErrorException $e) {
             DB::rollback();

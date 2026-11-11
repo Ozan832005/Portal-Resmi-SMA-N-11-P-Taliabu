@@ -15,7 +15,7 @@
         <div class="content-header-left col-md-9 col-12 mb-2">
             <div class="row breadcrumbs-top">
                 <div class="col-12">
-                    <h2>Form Pendaftaran PPDB SMK Yadika Natar</h2>
+                    <h2>SMA Negeri 11 Pulau Taliabu</h2>
                 </div>
             </div>
         </div>
@@ -327,29 +327,29 @@
                                 <div class="col-6">
                                     <ul>
                                       <li>Kartu Keluarga
-                                        <a href="{{asset('storage/images/berkas_murid/' .$murid->berkas->kartu_keluarga)}}" target="_blank" class="badge badge-info {{$murid->berkas->kartu_keluarga == NULL ? 'hidden' : ''}}">view</a>
+                                        <a href="{{ route('data-murid.berkas', [$murid->id, 'kartu_keluarga']) }}" target="_blank" rel="noopener" class="badge badge-info {{$murid->berkas->kartu_keluarga == NULL ? 'hidden' : ''}}">view</a>
                                       </li>
                                       <li>Surat Kelakuan Baik
-                                        <a href="{{asset('storage/images/berkas_murid/' .$murid->berkas->surat_kelakuan_baik)}}" target="_blank" class="badge badge-info {{$murid->berkas->surat_kelakuan_baik == NULL ? 'hidden' : ''}} ">view</a>
+                                        <a href="{{ route('data-murid.berkas', [$murid->id, 'surat_kelakuan_baik']) }}" target="_blank" rel="noopener" class="badge badge-info {{$murid->berkas->surat_kelakuan_baik == NULL ? 'hidden' : ''}} ">view</a>
                                       </li>
                                       <li>Surat Tidak Buta Warna
-                                        <a href="{{asset('storage/images/berkas_murid/' .$murid->berkas->surat_tidak_buta_warna)}}" target="_blank" class="badge badge-info {{$murid->berkas->surat_tidak_buta_warna == NULL ? 'hidden' : ''}} ">view</a>
+                                        <a href="{{ route('data-murid.berkas', [$murid->id, 'surat_tidak_buta_warna']) }}" target="_blank" rel="noopener" class="badge badge-info {{$murid->berkas->surat_tidak_buta_warna == NULL ? 'hidden' : ''}} ">view</a>
                                       </li>
                                       <li>ijazah
-                                        <a href="{{asset('storage/images/berkas_murid/' .$murid->berkas->ijazah)}}" target="_blank" class="badge badge-info {{$murid->berkas->ijazah == NULL ? 'hidden' : ''}} ">view</a>
+                                        <a href="{{ route('data-murid.berkas', [$murid->id, 'ijazah']) }}" target="_blank" rel="noopener" class="badge badge-info {{$murid->berkas->ijazah == NULL ? 'hidden' : ''}} ">view</a>
                                       </li>
                                     </ul>
                                 </div>
                                 <div class="col-6">
                                   <ul>
                                     <li>Akte Kelahiran
-                                      <a href="{{asset('storage/images/berkas_murid/' .$murid->berkas->akte_kelahiran)}}" target="_blank" class="badge badge-info {{$murid->berkas->akte_kelahiran == NULL ? 'hidden' : ''}} ">view</a>
+                                      <a href="{{ route('data-murid.berkas', [$murid->id, 'akte_kelahiran']) }}" target="_blank" rel="noopener" class="badge badge-info {{$murid->berkas->akte_kelahiran == NULL ? 'hidden' : ''}} ">view</a>
                                     </li>
                                     <li>Surat Sehat
-                                      <a href="{{asset('storage/images/berkas_murid/' .$murid->berkas->surat_sehat)}}" target="_blank" class="badge badge-info {{$murid->berkas->surat_sehat == NULL ? 'hidden' : ''}} ">view</a>
+                                      <a href="{{ route('data-murid.berkas', [$murid->id, 'surat_sehat']) }}" target="_blank" rel="noopener" class="badge badge-info {{$murid->berkas->surat_sehat == NULL ? 'hidden' : ''}} ">view</a>
                                     </li>
                                     <li>Rapor
-                                      <a href="{{asset('storage/images/berkas_murid/' .$murid->berkas->rapor)}}" target="_blank" class="badge badge-info {{$murid->berkas->rapor == NULL ? 'hidden' : ''}} ">view</a>
+                                      <a href="{{ route('data-murid.berkas', [$murid->id, 'rapor']) }}" target="_blank" rel="noopener" class="badge badge-info {{$murid->berkas->rapor == NULL ? 'hidden' : ''}} ">view</a>
                                     </li>
                                   </ul>
 

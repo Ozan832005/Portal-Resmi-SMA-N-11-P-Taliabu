@@ -17,9 +17,12 @@
     <meta property="og:url" content="{{ $socialUrl }}">
     @if ($socialImage)
         <meta property="og:image" content="{{ $socialImage }}">
+        <meta property="og:image:secure_url" content="{{ $socialImage }}">
+        <meta property="og:image:url" content="{{ $socialImage }}">
         <meta property="og:image:alt" content="{{ $event->title }}">
         <meta name="twitter:card" content="summary_large_image">
         <meta name="twitter:image" content="{{ $socialImage }}">
+        <meta name="twitter:image:alt" content="{{ $event->title }}">
     @endif
     <meta name="twitter:title" content="{{ $event->title }}">
     <meta name="twitter:description" content="{{ $socialDescription }}">
