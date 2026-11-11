@@ -3,89 +3,104 @@
 namespace Modules\Perpustakaan\Http\Controllers;
 
 use App\Helpers\GlobalHelpers;
-use Carbon\Carbon;
-use ErrorException;
 use Illuminate\Contracts\Support\Renderable;
-use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Storage;
 use Modules\Perpustakaan\Entities\Author;
 use Modules\Perpustakaan\Entities\Book;
 use Modules\Perpustakaan\Entities\Category;
 use Modules\Perpustakaan\Entities\Publisher;
 use Modules\Perpustakaan\Http\Requests\BookRequest;
+use RuntimeException;
+use Throwable;
 
 class BooksController extends Controller
 {
+    use GlobalHelpers;
 
-  use GlobalHelpers;
     /**
      * Display a listing of the resource.
+     *
      * @return Renderable
      */
     public function index()
     {
-        $book = Book::with('publisher','author','category')->get();
+        $book = Book::with(['publisher', 'author', 'category'])
+            ->withCount('borrowings')
+            ->get();
+
         return view('perpustakaan::backend.books.index', compact('book'));
     }
 
     /**
      * Show the form for creating a new resource.
+     *
      * @return Renderable
      */
     public function create()
     {
-        $publisher  = Publisher::get();
-        $author     = Author::get();
-        $category   = Category::get();
-        if (empty($publisher) || empty($author) || empty($category)) {
-          Session::flash('error','Data Publisher, Author atau Category Buku Belum Ada!');
-          return view('perpustakaan::backend.books.index');
+        $publisher = Publisher::all();
+        $author = Author::all();
+        $category = Category::all();
+
+        if ($publisher->isEmpty() || $author->isEmpty() || $category->isEmpty()) {
+            Session::flash('error', 'Data Publisher, Author atau Category Buku Belum Ada!');
+
+            return redirect()->route('books.index');
         }
-        Session::flash('success','Buku berhasil ditambah.');
-        return view('perpustakaan::backend.books.create', compact('publisher','author','category'));
+
+        return view('perpustakaan::backend.books.create', compact('publisher', 'author', 'category'));
     }
 
     /**
      * Store a newly created resource in storage.
-     * @param Request $request
+     *
+     * @param  Request  $request
      * @return Renderable
      */
     public function store(BookRequest $request)
     {
-      try {
-        $thumbnail = $request->file('thumbnail');
-        $thumbnail_name = time()."_".$thumbnail->getClientOriginalName();
-        // isi dengan nama folder tempat kemana file diupload
-        $tujuan_upload = 'public/images/thumbnail';
-        $thumbnail->storeAs($tujuan_upload,$thumbnail_name);
+        $thumbnailPath = $request->file('thumbnail')->store('images/thumbnail', 'public');
+
+        if ($thumbnailPath === false) {
+            throw new RuntimeException('Sampul buku tidak berhasil disimpan.');
+        }
 
         $book = new Book;
-        $book->book_code        = $this->generateNumber($book);
-        $book->name             = $request->name;
-        $book->description      = $request->description;
-        $book->category_id      = $request->category_id;
-        $book->publisher_id     = $request->publisher_id;
-        $book->author_id        = $request->author_id;
-        $book->publication_year = Carbon::parse($request->publication_year)->format('Y');
-        $book->isbn             = $request->isbn;
-        $book->stock            = $request->stock;
-        $book->thumbnail        = $thumbnail_name;
-        $book->save();
+        $book->book_code = $this->generateNumber($book);
+        $book->name = $request->name;
+        $book->description = $request->description;
+        $book->category_id = $request->category_id;
+        $book->publisher_id = $request->publisher_id;
+        $book->author_id = $request->author_id;
+        $book->publication_year = (int) $request->publication_year;
+        $book->isbn = $request->isbn;
+        $book->stock = $request->stock;
+        $book->thumbnail = $thumbnailPath;
 
-        $book->book_code        = $this->generateNumber($book);
-        $book->save();
+        try {
+            DB::transaction(function () use ($book): void {
+                $book->save();
+                $book->book_code = $this->generateNumber($book);
+                $book->save();
+            });
+        } catch (Throwable $exception) {
+            Storage::disk('public')->delete($thumbnailPath);
 
-        Session::flash('success','Buku Berhasil di tambah,');
+            throw $exception;
+        }
+
+        Session::flash('success', 'Buku Berhasil ditambah.');
+
         return redirect()->route('books.index');
-      } catch (\ErrorException $e) {
-        throw new ErrorException($e->getMessage());
-      }
     }
 
     /**
      * Show the specified resource.
-     * @param int $id
+     *
+     * @param  int  $id
      * @return Renderable
      */
     public function show($id)
@@ -95,32 +110,106 @@ class BooksController extends Controller
 
     /**
      * Show the form for editing the specified resource.
-     * @param int $id
+     *
+     * @param  int  $id
      * @return Renderable
      */
     public function edit($id)
     {
-        return view('perpustakaan::edit');
+        $book = Book::findOrFail($id);
+        $publisher = Publisher::all();
+        $author = Author::all();
+        $category = Category::all();
+
+        return view('perpustakaan::backend.books.create', compact('book', 'publisher', 'author', 'category'));
     }
 
     /**
      * Update the specified resource in storage.
-     * @param Request $request
-     * @param int $id
+     *
+     * @param  Request  $request
+     * @param  int  $id
      * @return Renderable
      */
-    public function update(Request $request, $id)
+    public function update(BookRequest $request, $id)
     {
-        //
+        $book = Book::findOrFail($id);
+        $oldThumbnail = $book->thumbnail;
+        $newThumbnailPath = null;
+
+        if ($request->hasFile('thumbnail')) {
+            $newThumbnailPath = $request->file('thumbnail')->store('images/thumbnail', 'public');
+
+            if ($newThumbnailPath === false) {
+                throw new RuntimeException('Sampul buku tidak berhasil disimpan.');
+            }
+
+            $book->thumbnail = $newThumbnailPath;
+        }
+
+        $book->name = $request->name;
+        $book->description = $request->description;
+        $book->category_id = $request->category_id;
+        $book->publisher_id = $request->publisher_id;
+        $book->author_id = $request->author_id;
+        $book->publication_year = (int) $request->publication_year;
+        $book->isbn = $request->isbn;
+        $book->stock = $request->stock;
+
+        try {
+            DB::transaction(fn () => $book->save());
+        } catch (Throwable $exception) {
+            if ($newThumbnailPath !== null) {
+                Storage::disk('public')->delete($newThumbnailPath);
+            }
+
+            throw $exception;
+        }
+
+        if ($newThumbnailPath !== null) {
+            $this->deleteThumbnailIfUnused($oldThumbnail);
+        }
+
+        Session::flash('success', 'Data buku berhasil diperbarui.');
+
+        return redirect()->route('books.index');
     }
 
     /**
      * Remove the specified resource from storage.
-     * @param int $id
+     *
+     * @param  int  $id
      * @return Renderable
      */
     public function destroy($id)
     {
-        //
+        $book = Book::findOrFail($id);
+
+        if ($book->borrowings()->exists()) {
+            Session::flash('error', 'Buku tidak dapat dihapus karena memiliki riwayat peminjaman.');
+
+            return redirect()->route('books.index');
+        }
+
+        $thumbnail = $book->thumbnail;
+        $book->delete();
+        $this->deleteThumbnailIfUnused($thumbnail);
+
+        Session::flash('success', 'Data buku berhasil dihapus.');
+
+        return redirect()->route('books.index');
+    }
+
+    private function deleteThumbnailIfUnused(string $thumbnail): void
+    {
+        $filename = basename(str_replace('\\', '/', $thumbnail));
+        $thumbnailPaths = [$thumbnail, 'images/thumbnail/'.$filename, $filename];
+
+        if (Book::query()->whereIn('thumbnail', $thumbnailPaths)->exists()) {
+            return;
+        }
+
+        Storage::disk('public')->delete('images/thumbnail/'.$filename);
+        Storage::disk('local')->delete('public/images/thumbnail/'.$filename);
     }
 }

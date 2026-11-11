@@ -67,6 +67,9 @@ Route::middleware([SetLocale::class, TrackPublicVisits::class])->group(function 
     Route::get('alumni/semua', [IndexController::class, 'alumniSemua'])->name('alumni.semua');
     Route::get('alumni', [IndexController::class, 'alumni'])->name('alumni');
     Route::get('katalog-perpustakaan', [IndexController::class, 'katalogPerpustakaan'])->name('katalog.perpustakaan');
+    Route::get('katalog-perpustakaan/buku/{book}/sampul', [IndexController::class, 'sampulBuku'])
+        ->whereNumber('book')
+        ->name('katalog.perpustakaan.sampul');
 
     // // PROGRAM STUDI \\\\
     Route::get('program/{slug}', [MenuController::class, 'programStudi']);

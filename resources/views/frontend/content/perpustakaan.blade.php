@@ -36,7 +36,7 @@
                                         <article class="km-library-book">
                                             <div class="km-library-book__cover">
                                                 @if ($book->thumbnail)
-                                                    <img src="{{ asset('storage/images/thumbnail/' . $book->thumbnail) }}" alt="Sampul {{ $book->name }}" loading="lazy">
+                                                    <img src="{{ route('katalog.perpustakaan.sampul', $book) }}" alt="Sampul {{ $book->name }}" loading="lazy">
                                                 @else
                                                     <i class="fa fa-book" aria-hidden="true"></i>
                                                 @endif

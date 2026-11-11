@@ -21,8 +21,10 @@ use App\Models\Visimisi;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 use Modules\Perpustakaan\Entities\Book;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class IndexController extends Controller
 {
@@ -321,6 +323,23 @@ class IndexController extends Controller
             ->groupBy(static fn (Book $book): string => $book->category?->name ?? 'Kategori lainnya');
 
         return view('frontend.content.perpustakaan', compact('kegiatanM', 'footer', 'booksByCategory'));
+    }
+
+    public function sampulBuku(Book $book): BinaryFileResponse
+    {
+        $publicPath = $book->thumbnailStoragePath();
+
+        if (Storage::disk('public')->exists($publicPath)) {
+            return response()->file(Storage::disk('public')->path($publicPath));
+        }
+
+        $legacyPath = $book->legacyThumbnailStoragePath();
+
+        if (Storage::disk('local')->exists($legacyPath)) {
+            return response()->file(Storage::disk('local')->path($legacyPath));
+        }
+
+        abort(404);
     }
 
     // Profile Sekolah

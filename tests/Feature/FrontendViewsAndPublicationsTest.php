@@ -7,8 +7,10 @@ use App\Models\Curriculum;
 use App\Models\PublicationVideo;
 use App\Models\Video;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Tests\TestCase;
 
@@ -461,6 +463,13 @@ class FrontendViewsAndPublicationsTest extends TestCase
 
     public function test_public_library_catalog_groups_books_and_links_checkout_to_login(): void
     {
+        Storage::fake('local');
+        Storage::disk('local')->putFileAs(
+            'public/images/thumbnail',
+            UploadedFile::fake()->image('legacy-cover.png'),
+            'legacy-cover.png',
+        );
+
         Schema::create('categories', function (Blueprint $table): void {
             $table->id();
             $table->string('name');
@@ -517,14 +526,14 @@ class FrontendViewsAndPublicationsTest extends TestCase
         ]);
 
         foreach ([
-            ['Novel Inspiratif', $novelCategoryId, 3],
-            ['Sains untuk Semua', $scienceCategoryId, 0],
-        ] as [$name, $categoryId, $stock]) {
+            ['Novel Inspiratif', $novelCategoryId, 3, 'legacy-cover.png'],
+            ['Sains untuk Semua', $scienceCategoryId, 0, ''],
+        ] as [$name, $categoryId, $stock, $thumbnail]) {
             DB::table('books')->insert([
                 'book_code' => strtolower(str_replace(' ', '-', $name)),
                 'name' => $name,
                 'description' => 'Koleksi bacaan perpustakaan sekolah.',
-                'thumbnail' => '',
+                'thumbnail' => $thumbnail,
                 'category_id' => $categoryId,
                 'author_id' => $authorId,
                 'publisher_id' => $publisherId,
@@ -544,8 +553,13 @@ class FrontendViewsAndPublicationsTest extends TestCase
             ->assertSee('Novel Inspiratif')
             ->assertSee('Sains untuk Semua')
             ->assertSee('href="'.route('login').'"', false)
+            ->assertSee('src="'.route('katalog.perpustakaan.sampul', 1).'"', false)
             ->assertSee('Pinjam buku')
             ->assertSee('Stok habis');
+
+        $this->get(route('katalog.perpustakaan.sampul', 1))
+            ->assertOk()
+            ->assertHeader('content-type', 'image/png');
     }
 
     public function test_login_page_uses_school_branding(): void

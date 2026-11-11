@@ -66,7 +66,19 @@
                                                     <td> {{$books->author->name}} </td>
                                                     <td> {{$books->category->name}} </td>
                                                     <td>
-                                                        <a href="" class="btn btn-success btn-sm">Detail</a>
+                                                        <div class="d-flex flex-wrap" style="gap: 6px;">
+                                                            <a href="{{ route('books.edit', $books->id) }}" class="btn btn-success btn-sm">Edit</a>
+                                                            @if ($books->borrowings_count > 0)
+                                                                <button type="button" class="btn btn-secondary btn-sm" disabled title="Buku memiliki riwayat peminjaman">Tidak dapat dihapus</button>
+                                                            @else
+                                                                <form action="{{ route('books.destroy', $books->id) }}" method="post"
+                                                                      data-delete-message="{{ 'Buku “'.$books->name.'” akan dihapus permanen.' }}">
+                                                                    @csrf
+                                                                    @method('DELETE')
+                                                                    <button type="submit" class="btn btn-danger btn-sm">Hapus</button>
+                                                                </form>
+                                                            @endif
+                                                        </div>
                                                     </td>
                                                 </tr>
                                             @endforeach
