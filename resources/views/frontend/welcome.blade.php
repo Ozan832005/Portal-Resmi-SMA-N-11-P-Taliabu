@@ -2,6 +2,10 @@
 
 @section('title', __('Beranda'))
 
+@section('social_meta')
+    <meta name="google-site-verification" content="iXJ3vzOf9uaebZKJSFa7gyI2bVtO1LEZnwFJ9rD-lxY" />
+@endsection
+
 @section('facts')
     @include('frontend.content.stats')
 @endsection
