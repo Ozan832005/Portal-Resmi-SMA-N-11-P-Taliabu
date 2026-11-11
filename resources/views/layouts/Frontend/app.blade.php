@@ -7,6 +7,7 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <title>@yield('title')</title>
     <meta name="description" content="">
+    @yield('social_meta')
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="{{ !empty($footer->logo) ? asset('storage/images/logo/' . $footer->logo) : asset('Assets/Frontend/img/favicon.png') }}?v={{ filemtime(public_path('Assets/Frontend/img/favicon.png')) }}">

@@ -11,7 +11,7 @@
                                 @else
                                     <img class="img-responsive" src="{{asset('storage/images/logo/' .$footer->logo)}}" alt="Logo SMA Negeri 11 Pulau Taliabu">
                                 @endif
-                                <span class="school-name">SMA 11 PULAU TALIABU</span>
+                                <span class="school-name">SMA NEGERI 11 PULAU TALIABU</span>
                             </a>
                         </div>
                     </div>

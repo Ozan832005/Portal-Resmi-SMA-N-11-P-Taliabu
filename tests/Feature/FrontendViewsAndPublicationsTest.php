@@ -56,6 +56,51 @@ class FrontendViewsAndPublicationsTest extends TestCase
         ]);
     }
 
+    public function test_news_and_event_pages_publish_their_own_social_preview_images(): void
+    {
+        $article = new Berita;
+        $article->title = 'Berita dengan gambar';
+        $article->slug = 'berita-dengan-gambar';
+        $article->content = '<p>Deskripsi berita untuk pratinjau.</p>';
+        $article->kategori_id = null;
+        $article->thumbnail = 'berita-preview.jpg';
+        $article->is_active = '0';
+        $article->created_by = null;
+        $article->views = 0;
+        $article->save();
+
+        $eventId = DB::table('events')->insertGetId([
+            'title' => 'Acara dengan gambar',
+            'desc' => 'Deskripsi acara untuk pratinjau.',
+            'slug' => 'acara-dengan-gambar',
+            'content' => 'Isi acara.',
+            'thumbnail' => 'acara-preview.png',
+            'acara' => '2026-10-27 10:00:00',
+            'lokasi' => 'Sekolah',
+            'is_active' => '0',
+            'views' => 0,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        $this->get('/berita/berita-dengan-gambar')
+            ->assertOk()
+            ->assertSee('<meta property="og:image" content="https://localhost:8000/storage/images/berita/berita-preview.jpg">', false)
+            ->assertSee('<meta property="og:title" content="Berita dengan gambar">', false)
+            ->assertSee('<meta name="twitter:card" content="summary_large_image">', false);
+
+        $this->get('/event/acara-dengan-gambar')
+            ->assertOk()
+            ->assertSee('<meta property="og:image" content="https://localhost:8000/storage/images/event/acara-preview.png">', false)
+            ->assertSee('<meta property="og:title" content="Acara dengan gambar">', false)
+            ->assertSee('<meta name="twitter:card" content="summary_large_image">', false);
+
+        $this->assertDatabaseHas('events', [
+            'id' => $eventId,
+            'views' => 1,
+        ]);
+    }
+
     public function test_homepage_counts_active_guest_and_murid_accounts_as_students(): void
     {
         $this->createHomepageTables();

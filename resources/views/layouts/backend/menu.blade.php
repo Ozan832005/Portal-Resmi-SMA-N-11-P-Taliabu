@@ -35,7 +35,7 @@
                             alt="">
                     </span>
                     <span class="brand-text">
-                        <span>SMA 11</span>
+                        <span>SMA NEGERI 11</span>
                         <small>PULAU TALIABU</small>
                     </span>
                 </a>

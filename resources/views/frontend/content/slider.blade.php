@@ -3,7 +3,7 @@
 
     // Slogan pada hero. Pisahkan beberapa varian dengan tanda "|" bila ingin
     // bergantian; animasi ketik-hapus-ulang ditangani Assets/Frontend/js/km-hero.js
-    $heroSlogan = __('SMA 11 PULAU TALIABU');
+    $heroSlogan = __('SMA NEGERI 11 PULAU TALIABU');
 @endphp
 
 {{-- Lapisan latar hero: grid berjalan + cahaya biru mengikuti kursor. --}}

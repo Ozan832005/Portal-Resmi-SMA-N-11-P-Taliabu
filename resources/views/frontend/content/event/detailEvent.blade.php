@@ -4,6 +4,27 @@
     {{ $event->title }}
 @endsection
 
+@section('social_meta')
+    @php
+        $socialDescription = trim(preg_replace('/\s+/u', ' ', strip_tags((string) ($event->desc ?: $event->content))));
+        $socialDescription = $socialDescription !== '' ? \Illuminate\Support\Str::limit($socialDescription, 200) : $event->title;
+        $socialImage = $event->thumbnail ? secure_asset('storage/images/event/' . $event->thumbnail) : null;
+        $socialUrl = url()->current();
+    @endphp
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="{{ $event->title }}">
+    <meta property="og:description" content="{{ $socialDescription }}">
+    <meta property="og:url" content="{{ $socialUrl }}">
+    @if ($socialImage)
+        <meta property="og:image" content="{{ $socialImage }}">
+        <meta property="og:image:alt" content="{{ $event->title }}">
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:image" content="{{ $socialImage }}">
+    @endif
+    <meta name="twitter:title" content="{{ $event->title }}">
+    <meta name="twitter:description" content="{{ $socialDescription }}">
+@endsection
+
 @section('content')
     @section('about')
         @php
