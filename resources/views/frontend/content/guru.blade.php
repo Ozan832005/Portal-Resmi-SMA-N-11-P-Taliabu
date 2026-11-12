@@ -18,7 +18,7 @@
         </div>
     @else
         <div class="container">
-            <div class="rc-carousel km-teacher-carousel" role="region" aria-label="{{ __('Geser untuk melihat profil pengajar') }}" data-loop="true" data-items="4" data-margin="22" data-autoplay="false" data-autoplay-timeout="10000" data-smart-speed="700" data-dots="true" data-nav="true" data-nav-speed="false" data-r-x-small="1" data-r-x-small-nav="true" data-r-x-small-dots="true" data-r-x-medium="1" data-r-x-medium-nav="true" data-r-x-medium-dots="true" data-r-small="2" data-r-small-nav="true" data-r-small-dots="true" data-r-medium="4" data-r-medium-nav="true" data-r-medium-dots="true" data-r-large="4" data-r-large-nav="true" data-r-large-dots="true">
+            <div class="rc-carousel km-teacher-carousel" role="region" aria-label="{{ __('Geser untuk melihat profil pengajar') }}" data-loop="true" data-items="4" data-margin="22" data-autoplay="false" data-autoplay-timeout="10000" data-smart-speed="700" data-dots="true" data-nav="false" data-nav-speed="false" data-r-x-small="1" data-r-x-small-nav="false" data-r-x-small-dots="true" data-r-x-medium="1" data-r-x-medium-nav="false" data-r-x-medium-dots="true" data-r-small="2" data-r-small-nav="false" data-r-small-dots="true" data-r-medium="4" data-r-medium-nav="false" data-r-medium-dots="true" data-r-large="4" data-r-large-nav="false" data-r-large-dots="true">
                 @foreach ($pengajar as $pengajars)
                     <div class="single-item km-person-slide">
                         @include('frontend.content.partials.person-card', ['pengajars' => $pengajars])

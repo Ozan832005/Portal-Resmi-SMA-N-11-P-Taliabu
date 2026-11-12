@@ -167,6 +167,114 @@ class BackendContentManagementTest extends TestCase
         $this->assertDatabaseMissing('curricula', ['id' => $curriculum->id]);
     }
 
+    public function test_teacher_can_view_and_download_admin_uploaded_module_ajar(): void
+    {
+        Storage::fake('local');
+
+        $this->actingAs($this->admin)
+            ->post(route('backend-kurikulum.store'), [
+                'label' => 'CP',
+                'title' => 'Capaian Pembelajaran',
+                'description' => 'Target pembelajaran.',
+                'is_active' => '1',
+                'sort_order' => 1,
+                'module_ajar' => UploadedFile::fake()->create('capaian.pdf', 100, 'application/pdf'),
+            ])
+            ->assertRedirect(route('backend-kurikulum.index'));
+
+        $curriculum = Curriculum::query()->firstOrFail();
+        Storage::disk('local')->assertExists($curriculum->module_ajar_path);
+
+        $teacher = User::create([
+            'name' => 'Guru Tes',
+            'username' => 'guru-tes',
+            'email' => 'guru@example.test',
+            'role' => 'Guru',
+            'status' => 'Aktif',
+            'password' => bcrypt('password'),
+        ]);
+        $teacher->assignRole('Guru');
+
+        $this->actingAs($teacher)
+            ->get(route('guru.kurikulum'))
+            ->assertOk()
+            ->assertSee('Capaian Pembelajaran')
+            ->assertSee(route('guru.kurikulum'), false)
+            ->assertSee(route('backend-kurikulum.modul-ajar', $curriculum), false);
+
+        $this->get(route('backend-kurikulum.modul-ajar', $curriculum))
+            ->assertDownload('capaian-pembelajaran.pdf');
+
+        $oldModuleAjarPath = $curriculum->module_ajar_path;
+
+        $this->actingAs($this->admin)
+            ->put(route('backend-kurikulum.update', $curriculum), [
+                'label' => 'CP',
+                'title' => 'Capaian Pembelajaran',
+                'description' => 'Target pembelajaran.',
+                'is_active' => '1',
+                'sort_order' => 1,
+                'module_ajar' => UploadedFile::fake()->create('capaian-baru.pdf', 100, 'application/pdf'),
+            ])
+            ->assertRedirect(route('backend-kurikulum.index'));
+
+        $curriculum->refresh();
+        Storage::disk('local')->assertMissing($oldModuleAjarPath);
+        Storage::disk('local')->assertExists($curriculum->module_ajar_path);
+
+        $this->delete(route('backend-kurikulum.destroy', $curriculum))
+            ->assertRedirect(route('backend-kurikulum.index'));
+
+        Storage::disk('local')->assertMissing($curriculum->module_ajar_path);
+    }
+
+    public function test_non_teachers_cannot_open_the_teacher_curriculum_page(): void
+    {
+        $staff = User::create([
+            'name' => 'Staf Tes',
+            'username' => 'staf-kurikulum',
+            'email' => 'staf-kurikulum@example.test',
+            'role' => 'Staf',
+            'status' => 'Aktif',
+            'password' => bcrypt('password'),
+        ]);
+        $staff->assignRole('Staf');
+        $curriculum = Curriculum::create([
+            'label' => 'CP',
+            'title' => 'Capaian Pembelajaran',
+            'description' => 'Target pembelajaran.',
+            'is_active' => true,
+            'sort_order' => 1,
+            'module_ajar_path' => 'kurikulum/modul-ajar/capaian.pdf',
+        ]);
+
+        $this->actingAs($staff)
+            ->get(route('guru.kurikulum'))
+            ->assertForbidden();
+
+        $this->get(route('backend-kurikulum.modul-ajar', $curriculum))
+            ->assertForbidden();
+    }
+
+    public function test_admin_cannot_upload_a_non_pdf_as_module_ajar(): void
+    {
+        Storage::fake('local');
+
+        $this->actingAs($this->admin)
+            ->from(route('backend-kurikulum.create'))
+            ->post(route('backend-kurikulum.store'), [
+                'label' => 'Modul',
+                'title' => 'Modul Ajar',
+                'description' => 'Panduan pembelajaran.',
+                'is_active' => '1',
+                'sort_order' => 1,
+                'module_ajar' => UploadedFile::fake()->create('modul.txt', 10, 'text/plain'),
+            ])
+            ->assertSessionHasErrors('module_ajar');
+
+        $this->assertDatabaseCount('curricula', 0);
+    }
+
     public function test_admin_can_create_update_and_delete_publication_videos(): void
     {
         $this->actingAs($this->admin)
@@ -355,6 +463,7 @@ class BackendContentManagementTest extends TestCase
             $table->text('description');
             $table->boolean('is_active')->default(true);
             $table->unsignedSmallInteger('sort_order')->default(0);
+            $table->string('module_ajar_path')->nullable();
             $table->timestamps();
         });
 

@@ -313,15 +313,24 @@ class FrontendViewsAndPublicationsTest extends TestCase
             'instagram' => 'guru.sma11',
         ]);
 
-        $this->get('/')
+        $response = $this->get('/');
+
+        $response
             ->assertOk()
-            ->assertSee('km-teacher-card', false)
+            ->assertSee('km-person-card', false)
+            ->assertSee('data-nav="false"', false)
+            ->assertSee('data-r-large-nav="false"', false)
             ->assertSee('Guru Informatika')
             ->assertSee('Informatika')
             ->assertSee('SMA Negeri 11 Pulau Taliabu')
             ->assertSee('Website Guru Informatika')
             ->assertSee('Instagram Guru Informatika')
-            ->assertSee('km-teacher-card__placeholder', false);
+            ->assertSee('km-person-card__placeholder', false);
+
+        $this->assertMatchesRegularExpression(
+            '/<div class="km-person-card__portrait">.*?km-person-card__contact.*?km-person-card__social.*?<\/div>\s*<div class="km-person-card__body">/s',
+            (string) $response->getContent(),
+        );
     }
 
     public function test_every_youtube_publication_is_available_for_inline_playback(): void
@@ -509,6 +518,7 @@ class FrontendViewsAndPublicationsTest extends TestCase
     public function test_public_library_catalog_groups_books_and_links_checkout_to_login(): void
     {
         Storage::fake('local');
+        Storage::fake('public');
         Storage::disk('local')->putFileAs(
             'public/images/thumbnail',
             UploadedFile::fake()->image('legacy-cover.png'),
@@ -539,6 +549,7 @@ class FrontendViewsAndPublicationsTest extends TestCase
             $table->string('name');
             $table->text('description');
             $table->string('thumbnail')->nullable();
+            $table->string('pdf_path')->nullable();
             $table->unsignedBigInteger('category_id');
             $table->unsignedBigInteger('author_id');
             $table->unsignedBigInteger('publisher_id');
@@ -579,6 +590,7 @@ class FrontendViewsAndPublicationsTest extends TestCase
                 'name' => $name,
                 'description' => 'Koleksi bacaan perpustakaan sekolah.',
                 'thumbnail' => $thumbnail,
+                'pdf_path' => $name === 'Novel Inspiratif' ? 'books/pdf/novel-inspiratif.pdf' : null,
                 'category_id' => $categoryId,
                 'author_id' => $authorId,
                 'publisher_id' => $publisherId,
@@ -590,6 +602,7 @@ class FrontendViewsAndPublicationsTest extends TestCase
                 'updated_at' => now(),
             ]);
         }
+        Storage::disk('public')->put('books/pdf/novel-inspiratif.pdf', '%PDF-1.4');
 
         $this->get('/katalog-perpustakaan')
             ->assertOk()
@@ -598,6 +611,7 @@ class FrontendViewsAndPublicationsTest extends TestCase
             ->assertSee('Novel Inspiratif')
             ->assertSee('Sains untuk Semua')
             ->assertSee('href="'.route('login').'"', false)
+            ->assertSee('href="'.route('katalog.perpustakaan.download', 1).'"', false)
             ->assertSee('src="'.route('katalog.perpustakaan.sampul', 1).'"', false)
             ->assertSee('Pinjam buku')
             ->assertSee('Stok habis');
@@ -605,6 +619,33 @@ class FrontendViewsAndPublicationsTest extends TestCase
         $this->get(route('katalog.perpustakaan.sampul', 1))
             ->assertOk()
             ->assertHeader('content-type', 'image/png');
+
+        $this->get(route('katalog.perpustakaan.download', 1))
+            ->assertOk()
+            ->assertDownload('novel-inspiratif.pdf');
+    }
+
+    public function test_public_curriculum_page_does_not_expose_private_module_ajar_files(): void
+    {
+        Storage::fake('local');
+        Storage::disk('local')->put('kurikulum/modul-ajar/privat.pdf', '%PDF-1.4');
+
+        $curriculumId = DB::table('curricula')->insertGetId([
+            'label' => 'Modul',
+            'title' => 'Modul Ajar Privat',
+            'description' => 'Isi kurikulum untuk pengunjung.',
+            'is_active' => true,
+            'sort_order' => 1,
+            'module_ajar_path' => 'kurikulum/modul-ajar/privat.pdf',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        $this->get(route('kurikulum'))
+            ->assertOk()
+            ->assertSee('Modul Ajar Privat')
+            ->assertDontSee(route('backend-kurikulum.modul-ajar', $curriculumId), false)
+            ->assertDontSee('Unduh Modul Ajar');
     }
 
     public function test_login_page_uses_school_branding(): void
@@ -729,6 +770,7 @@ class FrontendViewsAndPublicationsTest extends TestCase
             $table->text('description');
             $table->boolean('is_active')->default(true);
             $table->unsignedSmallInteger('sort_order')->default(0);
+            $table->string('module_ajar_path')->nullable();
             $table->timestamps();
         });
 

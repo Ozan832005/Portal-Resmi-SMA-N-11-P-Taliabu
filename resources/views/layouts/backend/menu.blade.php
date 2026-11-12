@@ -240,6 +240,18 @@
                     </a>
                 </li>
 
+            @elseif ($role == 'Guru')
+                <li class="km-menu-section" role="presentation">
+                    <span class="km-menu-section-label">Akademik</span>
+                </li>
+
+                <li class="nav-item {{ request()->routeIs('guru.kurikulum') ? 'active' : '' }}">
+                    <a class="d-flex align-items-center" href="{{ route('guru.kurikulum') }}">
+                        <i data-feather="layers"></i>
+                        <span class="menu-title text-truncate">Kurikulum</span>
+                    </a>
+                </li>
+
             @elseif ($role == 'Perpustakaan')
                 <li class="km-menu-section" role="presentation">
                     <span class="km-menu-section-label">Sirkulasi</span>

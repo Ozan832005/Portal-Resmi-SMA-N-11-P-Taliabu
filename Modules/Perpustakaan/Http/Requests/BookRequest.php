@@ -30,6 +30,7 @@ class BookRequest extends FormRequest
                 'mimes:jpg,jpeg,png',
                 'max:5120',
             ],
+            'pdf_file' => ['nullable', 'file', 'mimes:pdf', 'extensions:pdf', 'max:20480'],
         ];
     }
 
@@ -56,6 +57,9 @@ class BookRequest extends FormRequest
             'thumbnail.image' => 'Berkas sampul harus berupa gambar.',
             'thumbnail.mimes' => 'Gambar atau Cover Buku hanya mendukung .jpg .jpeg atau .png.',
             'thumbnail.max' => 'Ukuran sampul buku maksimal 5 MB.',
+            'pdf_file.mimes' => 'File buku harus berupa PDF.',
+            'pdf_file.extensions' => 'File buku harus menggunakan ekstensi .pdf.',
+            'pdf_file.max' => 'Ukuran file buku maksimal 20 MB.',
         ];
     }
 

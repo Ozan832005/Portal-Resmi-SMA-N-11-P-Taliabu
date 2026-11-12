@@ -12,6 +12,7 @@ class Curriculum extends Model
         'description',
         'is_active',
         'sort_order',
+        'module_ajar_path',
     ];
 
     protected function casts(): array

@@ -85,6 +85,16 @@ class PpdbAndPasswordActionsTest extends TestCase
         ]);
     }
 
+    public function test_applicant_registration_form_renders_with_clean_contact_fields(): void
+    {
+        $this->get(route('register'))
+            ->assertOk()
+            ->assertSee('No WhatsApp Calon Murid')
+            ->assertSee('id="register-email"', false)
+            ->assertSee('value=""', false)
+            ->assertSee('type="submit"', false);
+    }
+
     public function test_ppdb_staff_can_accept_applicant_when_student_role_has_not_been_created(): void
     {
         [$reviewer, $applicant] = $this->createApplicantAcceptanceScenario(150000);
@@ -197,6 +207,9 @@ class PpdbAndPasswordActionsTest extends TestCase
 
         $this->get('/ppdb')
             ->assertOk()
+            ->assertSee('SMA N 11 Pulau Taliabu All Rights Reserved.')
+            ->assertDontSee('Andri Desmana')
+            ->assertSee('id="faq-accordion"', false)
             ->assertSee('Logo SMA Negeri 11 Pulau Taliabu')
             ->assertSee('storage/images/logo/logo-sma11.png')
             ->assertSee('Kurikulum')

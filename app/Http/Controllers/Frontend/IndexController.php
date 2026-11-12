@@ -22,9 +22,11 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Illuminate\View\View;
 use Modules\Perpustakaan\Entities\Book;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class IndexController extends Controller
 {
@@ -340,6 +342,19 @@ class IndexController extends Controller
         }
 
         abort(404);
+    }
+
+    public function downloadPdfBuku(Book $book): StreamedResponse
+    {
+        abort_unless(
+            $book->pdf_path !== null && Storage::disk('public')->exists($book->pdf_path),
+            404,
+        );
+
+        return Storage::disk('public')->download(
+            $book->pdf_path,
+            Str::slug($book->name).'.pdf',
+        );
     }
 
     // Profile Sekolah

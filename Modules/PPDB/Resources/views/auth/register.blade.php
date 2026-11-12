@@ -59,7 +59,7 @@
                         </div>
                         <!-- /Left Text-->
                         <!-- Login-->
-                        <div class="d-flex col-lg-4 align-items-center auth-bg px-2 p-lg-5">
+                        <div class="d-flex col-lg-4 align-items-center auth-bg px-2 p-lg-5 py-5 py-lg-0">
                             <div class="col-12 col-sm-8 col-md-6 col-lg-12 px-xl-2 mx-auto">
                                 @if($message = Session::get('error'))
                                     <div class="alert alert-danger" role="alert">
@@ -74,8 +74,8 @@
                                 <form class="auth-login-form mt-2" action="{{route('register.store')}}" method="POST">
                                     @csrf
                                     <div class="form-group">
-                                        <label class="form-label">Nama Lengkap</label>
-                                        <input class="form-control @error('name') is-invalid @enderror" type="text" name="name" value=" {{old('name')}} " placeholder="Masukan Nama Lengkap" autofocus="" tabindex="1" />
+                                        <label class="form-label" for="register-name">Nama Lengkap</label>
+                                        <input id="register-name" class="form-control @error('name') is-invalid @enderror" type="text" name="name" value="{{ old('name') }}" placeholder="Masukan Nama Lengkap" autocomplete="name" autofocus />
                                         @error('name')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -83,8 +83,8 @@
                                         @enderror
                                     </div>
                                     <div class="form-group">
-                                        <label class="form-label">Email</label>
-                                        <input class="form-control @error('email') is-invalid @enderror" type="email" name="email" value=" {{old('email')}} " placeholder="Masukan Email" autofocus="" tabindex="1" />
+                                        <label class="form-label" for="register-email">Email</label>
+                                        <input id="register-email" class="form-control @error('email') is-invalid @enderror" type="email" name="email" value="{{ old('email') }}" placeholder="Masukan Email" autocomplete="email" />
                                         @error('email')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -92,8 +92,8 @@
                                         @enderror
                                     </div>
                                     <div class="form-group">
-                                        <label class="form-label">No WhatApp Calon Murid</label>
-                                        <input class="form-control @error('whatsapp') is-invalid @enderror" type="text" name="whatsapp" value=" {{old('whatsapp')}} " placeholder="Masukan No WhatsApp" autofocus="" tabindex="1" />
+                                        <label class="form-label" for="register-whatsapp">No WhatsApp Calon Murid</label>
+                                        <input id="register-whatsapp" class="form-control @error('whatsapp') is-invalid @enderror" type="text" name="whatsapp" value="{{ old('whatsapp') }}" placeholder="Masukan No WhatsApp" autocomplete="tel" />
                                         @error('whatsapp')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -101,8 +101,8 @@
                                         @enderror
                                     </div>
                                     <div class="form-group">
-                                        <label class="form-label">Asal Sekolah</label>
-                                        <input class="form-control @error('asal_sekolah') is-invalid @enderror" type="text" name="asal_sekolah" value=" {{old('asal_sekolah')}} " placeholder="Masukan Asal Sekolah" autofocus="" tabindex="1" />
+                                        <label class="form-label" for="register-school">Asal Sekolah</label>
+                                        <input id="register-school" class="form-control @error('asal_sekolah') is-invalid @enderror" type="text" name="asal_sekolah" value="{{ old('asal_sekolah') }}" placeholder="Masukan Asal Sekolah" autocomplete="organization" />
                                         @error('asal_sekolah')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -110,9 +110,9 @@
                                         @enderror
                                     </div>
                                     <div class="form-group">
-                                        <label class="form-label">Password Login</label>
+                                        <label class="form-label" for="register-password">Password Login</label>
                                         <div class="input-group input-group-merge form-password-toggle">
-                                            <input class="form-control form-control-merge @error('password') is-invalid @enderror" type="password" name="password" placeholder="············" tabindex="2" />
+                                            <input id="register-password" class="form-control form-control-merge @error('password') is-invalid @enderror" type="password" name="password" placeholder="············" autocomplete="new-password" />
                                             <div class="input-group-append"><span class="input-group-text cursor-pointer"><i data-feather="eye"></i></span></div>
                                             @error('password')
                                                 <span class="invalid-feedback" role="alert">
@@ -122,9 +122,9 @@
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="form-label">Konfirmasi Password</label>
+                                        <label class="form-label" for="register-confirm-password">Konfirmasi Password</label>
                                         <div class="input-group input-group-merge form-password-toggle">
-                                            <input class="form-control form-control-merge @error('confirm_password') is-invalid @enderror" type="password" name="confirm_password" placeholder="············" tabindex="2" />
+                                            <input id="register-confirm-password" class="form-control form-control-merge @error('confirm_password') is-invalid @enderror" type="password" name="confirm_password" placeholder="············" autocomplete="new-password" />
                                             <div class="input-group-append"><span class="input-group-text cursor-pointer"><i data-feather="eye"></i></span></div>
                                             @error('confirm_password')
                                                 <span class="invalid-feedback" role="alert">
@@ -135,11 +135,11 @@
                                     </div>
                                     <div class="form-group">
                                         <div class="custom-control custom-checkbox">
-                                            <input class="custom-control-input" id="remember-me" type="checkbox" tabindex="3" />
+                                            <input class="custom-control-input" id="remember-me" type="checkbox" />
                                             <label class="custom-control-label" for="remember-me"> Remember Me</label>
                                         </div>
                                     </div>
-                                    <button class="btn btn-primary btn-block" tabindex="4">Daftar</button>
+                                    <button class="btn btn-primary btn-block" type="submit">Daftar</button>
                                 </form>
                                 </div>
                         </div>

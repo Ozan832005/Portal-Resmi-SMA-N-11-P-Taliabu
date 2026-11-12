@@ -32,6 +32,7 @@
                             <th>Label</th>
                             <th>Judul</th>
                             <th>Deskripsi</th>
+                            <th>Modul ajar</th>
                             <th>Status</th>
                             <th>Aksi</th>
                         </tr>
@@ -43,6 +44,13 @@
                                 <td>{{ $curriculum->label }}</td>
                                 <td>{{ $curriculum->title }}</td>
                                 <td>{{ \Illuminate\Support\Str::limit($curriculum->description, 110) }}</td>
+                                <td>
+                                    @if ($curriculum->module_ajar_path)
+                                        <a href="{{ route('backend-kurikulum.modul-ajar', $curriculum) }}">Unduh PDF</a>
+                                    @else
+                                        <span class="text-muted">Belum ada</span>
+                                    @endif
+                                </td>
                                 <td>
                                     <span class="badge badge-light-{{ $curriculum->is_active ? 'success' : 'secondary' }}">
                                         {{ $curriculum->is_active ? 'Aktif' : 'Tidak aktif' }}
@@ -62,7 +70,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td class="text-center text-muted py-3" colspan="6">Belum ada materi kurikulum.</td>
+                                <td class="text-center text-muted py-3" colspan="7">Belum ada materi kurikulum.</td>
                             </tr>
                         @endforelse
                     </tbody>

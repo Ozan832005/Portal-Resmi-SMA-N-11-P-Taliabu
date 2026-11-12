@@ -28,6 +28,7 @@ class CurriculumRequest extends FormRequest
             'description' => ['required', 'string'],
             'is_active' => ['required', 'in:0,1'],
             'sort_order' => ['nullable', 'integer', 'min:0', 'max:65535'],
+            'module_ajar' => ['nullable', 'file', 'mimes:pdf', 'extensions:pdf', 'max:20480'],
         ];
     }
 }

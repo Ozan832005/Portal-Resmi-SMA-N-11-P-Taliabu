@@ -13,7 +13,7 @@
         </header>
 
         <section class="km-panel">
-            <form action="{{ route('backend-kurikulum.update', $curriculum) }}" method="post">
+            <form action="{{ route('backend-kurikulum.update', $curriculum) }}" method="post" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
                 @include('backend.website.kurikulum._form', ['curriculum' => $curriculum, 'submitLabel' => 'Simpan perubahan'])

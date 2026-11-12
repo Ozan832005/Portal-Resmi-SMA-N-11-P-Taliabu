@@ -64,6 +64,7 @@
 
 .km-person-card__portrait {
     position: relative;
+    isolation: isolate;
     width: 100%;
     aspect-ratio: 4 / 5;
     overflow: hidden;
@@ -193,10 +194,83 @@
 .km-person-card__social {
     display: flex;
     flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
     gap: 7px;
-    margin: auto 0 0;
-    padding: 14px 0 0;
+    margin: 0;
+    padding: 0;
     list-style: none;
+}
+
+.km-person-card__contact {
+    position: absolute;
+    z-index: 2;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.km-person-card__contact-curtain {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 50%;
+    background:
+        radial-gradient(ellipse at 50% 50%, rgba(119, 208, 242, .24), transparent 68%),
+        linear-gradient(145deg, rgba(7, 42, 63, .97), rgba(11, 92, 130, .96) 55%, rgba(7, 42, 63, .98));
+    box-shadow: 0 0 28px rgba(4, 25, 39, .24);
+    transition: transform .65s cubic-bezier(.22, 1, .36, 1);
+}
+
+.km-person-card__contact-curtain--left {
+    left: 0;
+    transform: translateX(-102%);
+}
+
+.km-person-card__contact-curtain--right {
+    right: 0;
+    transform: translateX(102%);
+}
+
+.km-person-card__contact .km-person-card__social {
+    position: relative;
+    z-index: 1;
+    gap: 10px;
+    padding: 12px;
+    opacity: 0;
+    transform: translateY(14px) scale(.96);
+    transition: opacity .3s ease .18s, transform .4s cubic-bezier(.22, 1, .36, 1) .18s;
+    pointer-events: auto;
+}
+
+.km-person-card__contact .km-person-card__social a {
+    width: 40px;
+    height: 40px;
+    border-color: rgba(255, 255, 255, .52);
+    background: rgba(255, 255, 255, .94);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, .2);
+}
+
+.km-person-card__contact .km-person-card__social a:hover,
+.km-person-card__contact .km-person-card__social a:focus-visible {
+    transform: translateY(-3px) scale(1.06);
+    border-color: #fff;
+    background: var(--km-blue, #3aaee5);
+    color: #fff !important;
+}
+
+.km-person-card:hover .km-person-card__contact-curtain,
+.km-person-card:focus-within .km-person-card__contact-curtain {
+    transform: translateX(0);
+}
+
+.km-person-card:hover .km-person-card__contact .km-person-card__social,
+.km-person-card:focus-within .km-person-card__contact .km-person-card__social {
+    opacity: 1;
+    transform: translateY(0) scale(1);
 }
 
 .km-person-card__social li {
@@ -224,6 +298,32 @@
     border-color: var(--km-blue, #3aaee5);
     background: var(--km-blue, #3aaee5);
     color: #fff !important;
+}
+
+@media (hover: none) {
+    .km-person-card__contact {
+        align-items: flex-end;
+        overflow: visible;
+    }
+
+    .km-person-card__contact-curtain {
+        display: none;
+    }
+
+    .km-person-card__contact .km-person-card__social {
+        width: 100%;
+        padding: 12px 10px;
+        background: linear-gradient(180deg, transparent, rgba(5, 28, 43, .76));
+        opacity: 1;
+        transform: none;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .km-person-card__contact-curtain,
+    .km-person-card__contact .km-person-card__social {
+        transition: none;
+    }
 }
 
 /* --------------------------------------------------------------------------

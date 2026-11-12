@@ -54,13 +54,20 @@
                                                 </div>
                                                 <div class="km-library-book__footer">
                                                     <span class="km-library-book__publisher">{{ $book->publisher?->name ?? __('Penerbit tidak dicantumkan') }}</span>
-                                                    @if ($book->stock > 0)
-                                                        <a class="km-library-checkout" href="{{ route('login') }}">
-                                                            {{ __('Pinjam buku') }} <i class="fa fa-arrow-right" aria-hidden="true"></i>
-                                                        </a>
-                                                    @else
-                                                        <span class="km-library-checkout km-library-checkout--disabled" aria-disabled="true">{{ __('Stok habis') }}</span>
-                                                    @endif
+                                                    <div class="km-library-book__actions">
+                                                        @if ($book->stock > 0)
+                                                            <a class="km-library-checkout" href="{{ route('login') }}">
+                                                                {{ __('Pinjam buku') }} <i class="fa fa-arrow-right" aria-hidden="true"></i>
+                                                            </a>
+                                                        @else
+                                                            <span class="km-library-checkout km-library-checkout--disabled" aria-disabled="true">{{ __('Stok habis') }}</span>
+                                                        @endif
+                                                        @if ($book->pdf_path)
+                                                            <a class="km-library-checkout" href="{{ route('katalog.perpustakaan.download', $book) }}">
+                                                                {{ __('Unduh PDF') }} <i class="fa fa-download" aria-hidden="true"></i>
+                                                            </a>
+                                                        @endif
+                                                    </div>
                                                 </div>
                                             </div>
                                         </article>

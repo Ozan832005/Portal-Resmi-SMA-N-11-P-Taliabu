@@ -50,6 +50,22 @@
             <span class="km-person-card__chip">{{ $personSubject }}</span>
             <span class="km-person-card__role"><i class="fa fa-graduation-cap" aria-hidden="true"></i>{{ __('Guru') }}</span>
         </span>
+
+        @if ($personSocials !== [])
+            <div class="km-person-card__contact" aria-label="{{ __('Kontak :name', ['name' => $pengajars->name]) }}">
+                <span class="km-person-card__contact-curtain km-person-card__contact-curtain--left" aria-hidden="true"></span>
+                <span class="km-person-card__contact-curtain km-person-card__contact-curtain--right" aria-hidden="true"></span>
+                <ul class="km-person-card__social" aria-label="{{ __('Informasi kontak') }}">
+                    @foreach ($personSocials as $social)
+                        <li>
+                            <a href="{{ $social['url'] }}" target="_blank" rel="noopener" aria-label="{{ $social['label'] }} {{ $pengajars->name }}">
+                                <i class="fa {{ $social['icon'] }}" aria-hidden="true"></i>
+                            </a>
+                        </li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
     </div>
 
     <div class="km-person-card__body">
@@ -62,17 +78,5 @@
         </span>
 
         <h3 class="km-person-card__name">{{ $pengajars->name }}</h3>
-
-        @if ($personSocials !== [])
-            <ul class="km-person-card__social">
-                @foreach ($personSocials as $social)
-                    <li>
-                        <a href="{{ $social['url'] }}" target="_blank" rel="noopener" aria-label="{{ $social['label'] }} {{ $pengajars->name }}">
-                            <i class="fa {{ $social['icon'] }}" aria-hidden="true"></i>
-                        </a>
-                    </li>
-                @endforeach
-            </ul>
-        @endif
     </div>
 </article>

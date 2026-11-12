@@ -154,6 +154,24 @@
                                     </div>
                                 </div>
 
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label for="book-pdf">File Buku PDF <span class="text-muted">(Opsional)</span></label>
+                                        @if ($isEditing && $book->pdf_path)
+                                            <div class="mb-1">
+                                                <a href="{{ route('katalog.perpustakaan.download', $book) }}">Unduh file PDF saat ini</a>
+                                            </div>
+                                            <small class="text-muted d-block mb-1">Kosongkan jika tidak ingin mengganti file.</small>
+                                        @endif
+                                        <input id="book-pdf" type="file" accept=".pdf,application/pdf"
+                                               class="form-control @error('pdf_file') is-invalid @enderror" name="pdf_file" />
+                                        @error('pdf_file')
+                                            <div class="invalid-feedback"><strong>{{ $message }}</strong></div>
+                                        @enderror
+                                        <small class="form-text text-muted">Format PDF, maksimal 20 MB.</small>
+                                    </div>
+                                </div>
+
                                 <div class="col-12">
                                     <div class="form-group">
                                         <label for="basicInput">Deskripsi</label>  <span class="text-danger">*</span>

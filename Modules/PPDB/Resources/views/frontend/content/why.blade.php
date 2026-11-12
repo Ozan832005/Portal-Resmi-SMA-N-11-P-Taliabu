@@ -1,14 +1,14 @@
 <div class="faq-page-area">
     <div class="container">
         <h1 class="about-title">Mengapa Memilih SMA Negeri 11 Pulau Taliabu?</h1>
-        <div class="row panel-group" id="faq-accordian">
+        <div class="row panel-group" id="faq-accordion">
             <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                 <div class="faq-box-wrapper">
                     <div class="faq-box-item panel panel-default">
                         <div class="panel-heading active">
                             <div class="panel-title faq-box-title">
                                 <h3>
-                                    <a aria-expanded="false" class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+                                    <a aria-expanded="true" class="accordion-toggle" data-toggle="collapse" data-parent="#faq-accordion" href="#collapseOne">
                                         <span class="faq-box-count">1</span>Pembelajaran Terarah
                                     </a>
                                 </h3>
@@ -26,7 +26,7 @@
                         <div class="panel-heading">
                             <div class="panel-title faq-box-title">
                                 <h3>
-                                    <a aria-expanded="false" class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
+                                    <a aria-expanded="false" class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#faq-accordion" href="#collapseTwo">
                                         <span class="faq-box-count">2</span>Sarana Pendukung Belajar
                                     </a>
                                 </h3>
@@ -44,7 +44,7 @@
                         <div class="panel-heading">
                             <div class="panel-title faq-box-title">
                                 <h3>
-                                    <a aria-expanded="false" class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseThree">
+                                    <a aria-expanded="false" class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#faq-accordion" href="#collapseThree">
                                         <span class="faq-box-count">3</span>Pendampingan Guru
                                     </a>
                                 </h3>
@@ -64,7 +64,7 @@
                         <div class="panel-heading">
                             <div class="panel-title faq-box-title">
                                 <h3>
-                                    <a aria-expanded="false" class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseFour">
+                                    <a aria-expanded="false" class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#faq-accordion" href="#collapseFour">
                                         <span class="faq-box-count">4</span>Kegiatan Pengembangan Diri
                                     </a>
                                 </h3>
@@ -82,7 +82,7 @@
                         <div class="panel-heading">
                             <div class="panel-title faq-box-title">
                                 <h3>
-                                    <a aria-expanded="false" class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseFive">
+                                    <a aria-expanded="false" class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#faq-accordion" href="#collapseFive">
                                         <span class="faq-box-count">5</span>Penguatan Karakter
                                     </a>
                                 </h3>
@@ -100,7 +100,7 @@
                         <div class="panel-heading">
                             <div class="panel-title faq-box-title">
                                 <h3>
-                                    <a aria-expanded="false" class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseSix">
+                                    <a aria-expanded="false" class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#faq-accordion" href="#collapseSix">
                                         <span class="faq-box-count">6</span>Pendaftaran PPDB Daring
                                     </a>
                                 </h3>

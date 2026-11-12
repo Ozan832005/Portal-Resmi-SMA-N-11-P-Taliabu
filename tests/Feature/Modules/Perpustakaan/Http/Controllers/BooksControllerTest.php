@@ -44,6 +44,74 @@ class BooksControllerTest extends TestCase
         Storage::disk('public')->assertExists($book->thumbnail);
     }
 
+    public function test_librarian_can_upload_a_book_pdf_for_public_download(): void
+    {
+        Storage::fake('public');
+        $librarian = $this->createLibrarian();
+        $bookDetails = $this->createBookDetails();
+
+        $this->actingAs($librarian)
+            ->post(route('books.store'), [
+                ...$bookDetails,
+                'name' => 'Buku PDF',
+                'thumbnail' => UploadedFile::fake()->image('sampul.png'),
+                'pdf_file' => UploadedFile::fake()->create('buku.pdf', 100, 'application/pdf'),
+            ])
+            ->assertRedirect(route('books.index'));
+
+        $book = Book::query()->where('name', 'Buku PDF')->firstOrFail();
+        Storage::disk('public')->assertExists($book->pdf_path);
+
+        $this->get(route('katalog.perpustakaan.download', $book))
+            ->assertDownload('buku-pdf.pdf');
+    }
+
+    public function test_replacing_and_deleting_a_book_removes_its_old_pdf(): void
+    {
+        Storage::fake('public');
+        $librarian = $this->createLibrarian();
+        $book = $this->createBook('Buku untuk PDF');
+        $book->pdf_path = 'books/pdf/lama.pdf';
+        $book->save();
+        Storage::disk('public')->put($book->pdf_path, '%PDF-1.4');
+
+        $this->actingAs($librarian)
+            ->put(route('books.update', $book), [
+                ...$this->createBookDetails(),
+                'name' => 'Buku untuk PDF',
+                'pdf_file' => UploadedFile::fake()->create('baru.pdf', 100, 'application/pdf'),
+            ])
+            ->assertRedirect(route('books.index'));
+
+        $book->refresh();
+        $this->assertNotSame('books/pdf/lama.pdf', $book->pdf_path);
+        Storage::disk('public')->assertMissing('books/pdf/lama.pdf');
+        Storage::disk('public')->assertExists($book->pdf_path);
+
+        $this->delete(route('books.destroy', $book))
+            ->assertRedirect(route('books.index'));
+
+        Storage::disk('public')->assertMissing($book->pdf_path);
+    }
+
+    public function test_librarian_cannot_upload_a_non_pdf_as_a_book_file(): void
+    {
+        Storage::fake('public');
+        $librarian = $this->createLibrarian();
+
+        $this->actingAs($librarian)
+            ->from(route('books.create'))
+            ->post(route('books.store'), [
+                ...$this->createBookDetails(),
+                'name' => 'Buku Bukan PDF',
+                'thumbnail' => UploadedFile::fake()->image('sampul.png'),
+                'pdf_file' => UploadedFile::fake()->create('buku.txt', 10, 'text/plain'),
+            ])
+            ->assertSessionHasErrors('pdf_file');
+
+        $this->assertDatabaseCount('books', 0);
+    }
+
     public function test_librarian_can_edit_a_book_without_reuploading_its_cover(): void
     {
         Storage::fake('public');
@@ -227,6 +295,7 @@ class BooksControllerTest extends TestCase
             $table->string('name')->unique();
             $table->text('description');
             $table->string('thumbnail');
+            $table->string('pdf_path')->nullable();
             $table->unsignedBigInteger('category_id');
             $table->unsignedBigInteger('author_id');
             $table->unsignedBigInteger('publisher_id');

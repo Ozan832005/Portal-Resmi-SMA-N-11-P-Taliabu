@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Backend\Pengguna\KurikulumPengajarController;
 use App\Http\Controllers\Backend\Pengguna\MuridController;
 use App\Http\Controllers\Backend\Pengguna\PengajarController;
 use App\Http\Controllers\Backend\Pengguna\PerpusController;
@@ -67,6 +68,9 @@ Route::middleware([SetLocale::class, TrackPublicVisits::class])->group(function 
     Route::get('alumni/semua', [IndexController::class, 'alumniSemua'])->name('alumni.semua');
     Route::get('alumni', [IndexController::class, 'alumni'])->name('alumni');
     Route::get('katalog-perpustakaan', [IndexController::class, 'katalogPerpustakaan'])->name('katalog.perpustakaan');
+    Route::get('katalog-perpustakaan/buku/{book}/download', [IndexController::class, 'downloadPdfBuku'])
+        ->whereNumber('book')
+        ->name('katalog.perpustakaan.download');
     Route::get('katalog-perpustakaan/buku/{book}/sampul', [IndexController::class, 'sampulBuku'])
         ->whereNumber('book')
         ->name('katalog.perpustakaan.sampul');
@@ -92,6 +96,12 @@ Route::middleware(SetLocale::class)->group(function () {
 // ======= BACKEND ======= \\
 Route::middleware('auth')->group(function () {
     Route::get('/home', [HomeController::class, 'index'])->name('home');
+    Route::get('/guru/kurikulum', [KurikulumPengajarController::class, 'index'])
+        ->middleware('role:Guru')
+        ->name('guru.kurikulum');
+    Route::get('backend-kurikulum/{curriculum}/modul-ajar', [CurriculumController::class, 'downloadModuleAjar'])
+        ->middleware('role:Admin|Guru')
+        ->name('backend-kurikulum.modul-ajar');
 
     // / PROFILE \\\
     Route::resource('profile-settings', ProfileController::class);

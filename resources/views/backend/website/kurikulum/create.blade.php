@@ -13,7 +13,7 @@
         </header>
 
         <section class="km-panel">
-            <form action="{{ route('backend-kurikulum.store') }}" method="post">
+            <form action="{{ route('backend-kurikulum.store') }}" method="post" enctype="multipart/form-data">
                 @csrf
                 @include('backend.website.kurikulum._form', ['curriculum' => null, 'submitLabel' => 'Simpan kurikulum'])
             </form>

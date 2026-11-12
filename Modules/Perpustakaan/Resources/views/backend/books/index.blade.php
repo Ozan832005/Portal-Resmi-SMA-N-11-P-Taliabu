@@ -52,6 +52,7 @@
                                                 <th>Penerbit</th>
                                                 <th>Penulis</th>
                                                 <th>Kategori</th>
+                                                <th>File PDF</th>
                                                 <th>Action</th>
                                             </tr>
                                         </thead>
@@ -65,6 +66,13 @@
                                                     <td> {{$books->publisher->name}} </td>
                                                     <td> {{$books->author->name}} </td>
                                                     <td> {{$books->category->name}} </td>
+                                                    <td>
+                                                        @if ($books->pdf_path)
+                                                            <a href="{{ route('katalog.perpustakaan.download', $books) }}">Unduh PDF</a>
+                                                        @else
+                                                            <span class="text-muted">-</span>
+                                                        @endif
+                                                    </td>
                                                     <td>
                                                         <div class="d-flex flex-wrap" style="gap: 6px;">
                                                             <a href="{{ route('books.edit', $books->id) }}" class="btn btn-success btn-sm">Edit</a>

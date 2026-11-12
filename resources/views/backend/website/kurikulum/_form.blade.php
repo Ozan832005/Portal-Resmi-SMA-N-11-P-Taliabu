@@ -55,6 +55,23 @@
             @enderror
         </div>
     </div>
+    <div class="col-12">
+        <div class="form-group">
+            <label for="curriculum-module-ajar">File Modul Ajar (PDF) <span class="text-muted">(Opsional)</span></label>
+            @if (!empty($curriculum?->module_ajar_path))
+                <div class="mb-1">
+                    <a href="{{ route('backend-kurikulum.modul-ajar', $curriculum) }}">Unduh file modul ajar saat ini</a>
+                </div>
+                <small class="text-muted d-block mb-1">Kosongkan jika tidak ingin mengganti file.</small>
+            @endif
+            <input id="curriculum-module-ajar" name="module_ajar" type="file" accept=".pdf,application/pdf"
+                   class="form-control @error('module_ajar') is-invalid @enderror">
+            @error('module_ajar')
+                <span class="invalid-feedback" role="alert">{{ $message }}</span>
+            @enderror
+            <small class="form-text text-muted">Format PDF, maksimal 20 MB.</small>
+        </div>
+    </div>
 </div>
 
 <div class="d-flex align-items-center">
