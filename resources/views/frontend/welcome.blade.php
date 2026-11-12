@@ -12,13 +12,13 @@
     <meta property="og:url" content="{{ url('/') }}" />
     <meta property="og:type" content="website" />
     <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "WebSite",
-      "name": "SMA Negeri 11 Pulau Taliabu",
-      "alternateName": "SMAN 11 Pulau Taliabu",
-      "url": "{{ url('/') }}"
-    }
+        @json([
+            '@context' => 'https://schema.org',
+            '@type' => 'WebSite',
+            'name' => 'SMA Negeri 11 Pulau Taliabu',
+            'alternateName' => 'SMAN 11 Pulau Taliabu',
+            'url' => url('/'),
+        ])
     </script>
 @endsection
 
